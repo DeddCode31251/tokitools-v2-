@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Main</title>
+  <link rel="stylesheet" href="mainpage.css" />
+</head>
+<body>
+  <!-- LOADING SCREEN -->
+  <div id="loading-animation">
+    <img src="icons/ruler.png" alt="ruler" id="ruler" />
+    <h1 id="txt">
+      <span>M</span><span>a</span><span>t</span><span>h</span>
+    </h1>
+    <div id="credit">Made by DeadCode Company</div>
+  </div>
+
+  <!-- Animated Gradient Background -->
+  <div class="animated-bg"></div>
+
+  <!-- Floating Shapes -->
+  <div class="floating-shapes">
+    <div class="shape circle"></div>
+    <div class="shape triangle"></div>
+    <div class="shape square"></div>
+    <div class="shape pentagon"></div>
+    <div class="shape hexagon"></div>
+  </div>
+
+  <!-- Profile Animation -->
+  <img src="icons/profile.png" id="profile-img" />
+
+  <!-- Data Section -->
+  <div id="data">
+    <h1 id="name-txt">
+      <span id="txt-1">M.</span> <span id="txt-2">Mina</span>
+      <span id="txt-3">Aguib</span>
+    </h1>
+    <h2 id="title">Math Teacher</h2>
+
+    <div id="buttons">
+      <button class="btn" id="exam-btn" onclick="document.location='home.html'">Exams</button>
+      <button class="btn" id="revision-btn">Revisions</button>
+    </div>
+  </div>
+
+  <script>
+    setTimeout(() => {
+      document.getElementById("loading-animation").style.display = "none";
+      document.body.style.overflow = "visible";
+    }, 3000);
+  </script>
+</body>
+</html>

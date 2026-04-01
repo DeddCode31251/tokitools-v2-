@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>GPA Calculator PRO</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    /*Title of the page*/
+        #tokitoolsTitle {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      position: relative;
+      color: transparent;
+      background: linear-gradient(135deg, #ff6a00, #ff0066, #00c6ff);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientSlide 5s infinite linear;
+
+      /* Glassy glowing edge */
+      text-shadow: 0 0 20px rgba(255, 105, 180, 0.7),
+                   0 0 40px rgba(0, 198, 255, 0.6),
+                   0 0 60px rgba(255, 106, 0, 0.5);
+	  margin-bottom: 4vw;
+    }
+
+    /* Gradient animation */
+    @keyframes gradientSlide {
+      0% {
+        background-position: 0% center;
+      }
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    /* Elegant underline */
+    #tokitoolsTitle::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 4px;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #ff6a00, #ff0066, #00c6ff);
+      animation: underlineGlow 3s infinite alternate;
+    }
+
+    @keyframes underlineGlow {
+      0% {
+        box-shadow: 0 0 10px #ff0066;
+      }
+      100% {
+        box-shadow: 0 0 25px #00c6ff;
+      }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen">
+     <h1 id="tokitoolsTitle">GPA Calculator</h1>
+  <div class="bg-white p-6 rounded shadow-lg max-w-md w-full text-center">
+
+
+    <div id="gradeInputs">
+      <input type="number" step="0.01" max="4" min="0" class="grade-input w-full mb-2 p-2 border rounded" placeholder="Grade 1">
+      <input type="number" step="0.01" max="4" min="0" class="grade-input w-full mb-2 p-2 border rounded" placeholder="Grade 2">
+      <input type="number" step="0.01" max="4" min="0" class="grade-input w-full mb-2 p-2 border rounded" placeholder="Grade 3">
+      <input type="number" step="0.01" max="4" min="0" class="grade-input w-full mb-4 p-2 border rounded" placeholder="Grade 4">
+    </div>
+
+    <div id="proTools">
+      <button onclick="addInput()" class="bg-yellow-400 hover:bg-yellow-500 text-white px-3 py-1 rounded mb-2">+ Add Course</button>
+      <button onclick="saveGPA()" class="bg-green-500 hover:bg-green-600 text-white px-3 py-1 rounded mb-2">💾 Save GPA</button>
+      <button onclick="exportGPA()" class="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded mb-4">📤 Export</button>
+    </div>
+
+    <button onclick="calculateGPA()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded">Calculate GPA</button>
+    <p id="gpaResult" class="mt-4 font-semibold text-gray-800"></p>
+
+  </div>
+
+  <script>
+    function calculateGPA() {
+      const inputs = document.querySelectorAll(".grade-input");
+      const grades = Array.from(inputs)
+        .map(input => parseFloat(input.value))
+        .filter(g => !isNaN(g) && g >= 0 && g <= 4);
+      if (grades.length === 0) return alert("Please enter at least 1 valid grade.");
+
+      const avg = (grades.reduce((a, b) => a + b, 0) / grades.length).toFixed(2);
+      document.getElementById("gpaResult").textContent = `Your GPA is ${avg}`;
+    }
+
+    function addInput() {
+      const container = document.getElementById("gradeInputs");
+      const input = document.createElement("input");
+      input.type = "number";
+      input.step = "0.01";
+      input.max = "4";
+      input.min = "0";
+      input.placeholder = `Grade ${container.children.length + 1}`;
+      input.className = "grade-input w-full mb-2 p-2 border rounded";
+      container.appendChild(input);
+    }
+
+
+    function saveGPA() {
+      const gpaText = document.getElementById("gpaResult").textContent;
+      if (!gpaText) return alert("Calculate GPA first.");
+      const old = localStorage.getItem("savedGPA") || "";
+      localStorage.setItem("savedGPA", old + "\n" + gpaText);
+      alert("✅ GPA Saved!");
+    }
+
+    function exportGPA() {
+      const saved = localStorage.getItem("savedGPA") || "No saved GPAs.";
+      const blob = new Blob([saved], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "gpa-history.txt";
+      link.click();
+    }
+  </script>
+
+</body>
+</html>

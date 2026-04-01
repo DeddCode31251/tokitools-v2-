@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2363078847817182"
+     crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toki Tools - Loading</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #00f0ff;
+            --secondary: #ff00aa;
+            --accent: #f0f;
+            --dark: #0a0a12;
+            --darker: #050508;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: radial-gradient(circle at center, var(--darker), var(--dark));
+            color: #fff;
+            font-family: 'Orbitron', sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            perspective: 1000px;
+        }
+
+        .universe {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle var(--duration, 5s) infinite ease-in-out;
+            opacity: var(--opacity, 0.8);
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.2; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .loading-container {
+            text-align: center;
+            z-index: 10;
+            position: relative;
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateX(0deg) rotateY(0deg); }
+            50% { transform: translateY(-20px) rotateX(5deg) rotateY(5deg); }
+        }
+
+        .company-name {
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            position: relative;
+            letter-spacing: 2px;
+            animation: textGlow 3s infinite alternate;
+        }
+
+        @keyframes textGlow {
+            0% { text-shadow: 0 0 15px rgba(0, 240, 255, 0.3); }
+            100% { text-shadow: 0 0 30px rgba(255, 0, 170, 0.6); }
+        }
+
+        .project-name {
+            font-size: 1.8rem;
+            letter-spacing: 5px;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            position: relative;
+        }
+
+        .project-name::after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            filter: drop-shadow(0 0 5px var(--primary));
+        }
+
+        .progress-container {
+            width: 400px;
+            height: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            margin: 0 auto 1.5rem;
+            overflow: hidden;
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.1);
+            position: relative;
+            border: 1px solid rgba(0, 240, 255, 0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                            rgba(255,255,255,0) 0%, 
+                            rgba(255,255,255,0.5) 50%, 
+                            rgba(255,255,255,0) 100%);
+            animation: shine 2s infinite;
+        }
+
+        @keyframes shine {
+            0% { transform: translateX(-100%) skewX(-30deg); }
+            100% { transform: translateX(200%) skewX(-30deg); }
+        }
+
+        .percentage {
+            margin-top: 1rem;
+            font-size: 1.5rem;
+            color: var(--primary);
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+            letter-spacing: 2px;
+        }
+
+        .particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            background: var(--primary);
+            border-radius: 50%;
+            filter: blur(5px);
+            opacity: 0;
+            animation: particleAnim 4s infinite;
+        }
+
+        @keyframes particleAnim {
+            0% { transform: translate(0, 0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translate(var(--tx, 0), var(--ty, 0)); opacity: 0; }
+        }
+
+        .hexagon-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.1;
+            overflow: hidden;
+        }
+
+        .hexagon {
+            position: absolute;
+            width: 100px;
+            height: 57.74px;
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            transform: rotate(90deg);
+            opacity: 0.3;
+            animation: hexPulse 8s infinite;
+        }
+
+        .hexagon:before,
+        .hexagon:after {
+            content: "";
+            position: absolute;
+            width: 0;
+            border-left: 50px solid transparent;
+            border-right: 50px solid transparent;
+        }
+
+        .hexagon:before {
+            bottom: 100%;
+            border-bottom: 28.87px solid var(--primary);
+        }
+
+        .hexagon:after {
+            top: 100%;
+            width: 0;
+            border-top: 28.87px solid var(--primary);
+        }
+
+        @keyframes hexPulse {
+            0%, 100% { transform: rotate(90deg) scale(1); opacity: 0.1; }
+            50% { transform: rotate(90deg) scale(1.2); opacity: 0.3; }
+        }
+
+        .energy-orb {
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle at center, 
+                            rgba(0, 240, 255, 0.2) 0%, 
+                            rgba(0, 240, 255, 0) 70%);
+            filter: blur(20px);
+            animation: orbPulse 4s infinite alternate;
+            z-index: -1;
+        }
+
+        @keyframes orbPulse {
+            0% { transform: scale(0.8); opacity: 0.5; }
+            100% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .circuit-lines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.3;
+        }
+
+        .circuit-line {
+            position: absolute;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            height: 1px;
+            animation: circuitFlow 6s infinite linear;
+            transform-origin: left center;
+        }
+
+        @keyframes circuitFlow {
+            0% { transform: scaleX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: scaleX(1); opacity: 0; }
+        }
+
+        .loading-complete {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--dark);
+            z-index: 100;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 1.5s ease;
+        }
+
+        .loading-complete.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .complete-message {
+            font-size: 3rem;
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 20px rgba(0, 240, 255, 0.5);
+            transform: scale(0.5);
+            opacity: 0;
+            transition: all 1s ease;
+        }
+
+        .loading-complete.active .complete-message {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                transparent 0%,
+                rgba(0, 240, 255, 0.05) 50%,
+                transparent 100%
+            );
+            background-size: 100% 4px;
+            z-index: 5;
+            pointer-events: none;
+            animation: scanline 8s linear infinite;
+        }
+
+        @keyframes scanline {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 100%; }
+        }
+
+        .glitch {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="5" height="5" x="0" y="0" fill="rgba(0,240,255,0.1)"/></svg>');
+            background-size: 20px 20px;
+            opacity: 0.1;
+            z-index: 1;
+            animation: glitch 0.5s infinite steps(1);
+            pointer-events: none;
+            display: none;
+        }
+
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="universe" id="universe"></div>
+    <div class="hexagon-grid" id="hexGrid"></div>
+    <div class="circuit-lines" id="circuitLines"></div>
+    <div class="particles" id="particles"></div>
+    <div class="energy-orb"></div>
+    <div class="scanlines"></div>
+    <div class="glitch" id="glitch"></div>
+
+    <div class="loading-container">
+        <h1 class="company-name">TOKI TOOLS</h1>
+        <p class="project-name">DEADCODE PROJECT 1</p>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="percentage" id="percentage">0%</div>
+    </div>
+
+    <div class="loading-complete" id="loadingComplete">
+        <div class="complete-message">SYSTEM READY</div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Create starfield
+            const universe = document.getElementById('universe');
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.classList.add('star');
+                star.style.width = Math.random() * 3 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.opacity = Math.random() * 0.5 + 0.5;
+                star.style.setProperty('--duration', Math.random() * 3 + 2 + 's');
+                universe.appendChild(star);
+            }
+
+            // Create hex grid
+            const hexGrid = document.getElementById('hexGrid');
+            const cols = Math.ceil(window.innerWidth / 120) + 2;
+            const rows = Math.ceil(window.innerHeight / 104) + 2;
+            
+            for (let y = -1; y < rows; y++) {
+                for (let x = -1; x < cols; x++) {
+                    const hex = document.createElement('div');
+                    hex.classList.add('hexagon');
+                    hex.style.left = (x * 120 + (y % 2 * 60)) + 'px';
+                    hex.style.top = (y * 104) + 'px';
+                    hex.style.animationDelay = (Math.random() * 5) + 's';
+                    hexGrid.appendChild(hex);
+                }
+            }
+
+            // Create circuit lines
+            const circuitLines = document.getElementById('circuitLines');
+            for (let i = 0; i < 20; i++) {
+                const line = document.createElement('div');
+                line.classList.add('circuit-line');
+                line.style.top = Math.random() * 100 + '%';
+                line.style.left = Math.random() * 100 + '%';
+                line.style.width = Math.random() * 300 + 100 + 'px';
+                line.style.transform = `rotate(${Math.random() * 360}deg)`;
+                line.style.animationDelay = Math.random() * 5 + 's';
+                line.style.animationDuration = Math.random() * 3 + 3 + 's';
+                circuitLines.appendChild(line);
+            }
+
+            // Loading elements
+            const progressBar = document.getElementById('progressBar');
+            const percentage = document.getElementById('percentage');
+            const particlesEl = document.getElementById('particles');
+            const loadingComplete = document.getElementById('loadingComplete');
+            const glitch = document.getElementById('glitch');
+
+            // Simulate loading with more dynamic progress
+            let progress = 0;
+            let loadInterval = setInterval(updateProgress, 50);
+            let particleInterval = setInterval(createParticle, 100);
+
+            function updateProgress() {
+                // Dynamic progress increase with occasional jumps
+                let increment = Math.random() * 2;
+                if (Math.random() > 0.95) increment = 5 + Math.random() * 10;
+                
+                progress = Math.min(progress + increment, 100);
+                
+                progressBar.style.width = progress + '%';
+                percentage.textContent = Math.floor(progress) + '%';
+                
+                // Add glitch effect at certain percentages
+                if (progress > 30 && progress < 40 || progress > 70 && progress < 80) {
+                    if (Math.random() > 0.7) {
+                        glitch.style.display = 'block';
+                        setTimeout(() => {
+                            glitch.style.display = 'none';
+                        }, 100);
+                    }
+                }
+
+                if (progress === 100) {
+                    clearInterval(loadInterval);
+                    clearInterval(particleInterval);
+                    
+                    // Show completion animation
+                    setTimeout(() => {
+                        loadingComplete.classList.add('active');
+                        
+                        // Redirect after animation
+                        setTimeout(() => {
+                            window.location.href = 'main.html';
+                        }, 1500);
+                    }, 500);
+                }
+            }
+
+            function createParticle() {
+                if (progress >= 100) return;
+                
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random size between 2 and 8px
+                const size = Math.random() * 6 + 2;
+                particle.style.width = size + 'px';
+                particle.style.height = size + 'px';
+                
+                // Random position
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                
+                // Random movement
+                const angle = Math.random() * Math.PI * 2;
+                const distance = Math.random() * 100 + 50;
+                particle.style.setProperty('--tx', Math.cos(angle) * distance + 'px');
+                particle.style.setProperty('--ty', Math.sin(angle) * distance + 'px');
+                
+                // Random color
+                const colors = ['var(--primary)', 'var(--secondary)', 'var(--accent)'];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                // Random animation duration
+                particle.style.animationDuration = Math.random() * 2 + 2 + 's';
+                
+                particlesEl.appendChild(particle);
+                
+                // Remove after animation completes
+                setTimeout(() => {
+                    particle.remove();
+                }, 4000);
+            }
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                // In a real app, you'd want to recalculate and reposition elements here
+            });
+        });
+    </script>
+</body>
+</html>

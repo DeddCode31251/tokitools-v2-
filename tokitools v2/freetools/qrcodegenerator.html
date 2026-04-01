@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>QR Code Generator PRO</title>
+  <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+
+  <div class="bg-white shadow p-6 rounded w-full max-w-md text-center">
+    <h1 class="text-2xl font-bold text-blue-600 mb-4">🔳 QR Code Generator</h1>
+
+    <textarea id="qrInput" placeholder="Enter text or link..." class="w-full p-3 border rounded mb-4 h-24 resize-none"></textarea>
+
+    <button onclick="generateQR()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded w-full">Generate QR</button>
+
+    <!-- PRO Options -->
+    <div id="proOptions" class=" mt-4 text-left text-sm">
+      <label class="block mb-1">🎨 Foreground Color: <input type="color" id="fgColor" value="#000000"></label>
+      <label class="block mb-1">🎨 Background Color: <input type="color" id="bgColor" value="#ffffff"></label>
+      <label class="block mb-1">📏 Size: <input type="number" id="qrSize" value="200" min="100" max="1000" class="w-20"></label>
+      <label class="block mb-3">📐 Margin: <input type="number" id="qrMargin" value="2" min="0" max="10" class="w-20"></label>
+
+      <label class="block mb-2">🖼️ Center Logo (optional):
+        <input type="file" id="logoInput" accept="image/*" class="mt-1">
+      </label>
+
+      <button onclick="saveQR()" class="bg-yellow-500 text-white px-3 py-2 rounded w-full mb-1">💾 Save to Browser</button>
+      <button onclick="exportQR()" class="bg-purple-600 text-white px-3 py-2 rounded w-full mb-2">📤 Export History</button>
+    </div>
+
+    <!-- Output -->
+    <div id="qrResult" class="mt-4 ">
+      <canvas id="qrCanvas" class="mx-auto mb-2"></canvas>
+      <a id="downloadPNG" href="#" download="qr-code.png" class="text-blue-600 underline">⬇️ Download PNG</a> |
+      <a id="downloadSVG" href="#" download="qr-code.svg" class="text-green-600 underline">⬇️ SVG</a>
+    </div>
+
+  </div>
+
+  <script>
+    let lastText = "";
+    function generateQR() {
+      const text = document.getElementById("qrInput").value.trim();
+      if (!text) return alert("Please enter something.");
+      lastText = text;
+
+      const canvas = document.getElementById("qrCanvas");
+      const size = +document.getElementById("qrSize")?.value || 200;
+      const margin = +document.getElementById("qrMargin")?.value || 2;
+      const colorDark = document.getElementById("fgColor")?.value || "#000";
+      const colorLight = document.getElementById("bgColor")?.value || "#fff";
+
+      QRCode.toCanvas(canvas, text, {
+        width: size,
+        margin: margin,
+        color: {
+          dark: colorDark,
+          light: colorLight
+        }
+      }, (err) => {
+        if (err) return alert("Error generating QR.");
+        document.getElementById("qrResult").classList.remove("hidden");
+        document.getElementById("downloadPNG").href = canvas.toDataURL("image/png");
+
+        // SVG Link
+        QRCode.toString(text, { type: "svg" }, function (err, svgText) {
+          const blob = new Blob([svgText], { type: "image/svg+xml" });
+          document.getElementById("downloadSVG").href = URL.createObjectURL(blob);
+        });
+
+        // Add logo if uploaded
+        const logoInput = document.getElementById("logoInput");
+        if (logoInput?.files.length) {
+          const ctx = canvas.getContext("2d");
+          const img = new Image();
+          img.onload = function () {
+            const scale = 0.2;
+            const logoSize = canvas.width * scale;
+            ctx.drawImage(img, canvas.width / 2 - logoSize / 2, canvas.height / 2 - logoSize / 2, logoSize, logoSize);
+            document.getElementById("downloadPNG").href = canvas.toDataURL("image/png");
+          };
+          img.src = URL.createObjectURL(logoInput.files[0]);
+        }
+      });
+    }
+
+
+    function saveQR() {
+      const history = localStorage.getItem("qrHistory") || "";
+      localStorage.setItem("qrHistory", history + "\n" + lastText);
+      alert("✅ QR saved to browser.");
+    }
+
+    function exportQR() {
+      const data = localStorage.getItem("qrHistory") || "No QR codes saved.";
+      const blob = new Blob([data], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "qr-history.txt";
+      link.click();
+    }
+  </script>
+</body>
+</html>

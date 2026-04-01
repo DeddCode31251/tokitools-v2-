@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>DeadCode Company</title>
+<style>
+    * {
+        box-sizing: border-box;
+        transition: all 0.3s ease;
+        font-family: "Poppins", sans-serif;
+    }
+
+    body {
+        margin: 0;
+        background: linear-gradient(135deg, #5a6ce8, #82a8f0);
+        color: white;
+        overflow-x: hidden;
+    }
+
+    @keyframes fadein {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    /* Navbar */
+    #top-nav {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+        width: 100%;
+        padding: 1rem;
+        animation: fadein 0.5s;
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        flex-wrap: wrap;
+        box-shadow: 0 0.5vw 1vw rgba(0, 0, 0, 0.3);
+    }
+
+    .top-nav-button {
+        margin: 0.5rem 1rem;
+        padding: 0.7rem 2rem;
+        border-radius: 1rem;
+        font-size: 1.1rem;
+        border: none;
+        background: white;
+        color: #2b4b6f;
+        font-weight: bold;
+    }
+
+    .top-nav-button:hover {
+        background: #f0f0ff;
+        transform: scale(1.05);
+        cursor: pointer;
+    }
+
+    /* Sections */
+    section {
+        display: none;
+        padding: 2rem;
+        animation: fadein 0.5s;
+    }
+
+    section.active {
+        display: block;
+    }
+
+    /* Home */
+    #home-search {
+        width: 80%;
+        max-width: 600px;
+        height: 3rem;
+        font-size: 1rem;
+        border-radius: 0.5rem;
+        border: none;
+        padding: 0.5rem 1rem;
+        margin-bottom: 2rem;
+    }
+
+    #accounts {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1rem;
+    }
+
+    .account-card {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 1rem;
+        padding: 1rem;
+        text-align: center;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    }
+
+    .account-card:hover {
+        transform: scale(1.03);
+        background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Updates */
+    .update-card {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 1rem;
+        margin-bottom: 1rem;
+        border-radius: 1rem;
+        font-size: 1rem;
+    }
+
+    /* Investing */
+    .investing-container {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 1rem;
+        padding: 2rem;
+        text-align: center;
+        box-shadow: 0 0.7rem 1rem rgba(0, 0, 0, 0.3);
+        max-width: 900px;
+        margin: auto;
+    }
+
+    .investing-header {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    .stat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+
+    .stat-card {
+        background: rgba(255, 255, 255, 0.2);
+        padding: 1rem;
+        border-radius: 1rem;
+        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.2);
+    }
+
+    .stat-title {
+        font-size: 1rem;
+        font-weight: bold;
+        margin-bottom: 0.5rem;
+    }
+
+    .stat-value {
+        font-size: 1.5rem;
+        font-weight: 600;
+    }
+
+    .trend-up {
+        color: #3aff7c;
+        font-weight: bold;
+    }
+
+    .trend-down {
+        color: #ff4d4d;
+        font-weight: bold;
+    }
+
+    /* Responsive Fixes */
+    @media (max-width: 768px) {
+        #top-nav {
+            flex-direction: column;
+        }
+        .top-nav-button {
+            width: 80%;
+            font-size: 1rem;
+        }
+        .investing-header {
+            font-size: 1.5rem;
+        }
+        .stat-value {
+            font-size: 1.2rem;
+        }
+    }
+
+    @media (max-width: 480px) {
+        body {
+            font-size: 0.9rem;
+        }
+        .top-nav-button {
+            padding: 0.6rem 1.5rem;
+        }
+        .investing-container {
+            padding: 1rem;
+        }
+    }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav id="top-nav">
+    <button class="top-nav-button" onclick="showSection('home')">Home</button>
+    <button class="top-nav-button" onclick="showSection('updates')">Updates</button>
+    <button class="top-nav-button" onclick="showSection('investing')">Investing</button>
+</nav>
+
+<!-- Home -->
+<section id="home" class="active">
+    <center>
+        <input type="search" id="home-search" placeholder="Search accounts..." oninput="filterAccounts()">
+    </center>
+    <div id="accounts"></div>
+</section>
+
+<!-- Updates -->
+<section id="updates">
+    <h2>Company Updates</h2>
+    <div id="updates-list"></div>
+</section>
+
+<!-- Investing -->
+<section id="investing">
+    <div class="investing-container">
+        <div class="investing-header">Investment Dashboard</div>
+        <div class="stat-grid">
+            <div class="stat-card">
+                <div class="stat-title">Arrows on Sale</div>
+                <div class="stat-value" id="arrowsOnSale">10,000</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Arrow Value</div>
+                <div class="stat-value" id="arrowValue"></div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Company Value</div>
+                <div class="stat-value" id="companyValue">65 EGP</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Investors</div>
+                <div class="stat-value" id="investors">2</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-title">Monthly Profit</div>
+                <div class="stat-value" id="profit">10 EGP</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    const accounts = [
+        { name: "Gasser Ahmed", arrowsBought: 200 },
+        { name: "Bichoy Nabil", arrowsBought: 300 }
+    ];
+
+    const updates = [
+        "DeadCode released Arrow X2 — lighter and more accurate!",
+        "New investors joined our $3.1M growth round!",
+        "Partnership with SteelPoint for stronger arrow tips.",
+        "Market shows 8% rise in Arrow demand globally.",
+    ];
+
+    // Display accounts
+    function displayAccounts() {
+        const accountsDiv = document.getElementById("accounts");
+        accountsDiv.innerHTML = "";
+        accounts.forEach(acc => {
+            const div = document.createElement("div");
+            div.className = "account-card";
+            div.innerHTML = `<h3>${acc.name}</h3><p>Arrows Bought: <b>${acc.arrowsBought}</b></p>`;
+            accountsDiv.appendChild(div);
+        });
+    }
+
+    // Filter accounts by search
+    function filterAccounts() {
+        const query = document.getElementById("home-search").value.toLowerCase();
+        const accountsDiv = document.getElementById("accounts");
+        accountsDiv.innerHTML = "";
+        accounts
+            .filter(a => a.name.toLowerCase().includes(query))
+            .forEach(acc => {
+                const div = document.createElement("div");
+                div.className = "account-card";
+                div.innerHTML = `<h3>${acc.name}</h3><p>Arrows Bought: <b>${acc.arrowsBought}</b></p>`;
+                accountsDiv.appendChild(div);
+            });
+    }
+
+    // Display updates
+    const updatesList = document.getElementById("updates-list");
+    updates.forEach(up => {
+        const div = document.createElement("div");
+        div.className = "update-card";
+        div.textContent = up;
+        updatesList.appendChild(div);
+    });
+
+    // Arrow value trend logic
+    const oldCompanyValue = 10;
+    const newCompanyValue = 65;
+    const totalArrows = 10000;
+    const oldArrowValue = oldCompanyValue / totalArrows; // 0.001
+    const newArrowValue = newCompanyValue / totalArrows; // 0.0065
+    const diff = ((newArrowValue - oldArrowValue) / oldArrowValue * 100).toFixed(2);
+
+    const arrowValueEl = document.getElementById("arrowValue");
+    if (diff > 0) {
+        arrowValueEl.innerHTML = `${newArrowValue.toFixed(4)} EGP <span class="trend-up">▲ +${diff}%</span>`;
+    } else {
+        arrowValueEl.innerHTML = `${newArrowValue.toFixed(4)} EGP <span class="trend-down">▼ ${diff}%</span>`;
+    }
+
+    // Navigation
+    function showSection(id) {
+        document.querySelectorAll("section").forEach((sec) => sec.classList.remove("active"));
+        document.getElementById(id).classList.add("active");
+    }
+
+    displayAccounts();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>22-in-1 Web Tools Collection</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --card-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+            --border-radius: 12px;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e7f1 100%);
+            color: var(--dark);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+            max-width: 1600px;
+            margin: 0 auto;
+        }
+
+        /* Header styles */
+        header {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px var(--shadow);
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            max-width: 800px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px var(--shadow);
+            padding: 20px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        .tools-menu {
+            list-style: none;
+        }
+
+        .tools-menu li {
+            margin-bottom: 10px;
+        }
+
+        .tools-menu a {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            transition: var(--transition);
+        }
+
+        .tools-menu a:hover {
+            background: rgba(67, 97, 238, 0.1);
+            color: var(--primary);
+        }
+
+        .tools-menu a.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .tools-menu i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        /* Main content styles */
+        .main-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .tool-card {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            box-shadow: 0 4px 12px var(--shadow);
+            padding: 25px;
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px var(--shadow);
+        }
+
+        .tool-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid rgba(67, 97, 238, 0.1);
+        }
+
+        .tool-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .tool-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .tool-content {
+            flex-grow: 1;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--dark);
+        }
+
+        input, select, textarea, button {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+        }
+
+        button {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+            padding: 12px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(67, 97, 238, 0.05);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary);
+            font-size: 1.1rem;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 1100px) {
+            .container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                position: relative;
+                top: 0;
+            }
+            
+            .tools-menu {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 10px;
+            }
+            
+            .tools-menu li {
+                margin-bottom: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        .highlight {
+            background: linear-gradient(to right, var(--accent), var(--success));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-toolbox"></i> 22-in-1 <span class="highlight">Toki Tools</span> Collection</h1>
+            <p>All your essential web tools in one convenient place. No downloads, no installations - just pure utility!</p>
+        </header>
+        
+        <aside class="sidebar">
+            <ul class="tools-menu">
+                <li><a href="#ideal-weight" class="active"><i class="fas fa-weight-scale"></i> Ideal Weight</a></li>
+                <li><a href="#heart-rate"><i class="fas fa-heart-pulse"></i> Heart Rate</a></li>
+                <li><a href="#loan-emi"><i class="fas fa-calculator"></i> Loan EMI</a></li>
+                <li><a href="#rent-split"><i class="fas fa-house-user"></i> Rent Split</a></li>
+                <li><a href="#water-intake"><i class="fas fa-glass-water"></i> Water Intake</a></li>
+                <li><a href="#ovulation-date"><i class="fas fa-calendar-day"></i> Ovulation Date</a></li>
+                <li><a href="#reading-time"><i class="fas fa-book-open"></i> Reading Time</a></li>
+                <li><a href="#cgpa-gpa"><i class="fas fa-graduation-cap"></i> CGPA to GPA</a></li>
+                <li><a href="#split-bill"><i class="fas fa-receipt"></i> Split Bill</a></li>
+                <li><a href="#fantasy-name"><i class="fas fa-dragon"></i> Fantasy Name</a></li>
+                <li><a href="#dice-roller"><i class="fas fa-dice"></i> Dice Roller</a></li>
+                <li><a href="#quote-generator"><i class="fas fa-quote-right"></i> Quote Generator</a></li>
+                <li><a href="#zalgo-text"><i class="fas fa-text-height"></i> Zalgo Text</a></li>
+                <li><a href="#line-counter"><i class="fas fa-music"></i> Line Counter</a></li>
+                <li><a href="#lofi-bg"><i class="fas fa-headphones"></i> Lo-Fi BG</a></li>
+                <li><a href="#speech-bubble"><i class="fas fa-comment"></i> Speech Bubble</a></li>
+                <li><a href="#meme-text"><i class="fas fa-font"></i> Meme Text</a></li>
+                <li><a href="#vampire-name"><i class="fas fa-moon"></i> Vampire Name</a></li>
+                <li><a href="#password-strength"><i class="fas fa-lock"></i> Password Strength</a></li>
+                <li><a href="#rsa-key"><i class="fas fa-key"></i> RSA Key</a></li>
+                <li><a href="#bcrypt-hash"><i class="fas fa-hashtag"></i> Bcrypt Hash</a></li>
+                <li><a href="#ping-test"><i class="fas fa-wifi"></i> Ping Test</a></li>
+            </ul>
+        </aside>
+        
+        <main class="main-content">
+            <!-- Tool 1: Ideal Weight Calculator -->
+            <div class="tool-card" id="ideal-weight">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-weight-scale"></i>
+                    </div>
+                    <h2 class="tool-title">Ideal Weight Calculator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="height">Height (cm):</label>
+                        <input type="number" id="height" placeholder="Enter your height" min="100" max="250">
+                    </div>
+                    <div class="form-group">
+                        <label for="gender">Gender:</label>
+                        <select id="gender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <button onclick="calculateIdealWeight()">Calculate</button>
+                    <div class="result" id="idealWeightResult">Your result will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 2: Heart Rate Calculator -->
+            <div class="tool-card" id="heart-rate">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-heart-pulse"></i>
+                    </div>
+                    <h2 class="tool-title">Heart Rate Calculator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="age">Age:</label>
+                        <input type="number" id="age" placeholder="Enter your age" min="10" max="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="resting-hr">Resting Heart Rate (bpm):</label>
+                        <input type="number" id="resting-hr" placeholder="Enter resting heart rate" min="40" max="120">
+                    </div>
+                    <button onclick="calculateHeartRate()">Calculate</button>
+                    <div class="result" id="heartRateResult">Your heart rate zones will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 3: Loan/EMI Calculator -->
+            <div class="tool-card" id="loan-emi">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h2 class="tool-title">Loan EMI Calculator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="loan-amount">Loan Amount ($):</label>
+                        <input type="number" id="loan-amount" placeholder="Enter loan amount" min="100" step="100">
+                    </div>
+                    <div class="form-group">
+                        <label for="interest-rate">Interest Rate (% per year):</label>
+                        <input type="number" id="interest-rate" placeholder="Enter interest rate" min="1" max="30" step="0.1">
+                    </div>
+                    <div class="form-group">
+                        <label for="loan-term">Loan Term (years):</label>
+                        <input type="number" id="loan-term" placeholder="Enter loan term" min="1" max="30">
+                    </div>
+                    <button onclick="calculateEMI()">Calculate EMI</button>
+                    <div class="result" id="emiResult">Your EMI details will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 4: Rent Split Calculator -->
+            <div class="tool-card" id="rent-split">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-house-user"></i>
+                    </div>
+                    <h2 class="tool-title">Rent Split Calculator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="rent-amount">Total Rent ($):</label>
+                        <input type="number" id="rent-amount" placeholder="Enter total rent" min="100" step="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="roommates">Number of Roommates:</label>
+                        <input type="number" id="roommates" placeholder="Enter number of roommates" min="1" max="10">
+                    </div>
+                    <button onclick="splitRent()">Split Rent</button>
+                    <div class="result" id="rentSplitResult">Each person pays: -</div>
+                </div>
+            </div>
+            
+            <!-- Tool 5: Water Intake Calculator -->
+            <div class="tool-card" id="water-intake">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-glass-water"></i>
+                    </div>
+                    <h2 class="tool-title">Water Intake Calculator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="weight">Weight (kg):</label>
+                        <input type="number" id="weight" placeholder="Enter your weight" min="30" max="200">
+                    </div>
+                    <div class="form-group">
+                        <label for="activity">Activity Level:</label>
+                        <select id="activity">
+                            <option value="low">Low (Sedentary)</option>
+                            <option value="moderate" selected>Moderate</option>
+                            <option value="high">High (Active)</option>
+                        </select>
+                    </div>
+                    <button onclick="calculateWaterIntake()">Calculate</button>
+                    <div class="result" id="waterIntakeResult">Your daily water intake will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 6: Ovulation Date Estimator -->
+            <div class="tool-card" id="ovulation-date">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <h2 class="tool-title">Ovulation Date Estimator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="last-period">First Day of Last Period:</label>
+                        <input type="date" id="last-period">
+                    </div>
+                    <div class="form-group">
+                        <label for="cycle-length">Cycle Length (days):</label>
+                        <input type="number" id="cycle-length" placeholder="Average cycle length" min="20" max="40" value="28">
+                    </div>
+                    <button onclick="estimateOvulation()">Estimate</button>
+                    <div class="result" id="ovulationResult">Your ovulation dates will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 7: Reading Time Estimator -->
+            <div class="tool-card" id="reading-time">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-book-open"></i>
+                    </div>
+                    <h2 class="tool-title">Reading Time Estimator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="text-content">Text Content:</label>
+                        <textarea id="text-content" rows="4" placeholder="Paste your text here"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="wpm">Reading Speed (words per minute):</label>
+                        <input type="number" id="wpm" placeholder="Words per minute" min="100" max="500" value="200">
+                    </div>
+                    <button onclick="estimateReadingTime()">Estimate</button>
+                    <div class="result" id="readingTimeResult">Reading time will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 8: CGPA to GPA Converter -->
+            <div class="tool-card" id="cgpa-gpa">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-graduation-cap"></i>
+                    </div>
+                    <h2 class="tool-title">CGPA to GPA Converter</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="cgpa">Enter CGPA (0-10 scale):</label>
+                        <input type="number" id="cgpa" placeholder="Enter your CGPA" min="0" max="10" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="gpa-scale">Convert to Scale:</label>
+                        <select id="gpa-scale">
+                            <option value="4.0">4.0 Scale</option>
+                            <option value="5.0">5.0 Scale</option>
+                        </select>
+                    </div>
+                    <button onclick="convertCGPA()">Convert</button>
+                    <div class="result" id="cgpaResult">Converted GPA will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 9: Split Bill with Tip -->
+            <div class="tool-card" id="split-bill">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-receipt"></i>
+                    </div>
+                    <h2 class="tool-title">Split Bill with Tip</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="bill-amount">Bill Amount ($):</label>
+                        <input type="number" id="bill-amount" placeholder="Enter bill amount" min="1" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="tip-percent">Tip Percentage (%):</label>
+                        <input type="number" id="tip-percent" placeholder="Enter tip percentage" min="0" max="100" value="15">
+                    </div>
+                    <div class="form-group">
+                        <label for="split-people">Split Between:</label>
+                        <input type="number" id="split-people" placeholder="Number of people" min="1" max="20" value="2">
+                    </div>
+                    <button onclick="splitBill()">Split Bill</button>
+                    <div class="result" id="splitBillResult">Each person pays: -</div>
+                </div>
+            </div>
+            
+            <!-- Tool 10: Fantasy Name Generator -->
+            <div class="tool-card" id="fantasy-name">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-dragon"></i>
+                    </div>
+                    <h2 class="tool-title">Fantasy Name Generator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="race">Select Race:</label>
+                        <select id="race">
+                            <option value="elf">Elf</option>
+                            <option value="dwarf">Dwarf</option>
+                            <option value="orc">Orc</option>
+                            <option value="human">Human</option>
+                            <option value="dragon">Dragon</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="gender-fantasy">Gender:</label>
+                        <select id="gender-fantasy">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <button onclick="generateFantasyName()">Generate Name</button>
+                    <div class="result" id="fantasyNameResult">Your fantasy name will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 11: Dice Roller Tool -->
+            <div class="tool-card" id="dice-roller">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-dice"></i>
+                    </div>
+                    <h2 class="tool-title">Dice Roller Tool</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="dice-type">Dice Type:</label>
+                        <select id="dice-type">
+                            <option value="4">D4</option>
+                            <option value="6" selected>D6 (Standard)</option>
+                            <option value="8">D8</option>
+                            <option value="10">D10</option>
+                            <option value="12">D12</option>
+                            <option value="20">D20</option>
+                            <option value="100">D100</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="dice-count">Number of Dice:</label>
+                        <input type="number" id="dice-count" min="1" max="10" value="1">
+                    </div>
+                    <button onclick="rollDice()">Roll Dice</button>
+                    <div class="result" id="diceResult">Roll result will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 12: Quote of the Day Generator -->
+            <div class="tool-card" id="quote-generator">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-quote-right"></i>
+                    </div>
+                    <h2 class="tool-title">Quote of the Day Generator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="quote-category">Category:</label>
+                        <select id="quote-category">
+                            <option value="inspiration">Inspiration</option>
+                            <option value="life">Life</option>
+                            <option value="wisdom">Wisdom</option>
+                            <option value="humor">Humor</option>
+                            <option value="love">Love</option>
+                        </select>
+                    </div>
+                    <button onclick="generateQuote()">Generate Quote</button>
+                    <div class="result" id="quoteResult">Your quote will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 13: Zalgo Text Generator -->
+            <div class="tool-card" id="zalgo-text">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-text-height"></i>
+                    </div>
+                    <h2 class="tool-title">Zalgo Text Generator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="zalgo-input">Enter Text:</label>
+                        <input type="text" id="zalgo-input" placeholder="Enter text to glitch">
+                    </div>
+                    <div class="form-group">
+                        <label for="zalgo-intensity">Intensity:</label>
+                        <input type="range" id="zalgo-intensity" min="1" max="10" value="5">
+                        <span id="intensity-value">5</span>
+                    </div>
+                    <button onclick="generateZalgo()">Generate</button>
+                    <div class="result" id="zalgoResult">Glitched text will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 14: Song Lyrics Line Counter -->
+            <div class="tool-card" id="line-counter">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-music"></i>
+                    </div>
+                    <h2 class="tool-title">Song Lyrics Line Counter</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="lyrics">Paste Lyrics:</label>
+                        <textarea id="lyrics" rows="6" placeholder="Paste song lyrics here"></textarea>
+                    </div>
+                    <button onclick="countLines()">Count Lines</button>
+                    <div class="result" id="lineCountResult">Line count will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 15: Lo-Fi Background Generator -->
+            <div class="tool-card" id="lofi-bg">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-headphones"></i>
+                    </div>
+                    <h2 class="tool-title">Lo-Fi Background Generator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="lofi-style">Style:</label>
+                        <select id="lofi-style">
+                            <option value="city">City Night</option>
+                            <option value="rain">Rainy Day</option>
+                            <option value="study">Study Room</option>
+                            <option value="nature">Nature</option>
+                        </select>
+                    </div>
+                    <button onclick="generateLofi()">Generate Background</button>
+                    <div class="result" id="lofiResult" style="height: 120px; display: flex; justify-content: center; align-items: center;">
+                        Background will appear here
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tool 16: Speech Bubble Generator -->
+            <div class="tool-card" id="speech-bubble">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-comment"></i>
+                    </div>
+                    <h2 class="tool-title">Speech Bubble Generator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="speech-text">Enter Text:</label>
+                        <input type="text" id="speech-text" placeholder="Text for speech bubble">
+                    </div>
+                    <div class="form-group">
+                        <label for="bubble-style">Bubble Style:</label>
+                        <select id="bubble-style">
+                            <option value="thought">Thought Bubble</option>
+                            <option value="speech" selected>Speech Bubble</option>
+                            <option value="shout">Shout Bubble</option>
+                        </select>
+                    </div>
+                    <button onclick="generateBubble()">Generate</button>
+                    <div class="result" id="bubbleResult" style="height: 120px; display: flex; justify-content: center; align-items: center;">
+                        Speech bubble will appear here
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tool 17: Meme Text Formatter -->
+            <div class="tool-card" id="meme-text">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-font"></i>
+                    </div>
+                    <h2 class="tool-title">Meme Text Formatter</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="meme-input">Enter Text:</label>
+                        <input type="text" id="meme-input" placeholder="Text to format">
+                    </div>
+                    <div class="form-group">
+                        <label for="meme-style">Meme Style:</label>
+                        <select id="meme-style">
+                            <option value="spongebob">Mocking SpongeBob</option>
+                            <option value="impact">Impact Font</option>
+                            <option value="old-english">Old English</option>
+                        </select>
+                    </div>
+                    <button onclick="formatMemeText()">Format Text</button>
+                    <div class="result" id="memeResult" style="font-size: 1.2rem; font-weight: bold;">
+                        Formatted text will appear here
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tool 18: Vampire Name Generator -->
+            <div class="tool-card" id="vampire-name">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <h2 class="tool-title">Vampire Name Generator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="vampire-era">Era:</label>
+                        <select id="vampire-era">
+                            <option value="medieval">Medieval</option>
+                            <option value="victorian">Victorian</option>
+                            <option value="modern">Modern</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="vampire-gender">Gender:</label>
+                        <select id="vampire-gender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                    <button onclick="generateVampireName()">Generate Name</button>
+                    <div class="result" id="vampireNameResult">Your vampire name will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 19: Password Strength Checker -->
+            <div class="tool-card" id="password-strength">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h2 class="tool-title">Password Strength Checker</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="password">Enter Password:</label>
+                        <input type="password" id="password" placeholder="Enter password to check">
+                    </div>
+                    <button onclick="checkPassword()">Check Strength</button>
+                    <div class="result" id="passwordResult">Password strength will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 20: RSA Key Generator -->
+            <div class="tool-card" id="rsa-key">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-key"></i>
+                    </div>
+                    <h2 class="tool-title">RSA Key Generator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="key-size">Key Size (bits):</label>
+                        <select id="key-size">
+                            <option value="1024">1024 bits</option>
+                            <option value="2048" selected>2048 bits (Recommended)</option>
+                            <option value="4096">4096 bits (Strong)</option>
+                        </select>
+                    </div>
+                    <button onclick="generateRSAKeys()">Generate Keys</button>
+                    <div class="result" id="rsaResult" style="font-size: 0.9rem; overflow: auto; max-height: 200px;">
+                        Keys will appear here
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Tool 21: Bcrypt Hash Generator -->
+            <div class="tool-card" id="bcrypt-hash">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-hashtag"></i>
+                    </div>
+                    <h2 class="tool-title">Bcrypt Hash Generator</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="hash-input">Enter Text to Hash:</label>
+                        <input type="text" id="hash-input" placeholder="Text to hash">
+                    </div>
+                    <div class="form-group">
+                        <label for="salt-rounds">Salt Rounds (4-31):</label>
+                        <input type="number" id="salt-rounds" min="4" max="31" value="10">
+                    </div>
+                    <button onclick="generateBcrypt()">Generate Hash</button>
+                    <div class="result" id="bcryptResult">Hash will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Tool 22: Ping/Latency Test -->
+            <div class="tool-card" id="ping-test">
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-wifi"></i>
+                    </div>
+                    <h2 class="tool-title">Ping/Latency Test</h2>
+                </div>
+                <div class="tool-content">
+                    <div class="form-group">
+                        <label for="ping-url">URL to Ping:</label>
+                        <input type="text" id="ping-url" placeholder="https://example.com" value="https://www.google.com">
+                    </div>
+                    <button onclick="testPing()">Test Latency</button>
+                    <div class="result" id="pingResult">Ping results will appear here</div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        // Common functions
+        function getRandomElement(arr) {
+            return arr[Math.floor(Math.random() * arr.length)];
+        }
+        
+        // Tool 1: Ideal Weight Calculator
+        function calculateIdealWeight() {
+            const height = parseFloat(document.getElementById('height').value);
+            const gender = document.getElementById('gender').value;
+            
+            if (!height) {
+                document.getElementById('idealWeightResult').textContent = "Please enter your height";
+                return;
+            }
+            
+            let idealWeight;
+            if (gender === 'male') {
+                idealWeight = 50 + 0.9 * (height - 152);
+            } else {
+                idealWeight = 45.5 + 0.9 * (height - 152);
+            }
+            
+            document.getElementById('idealWeightResult').innerHTML = 
+                `Your ideal weight is approximately: <strong>${idealWeight.toFixed(1)} kg</strong>`;
+        }
+        
+        // Tool 2: Heart Rate Calculator
+        function calculateHeartRate() {
+            const age = parseInt(document.getElementById('age').value);
+            const restingHR = parseInt(document.getElementById('resting-hr').value);
+            
+            if (!age || !restingHR) {
+                document.getElementById('heartRateResult').textContent = "Please enter both values";
+                return;
+            }
+            
+            const maxHR = 220 - age;
+            const reserveHR = maxHR - restingHR;
+            
+            const lowTarget = Math.round(restingHR + reserveHR * 0.5);
+            const highTarget = Math.round(restingHR + reserveHR * 0.85);
+            
+            document.getElementById('heartRateResult').innerHTML = 
+                `Your target heart rate zone: <strong>${lowTarget}-${highTarget} bpm</strong><br>
+                 Maximum heart rate: <strong>${maxHR} bpm</strong>`;
+        }
+        
+        // Tool 3: Loan EMI Calculator
+        function calculateEMI() {
+            const amount = parseFloat(document.getElementById('loan-amount').value);
+            const rate = parseFloat(document.getElementById('interest-rate').value) / 100 / 12;
+            const term = parseFloat(document.getElementById('loan-term').value) * 12;
+            
+            if (!amount || !rate || !term) {
+                document.getElementById('emiResult').textContent = "Please enter all values";
+                return;
+            }
+            
+            const emi = amount * rate * Math.pow(1 + rate, term) / (Math.pow(1 + rate, term) - 1);
+            const total = emi * term;
+            const interest = total - amount;
+            
+            document.getElementById('emiResult').innerHTML = 
+                `Monthly EMI: <strong>$${emi.toFixed(2)}</strong><br>
+                 Total Payment: <strong>$${total.toFixed(2)}</strong><br>
+                 Total Interest: <strong>$${interest.toFixed(2)}</strong>`;
+        }
+        
+        // Tool 4: Rent Split Calculator
+        function splitRent() {
+            const rent = parseFloat(document.getElementById('rent-amount').value);
+            const roommates = parseInt(document.getElementById('roommates').value);
+            
+            if (!rent || !roommates) {
+                document.getElementById('rentSplitResult').textContent = "Please enter both values";
+                return;
+            }
+            
+            const perPerson = rent / roommates;
+            document.getElementById('rentSplitResult').innerHTML = 
+                `Each person pays: <strong>$${perPerson.toFixed(2)}</strong>`;
+        }
+        
+        // Tool 5: Water Intake Calculator
+        function calculateWaterIntake() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const activity = document.getElementById('activity').value;
+            
+            if (!weight) {
+                document.getElementById('waterIntakeResult').textContent = "Please enter your weight";
+                return;
+            }
+            
+            let multiplier;
+            switch(activity) {
+                case 'low': multiplier = 0.03; break;
+                case 'moderate': multiplier = 0.035; break;
+                case 'high': multiplier = 0.04; break;
+                default: multiplier = 0.035;
+            }
+            
+            const liters = weight * multiplier;
+            const glasses = Math.round(liters * 4.22675); // Convert liters to glasses (1 glass = 0.2366L)
+            
+            document.getElementById('waterIntakeResult').innerHTML = 
+                `Daily water intake: <strong>${liters.toFixed(2)} liters</strong><br>
+                 Approximately <strong>${glasses} glasses</strong> (8 oz each)`;
+        }
+        
+        // Tool 6: Ovulation Date Estimator
+        function estimateOvulation() {
+            const lastPeriod = new Date(document.getElementById('last-period').value);
+            const cycleLength = parseInt(document.getElementById('cycle-length').value);
+            
+            if (!lastPeriod || !cycleLength) {
+                document.getElementById('ovulationResult').textContent = "Please enter both values";
+                return;
+            }
+            
+            // Calculate next ovulation date (typically around day 14 of cycle)
+            const ovulationDate = new Date(lastPeriod);
+            ovulationDate.setDate(ovulationDate.getDate() + cycleLength - 14);
+            
+            // Calculate fertile window (5 days before ovulation)
+            const fertileStart = new Date(ovulationDate);
+            fertileStart.setDate(fertileStart.getDate() - 5);
+            
+            document.getElementById('ovulationResult').innerHTML = 
+                `Your next ovulation date: <strong>${ovulationDate.toDateString()}</strong><br>
+                 Fertile window: <strong>${fertileStart.toDateString()} to ${ovulationDate.toDateString()}</strong>`;
+        }
+        
+        // Tool 7: Reading Time Estimator
+        function estimateReadingTime() {
+            const text = document.getElementById('text-content').value;
+            const wpm = parseInt(document.getElementById('wpm').value) || 200;
+            
+            if (!text) {
+                document.getElementById('readingTimeResult').textContent = "Please enter some text";
+                return;
+            }
+            
+            const words = text.trim().split(/\s+/).length;
+            const minutes = Math.ceil(words / wpm);
+            
+            document.getElementById('readingTimeResult').innerHTML = 
+                `Reading time: <strong>${minutes} minute${minutes !== 1 ? 's' : ''}</strong><br>
+                 Word count: <strong>${words}</strong>`;
+        }
+        
+        // Tool 8: CGPA to GPA Converter
+        function convertCGPA() {
+            const cgpa = parseFloat(document.getElementById('cgpa').value);
+            const scale = document.getElementById('gpa-scale').value;
+            
+            if (!cgpa) {
+                document.getElementById('cgpaResult').textContent = "Please enter your CGPA";
+                return;
+            }
+            
+            let gpa;
+            if (scale === "4.0") {
+                gpa = (cgpa / 10) * 4;
+            } else {
+                gpa = (cgpa / 10) * 5;
+            }
+            
+            document.getElementById('cgpaResult').innerHTML = 
+                `Converted GPA (${scale} scale): <strong>${gpa.toFixed(2)}</strong>`;
+        }
+        
+        // Tool 9: Split Bill with Tip
+        function splitBill() {
+            const bill = parseFloat(document.getElementById('bill-amount').value);
+            const tipPercent = parseFloat(document.getElementById('tip-percent').value) || 0;
+            const people = parseInt(document.getElementById('split-people').value) || 1;
+            
+            if (!bill) {
+                document.getElementById('splitBillResult').textContent = "Please enter bill amount";
+                return;
+            }
+            
+            const tip = bill * (tipPercent / 100);
+            const total = bill + tip;
+            const perPerson = total / people;
+            
+            document.getElementById('splitBillResult').innerHTML = 
+                `Each person pays: <strong>$${perPerson.toFixed(2)}</strong><br>
+                 Total with tip: <strong>$${total.toFixed(2)}</strong>`;
+        }
+        
+        // Tool 10: Fantasy Name Generator
+        function generateFantasyName() {
+            const race = document.getElementById('race').value;
+            const gender = document.getElementById('gender-fantasy').value;
+            
+            const prefixes = {
+                elf: { male: ['Ara', 'Cele', 'El', 'Gal', 'Leg'], female: ['Ara', 'Cele', 'El', 'Gal', 'Ar'] },
+                dwarf: { male: ['Bali', 'Dwal', 'Gloi', 'Thra', 'Ori'], female: ['Dis', 'Hun', 'Kri', 'Lif', 'Ris'] },
+                orc: { male: ['Gor', 'Mog', 'Thak', 'Ugl', 'Zog'], female: ['Gha', 'Mor', 'Sha', 'Uga', 'Zug'] },
+                human: { male: ['Ed', 'Jon', 'Rob', 'Wil', 'Tom'], female: ['Ali', 'Em', 'Jen', 'Sar', 'Vic'] },
+                dragon: { male: ['Dra', 'Ign', 'Py', 'Vor', 'Zha'], female: ['Aur', 'Cry', 'Em', 'Sil', 'Tia'] }
+            };
+            
+            const suffixes = {
+                elf: { male: ['dion', 'fion', 'las', 'mir', 'ron'], female: ['wen', 'driel', 'thiel', 'miriel', 'riel'] },
+                dwarf: { male: ['n', 'in', 'ur', 'or', 'ar'], female: ['a', 'na', 'ra', 'la', 'da'] },
+                orc: { male: ['gash', 'dush', 'nak', 'guk', 'dak'], female: ['na', 'ga', 'sha', 'tha', 'ka'] },
+                human: { male: ['dard', 'athan', 'ert', 'liam', 'ward'], female: ['cia', 'elle', 'ifer', 'lie', 'ra'] },
+                dragon: { male: ['gon', 'thax', 'rius', 'nos', 'kar'], female: ['ora', 'thys', 'ria', 'lith', 'nya'] }
+            };
+            
+            const prefix = getRandomElement(prefixes[race][gender]);
+            const suffix = getRandomElement(suffixes[race][gender]);
+            
+            document.getElementById('fantasyNameResult').innerHTML = 
+                `Your ${gender} ${race} name: <strong>${prefix}${suffix}</strong>`;
+        }
+        
+        // Tool 11: Dice Roller Tool
+        function rollDice() {
+            const diceType = parseInt(document.getElementById('dice-type').value);
+            const diceCount = parseInt(document.getElementById('dice-count').value) || 1;
+            
+            let results = [];
+            let total = 0;
+            
+            for (let i = 0; i < diceCount; i++) {
+                const roll = Math.floor(Math.random() * diceType) + 1;
+                results.push(roll);
+                total += roll;
+            }
+            
+            let resultText = `You rolled: ${results.join(', ')}`;
+            if (diceCount > 1) {
+                resultText += `<br>Total: ${total}`;
+            }
+            
+            document.getElementById('diceResult').innerHTML = resultText;
+        }
+        
+        // Tool 12: Quote of the Day Generator
+        function generateQuote() {
+            const category = document.getElementById('quote-category').value;
+            
+            const quotes = {
+                inspiration: [
+                    "The only way to do great work is to love what you do. - Steve Jobs",
+                    "Believe you can and you're halfway there. - Theodore Roosevelt",
+                    "It always seems impossible until it's done. - Nelson Mandela"
+                ],
+                life: [
+                    "Life is what happens when you're busy making other plans. - John Lennon",
+                    "In the end, it's not the years in your life that count. It's the life in your years. - Abraham Lincoln",
+                    "The purpose of our lives is to be happy. - Dalai Lama"
+                ],
+                wisdom: [
+                    "The only true wisdom is in knowing you know nothing. - Socrates",
+                    "Knowing yourself is the beginning of all wisdom. - Aristotle",
+                    "Wisdom is not a product of schooling but of the lifelong attempt to acquire it. - Albert Einstein"
+                ],
+                humor: [
+                    "I am so clever that sometimes I don't understand a single word of what I am saying. - Oscar Wilde",
+                    "Behind every great man is a woman rolling her eyes. - Jim Carrey",
+                    "I'm not lazy, I'm in energy-saving mode."
+                ],
+                love: [
+                    "Love is composed of a single soul inhabiting two bodies. - Aristotle",
+                    "The best thing to hold onto in life is each other. - Audrey Hepburn",
+                    "We are most alive when we're in love. - John Updike"
+                ]
+            };
+            
+            document.getElementById('quoteResult').innerHTML = 
+                `"${getRandomElement(quotes[category])}"`;
+        }
+        
+        // Tool 13: Zalgo Text Generator
+        function generateZalgo() {
+            const text = document.getElementById('zalgo-input').value;
+            const intensity = parseInt(document.getElementById('zalgo-intensity').value);
+            
+            if (!text) {
+                document.getElementById('zalgoResult').textContent = "Please enter some text";
+                return;
+            }
+            
+            // Zalgo characters (combining diacritical marks)
+            const zalgoChars = [
+                '\u0300', '\u0301', '\u0302', '\u0303', '\u0304', '\u0305', '\u0306', 
+                '\u0307', '\u0308', '\u0309', '\u030A', '\u030B', '\u030C', '\u030D', 
+                '\u030E', '\u030F', '\u0310', '\u0311', '\u0312', '\u0313', '\u0314', 
+                '\u0315', '\u031A', '\u031B', '\u033D', '\u033E', '\u033F', '\u0340', 
+                '\u0341', '\u0342', '\u0343', '\u0344', '\u0346', '\u034A', '\u034B', 
+                '\u034C', '\u0350', '\u0351', '\u0352', '\u0357', '\u0358', '\u035B', 
+                '\u035D', '\u035E', '\u0360', '\u0361'
+            ];
+            
+            let zalgoText = '';
+            
+            for (let i = 0; i < text.length; i++) {
+                zalgoText += text[i];
+                
+                // Add zalgo characters above and below
+                for (let j = 0; j < intensity; j++) {
+                    zalgoText += getRandomElement(zalgoChars);
+                }
+            }
+            
+            document.getElementById('zalgoResult').innerHTML = zalgoText;
+        }
+        
+        // Tool 14: Song Lyrics Line Counter
+        function countLines() {
+            const lyrics = document.getElementById('lyrics').value;
+            
+            if (!lyrics) {
+                document.getElementById('lineCountResult').textContent = "Please enter lyrics";
+                return;
+            }
+            
+            const lines = lyrics.split('\n').filter(line => line.trim() !== '').length;
+            document.getElementById('lineCountResult').innerHTML = 
+                `Total lines: <strong>${lines}</strong>`;
+        }
+        
+        // Tool 15: Lo-Fi Background Generator
+        function generateLofi() {
+            const style = document.getElementById('lofi-style').value;
+            const resultDiv = document.getElementById('lofiResult');
+            
+            const backgrounds = {
+                city: 'linear-gradient(135deg, #1a2a6c, #b21f1f, #1a2a6c)',
+                rain: 'linear-gradient(135deg, #2c3e50, #4ca1af, #2c3e50)',
+                study: 'linear-gradient(135deg, #3a1c71, #d76d77, #3a1c71)',
+                nature: 'linear-gradient(135deg, #0f9b0f, #3fada8, #0f9b0f)'
+            };
+            
+            resultDiv.style.background = backgrounds[style];
+            resultDiv.style.backgroundSize = '400% 400%';
+            resultDiv.style.animation = 'gradient 15s ease infinite';
+            resultDiv.innerHTML = '<i class="fas fa-headphones" style="font-size: 2rem; color: white;"></i>';
+            
+            // Add animation to CSS
+            const styleSheet = document.styleSheets[0];
+            styleSheet.insertRule(`
+                @keyframes gradient {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
+                }
+            `, styleSheet.cssRules.length);
+        }
+        
+        // Tool 16: Speech Bubble Generator
+        function generateBubble() {
+            const text = document.getElementById('speech-text').value || "Hello!";
+            const style = document.getElementById('bubble-style').value;
+            const resultDiv = document.getElementById('bubbleResult');
+            
+            resultDiv.style.position = 'relative';
+            resultDiv.style.background = '#f0f0f0';
+            resultDiv.style.borderRadius = '20px';
+            resultDiv.style.padding = '15px';
+            resultDiv.style.textAlign = 'center';
+            resultDiv.style.fontWeight = 'bold';
+            
+            if (style === 'thought') {
+                resultDiv.style.background = '#fff';
+                resultDiv.style.border = '2px dashed #ccc';
+                resultDiv.innerHTML = text;
+            } else if (style === 'shout') {
+                resultDiv.style.background = '#ff9999';
+                resultDiv.style.border = '3px solid #ff0000';
+                resultDiv.style.fontSize = '1.3rem';
+                resultDiv.innerHTML = text.toUpperCase() + '!!!';
+            } else {
+                // Speech bubble
+                resultDiv.style.background = '#e6f7ff';
+                resultDiv.style.border = '2px solid #4da6ff';
+                resultDiv.innerHTML = text;
+                
+                // Add speech bubble tail
+                resultDiv.innerHTML += '<div style="position: absolute; bottom: -10px; left: 20px; width: 0; height: 0; border-left: 10px solid transparent; border-right: 10px solid transparent; border-top: 10px solid #4da6ff;"></div>';
+            }
+        }
+        
+        // Tool 17: Meme Text Formatter
+        function formatMemeText() {
+            const text = document.getElementById('meme-input').value || "Meme Text";
+            const style = document.getElementById('meme-style').value;
+            const resultDiv = document.getElementById('memeResult');
+            
+            if (style === 'spongebob') {
+                let formatted = '';
+                for (let i = 0; i < text.length; i++) {
+                    formatted += i % 2 === 0 ? text[i].toLowerCase() : text[i].toUpperCase();
+                }
+                resultDiv.textContent = formatted;
+                resultDiv.style.fontFamily = 'Arial, sans-serif';
+                resultDiv.style.color = 'black';
+                resultDiv.style.textShadow = 'none';
+            } else if (style === 'impact') {
+                resultDiv.textContent = text.toUpperCase();
+                resultDiv.style.fontFamily = 'Impact, Charcoal, sans-serif';
+                resultDiv.style.color = 'white';
+                resultDiv.style.textShadow = '2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000';
+            } else {
+                resultDiv.textContent = text;
+                resultDiv.style.fontFamily = 'Old English Text MT, Times New Roman, serif';
+                resultDiv.style.color = 'black';
+                resultDiv.style.textShadow = 'none';
+            }
+        }
+        
+        // Tool 18: Vampire Name Generator
+        function generateVampireName() {
+            const era = document.getElementById('vampire-era').value;
+            const gender = document.getElementById('vampire-gender').value;
+            
+            const prefixes = {
+                medieval: { male: ['Vlad', 'Alucard', 'Sorin', 'Radu', 'Mathias'], female: ['Carmilla', 'Erzsébet', 'Lilith', 'Mina', 'Selene'] },
+                victorian: { male: ['Edgar', 'Victor', 'Abraham', 'Quincey', 'Arthur'], female: ['Victoria', 'Elizabeth', 'Wilhelmina', 'Genevieve', 'Annabelle'] },
+                modern: { male: ['Edward', 'Damon', 'Stefan', 'Eric', 'Bill'], female: ['Bella', 'Elena', 'Sookie', 'Pamela', 'Jessica'] }
+            };
+            
+            const suffixes = {
+                medieval: { male: ['the Impaler', 'the Dark', 'of Wallachia', 'the Bloody', 'the Cruel'], female: ['of Karnstein', 'Blood Countess', 'the Pale', 'of the Night', 'Moonchild'] },
+                victorian: { male: ['Van Helsing', 'of London', 'the Gentleman', 'the Aristocrat', 'of Whitby'], female: ['the Widow', 'of Highgate', 'the Duchess', 'the Enchantress', 'of Carfax'] },
+                modern: { male: ['Cullen', 'Salvatore', 'Northman', 'Compton', 'the Daywalker'], female: ['Swan', 'Gilbert', 'Stackhouse', 'Newlin', 'the Siren'] }
+            };
+            
+            const prefix = getRandomElement(prefixes[era][gender]);
+            const suffix = getRandomElement(suffixes[era][gender]);
+            
+            document.getElementById('vampireNameResult').innerHTML = 
+                `Your ${era} vampire name: <strong>${prefix} ${suffix}</strong>`;
+        }
+        
+        // Tool 19: Password Strength Checker
+        function checkPassword() {
+            const password = document.getElementById('password').value;
+            let strength = 0;
+            let message = '';
+            
+            if (!password) {
+                document.getElementById('passwordResult').textContent = "Please enter a password";
+                return;
+            }
+            
+            // Length check
+            if (password.length >= 8) strength += 1;
+            if (password.length >= 12) strength += 1;
+            
+            // Character diversity
+            if (/[A-Z]/.test(password)) strength += 1;
+            if (/[a-z]/.test(password)) strength += 1;
+            if (/[0-9]/.test(password)) strength += 1;
+            if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+            
+            // Common password check
+            const commonPasswords = ['password', '123456', 'qwerty', 'letmein', 'welcome'];
+            if (commonPasswords.includes(password.toLowerCase())) {
+                strength = 1;
+            }
+            
+            // Strength message
+            if (strength < 3) {
+                message = "Very Weak";
+            } else if (strength < 5) {
+                message = "Weak";
+            } else if (strength < 7) {
+                message = "Medium";
+            } else if (strength < 9) {
+                message = "Strong";
+            } else {
+                message = "Very Strong";
+            }
+            
+            document.getElementById('passwordResult').innerHTML = 
+                `Password strength: <strong>${message}</strong><br>
+                 Score: <strong>${strength}/9</strong>`;
+        }
+        
+        // Tool 20: RSA Key Generator
+        function generateRSAKeys() {
+            const keySize = parseInt(document.getElementById('key-size').value);
+            const resultDiv = document.getElementById('rsaResult');
+            
+            resultDiv.innerHTML = `
+                <div style="margin-bottom: 10px;">
+                    <strong>Public Key:</strong><br>
+                    RSA-${keySize} (simulated)
+                </div>
+                <div>
+                    <strong>Private Key:</strong><br>
+                    RSA-${keySize} (simulated)
+                </div>
+                <p style="margin-top: 15px; color: #666; font-size: 0.8rem;">
+                    Note: Actual RSA key generation requires a secure environment and cryptographic libraries.
+                    This is a simulated representation for demonstration purposes.
+                </p>
+            `;
+        }
+        
+        // Tool 21: Bcrypt Hash Generator
+        function generateBcrypt() {
+            const text = document.getElementById('hash-input').value;
+            const saltRounds = parseInt(document.getElementById('salt-rounds').value) || 10;
+            
+            if (!text) {
+                document.getElementById('bcryptResult').textContent = "Please enter text to hash";
+                return;
+            }
+            
+            // Simulate bcrypt hash (actual implementation requires a library)
+            const fakeHash = `$2a$${saltRounds}$${btoa(text).substring(0, 53)}`;
+            
+            document.getElementById('bcryptResult').innerHTML = 
+                `Bcrypt hash (simulated):<br><strong style="word-break: break-all;">${fakeHash}</strong>`;
+        }
+        
+        // Tool 22: Ping/Latency Test
+        function testPing() {
+            const url = document.getElementById('ping-url').value;
+            const resultDiv = document.getElementById('pingResult');
+            
+            if (!url) {
+                resultDiv.textContent = "Please enter a URL";
+                return;
+            }
+            
+            resultDiv.textContent = "Testing latency...";
+            
+            // Using a simple image load technique to measure latency
+            const start = new Date().getTime();
+            const img = new Image();
+            img.src = url + '?t=' + new Date().getTime(); // Cache buster
+            
+            img.onload = function() {
+                const end = new Date().getTime();
+                const latency = end - start;
+                resultDiv.innerHTML = `Latency to ${url}: <strong>${latency} ms</strong>`;
+            };
+            
+            img.onerror = function() {
+                resultDiv.innerHTML = `Failed to ping ${url}. The resource may not support this method.`;
+            };
+        }
+        
+        // Initialize intensity slider value display
+        document.getElementById('zalgo-intensity').addEventListener('input', function() {
+            document.getElementById('intensity-value').textContent = this.value;
+        });
+        
+        // Set current date for ovulation tool
+        document.getElementById('last-period').valueAsDate = new Date();
+    </script>
+</body>
+</html>

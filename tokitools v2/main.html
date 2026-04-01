@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Toki Tools Hub</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* RESET & GLOBAL STYLES */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    :root {
+      --primary: #6366f1;
+      --primary-dark: #4f46e5;
+      --secondary: #10b981;
+      --accent: #f59e0b;
+      --dark-bg: #0f172a;
+      --darker-bg: #0a0f1f;
+      --card-bg: rgba(30, 41, 59, 0.7);
+      --text-light: #f8fafc;
+      --text-dim: #94a3b8;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 50%, #1e293b 100%);
+      color: var(--text-light);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+
+    /* ANIMATIONS */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    @keyframes cubeSpin {
+      0% { transform: rotateX(-15deg) rotateY(0deg); }
+      25% { transform: rotateX(20deg) rotateY(90deg); }
+      50% { transform: rotateX(-10deg) rotateY(180deg); }
+      75% { transform: rotateX(15deg) rotateY(270deg); }
+      100% { transform: rotateX(-15deg) rotateY(360deg); }
+    }
+
+    @keyframes shine {
+      0% { left: -100%; }
+      100% { left: 200%; }
+    }
+
+    /* HEADER & TITLE */
+    header {
+      width: 100%;
+      padding: 2rem 0;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    #hub-title {
+      display: inline-block;
+      padding: 1.5rem 3rem;
+      margin-top: 1.5rem;
+      border-radius: 1.5rem;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #hub-title::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+      animation: shine 3s infinite;
+    }
+
+    #hub-title h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+      background-size: 200% auto;
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      animation: gradientShift 5s ease infinite;
+    }
+
+    #hub-title h1 span {
+      display: inline-block;
+      animation: float 2s infinite ease-in-out;
+      color: white;
+    }
+
+    #hub-title h1 span:nth-child(2) { animation-delay: 0.1s; }
+    #hub-title h1 span:nth-child(3) { animation-delay: 0.2s; }
+    #hub-title h1 span:nth-child(4) { animation-delay: 0.3s; }
+    #hub-title h1 span:nth-child(6) { animation-delay: 0.4s; }
+    #hub-title h1 span:nth-child(7) { animation-delay: 0.5s; }
+    #hub-title h1 span:nth-child(8) { animation-delay: 0.6s; }
+    #hub-title h1 span:nth-child(9) { animation-delay: 0.7s; }
+    #hub-title h1 span:nth-child(11) { animation-delay: 0.8s; }
+    #hub-title h1 span:nth-child(12) { animation-delay: 0.9s; }
+    #hub-title h1 span:nth-child(13) { animation-delay: 1.0s; }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: var(--text-dim);
+      margin-top: 1rem;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    /* MAIN CONTAINER */
+    #container {
+      width: 90%;
+      max-width: 1400px;
+      margin: 3rem auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+      padding: 0 1rem;
+    }
+
+    /* 3D CUBE SECTION */
+    #t3danimation {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1200px;
+    }
+
+    .cube-wrapper {
+      width: 18vw;
+      height: 18vw;
+      min-width: 200px;
+      min-height: 200px;
+      position: relative;
+      transform-style: preserve-3d;
+      animation: cubeSpin 12s linear infinite;
+    }
+
+    .cube-face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 1rem;
+      box-shadow: 
+        inset 0 0 20px rgba(255, 255, 255, 0.2),
+        0 0 30px rgba(0, 0, 0, 0.5);
+      backface-visibility: hidden;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 3rem;
+      color: rgba(255, 255, 255, 0.9);
+      overflow: hidden;
+    }
+
+    .cube-face::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+      animation: shine 5s infinite linear;
+    }
+
+    .front  { 
+      transform: translateZ(9vw);
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    }
+    .back   { 
+      transform: rotateY(180deg) translateZ(9vw);
+      background: linear-gradient(135deg, var(--secondary), #0d966c);
+    }
+    .right  { 
+      transform: rotateY(90deg) translateZ(9vw);
+      background: linear-gradient(135deg, var(--accent), #d97706);
+    }
+    .left   { 
+      transform: rotateY(-90deg) translateZ(9vw);
+      background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    }
+    .top    { 
+      transform: rotateX(90deg) translateZ(9vw);
+      background: linear-gradient(135deg, #06b6d4, #0891b2);
+    }
+    .bottom { 
+      transform: rotateX(-90deg) translateZ(9vw);
+      background: linear-gradient(135deg, #ef4444, #dc2626);
+    }
+
+    .cube-face i {
+      filter: drop-shadow(0 0 10px rgba(0, 0, 0, 0.5));
+    }
+
+    /* TOOLS GRID */
+    #tools {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2rem;
+    }
+
+    .tool-card {
+      background: var(--card-bg);
+      padding: 2rem;
+      border-radius: 1.5rem;
+      backdrop-filter: blur(10px);
+      box-shadow: 
+        0 10px 25px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      height: 100%;
+    }
+
+    .tool-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .tool-card:hover {
+      transform: translateY(-10px);
+      border-color: var(--primary);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        0 0 30px rgba(99, 102, 241, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    .tool-card:hover .tool-icon {
+      transform: scale(1.1) rotate(5deg);
+      box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+    }
+
+    .tool-icon {
+      width: 4.5rem;
+      height: 4.5rem;
+      border-radius: 1rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      color: white;
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+    }
+
+    .tool-title {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      background: linear-gradient(90deg, var(--text-light), var(--primary));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .tool-desc {
+      font-size: 1rem;
+      color: var(--text-dim);
+      margin-bottom: 1.8rem;
+      flex-grow: 1;
+    }
+
+    .tool-btn {
+      padding: 0.8rem 2rem;
+      border-radius: 0.8rem;
+      background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      align-self: flex-start;
+      box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    .tool-btn:hover {
+      background: linear-gradient(90deg, var(--primary-dark), var(--primary));
+      box-shadow: 0 8px 20px rgba(99, 102, 241, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .tool-btn i {
+      font-size: 0.9rem;
+    }
+
+    /* FOOTER */
+    footer {
+      width: 100%;
+      padding: 2.5rem 0;
+      margin-top: auto;
+      text-align: center;
+      background: rgba(0, 0, 0, 0.2);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-text {
+      font-size: 1rem;
+      color: var(--text-dim);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+    }
+
+    .footer-text i {
+      color: #ef4444;
+      animation: pulse 1.5s infinite;
+    }
+
+    /* RESPONSIVE DESIGN */
+    @media (max-width: 1100px) {
+      #container {
+        grid-template-columns: 1fr;
+        gap: 4rem;
+      }
+      
+      #t3danimation {
+        order: 1;
+      }
+      
+      #tools {
+        order: 2;
+      }
+      
+      .cube-wrapper {
+        width: 25vw;
+        height: 25vw;
+      }
+      
+      .front  { transform: translateZ(12.5vw); }
+      .back   { transform: rotateY(180deg) translateZ(12.5vw); }
+      .right  { transform: rotateY(90deg) translateZ(12.5vw); }
+      .left   { transform: rotateY(-90deg) translateZ(12.5vw); }
+      .top    { transform: rotateX(90deg) translateZ(12.5vw); }
+      .bottom { transform: rotateX(-90deg) translateZ(12.5vw); }
+    }
+
+    @media (max-width: 768px) {
+      #tools {
+        grid-template-columns: 1fr;
+      }
+      
+      #hub-title h1 {
+        font-size: 2.2rem;
+      }
+      
+      .subtitle {
+        font-size: 1rem;
+        padding: 0 1rem;
+      }
+      
+      .cube-wrapper {
+        width: 40vw;
+        height: 40vw;
+        min-width: 180px;
+        min-height: 180px;
+      }
+      
+      .front  { transform: translateZ(20vw); }
+      .back   { transform: rotateY(180deg) translateZ(20vw); }
+      .right  { transform: rotateY(90deg) translateZ(20vw); }
+      .left   { transform: rotateY(-90deg) translateZ(20vw); }
+      .top    { transform: rotateX(90deg) translateZ(20vw); }
+      .bottom { transform: rotateX(-90deg) translateZ(20vw); }
+      
+      .tool-card {
+        padding: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      #hub-title {
+        padding: 1.2rem 2rem;
+      }
+      
+      #hub-title h1 {
+        font-size: 1.8rem;
+      }
+      
+      .cube-wrapper {
+        width: 50vw;
+        height: 50vw;
+      }
+      
+      .front  { transform: translateZ(25vw); }
+      .back   { transform: rotateY(180deg) translateZ(25vw); }
+      .right  { transform: rotateY(90deg) translateZ(25vw); }
+      .left   { transform: rotateY(-90deg) translateZ(25vw); }
+      .top    { transform: rotateX(90deg) translateZ(25vw); }
+      .bottom { transform: rotateX(-90deg) translateZ(25vw); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div id="hub-title">
+      <h1>
+        <span>T</span><span>o</span><span>k</span><span>i</span>
+        <span> </span>
+        <span>T</span><span>o</span><span>o</span><span>l</span><span>s</span>
+        <span> </span>
+        <span>H</span><span>u</span><span>b</span>
+      </h1>
+    </div>
+    <p class="subtitle">A curated collection of essential tools for developers, designers, and productivity enthusiasts</p>
+  </header>
+
+  <!-- Main Container -->
+  <div id="container">
+
+    <!-- 3D Cube -->
+    <div id="t3danimation">
+      <div class="cube-wrapper">
+        <div class="cube-face front"><i class="fas fa-cube"></i></div>
+        <div class="cube-face back"><i class="fas fa-tools"></i></div>
+        <div class="cube-face right"><i class="fas fa-code"></i></div>
+        <div class="cube-face left"><i class="fas fa-palette"></i></div>
+        <div class="cube-face top"><i class="fas fa-rocket"></i></div>
+        <div class="cube-face bottom"><i class="fas fa-layer-group"></i></div>
+      </div>
+    </div>
+
+    <!-- Tools Grid -->
+    <div id="tools">
+
+      <div class="tool-card">
+        <div class="tool-icon"><i class="fas fa-code"></i></div>
+        <div class="tool-title">Developer Tools</div>
+        <div class="tool-desc">A comprehensive collection of essential tools for developers including code formatters, validators, debuggers, and API testing utilities.</div>
+        <button class="tool-btn" onclick="window.location.href='devtool.html'">
+          Explore Tools <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon"><i class="fas fa-globe"></i></div>
+        <div class="tool-title">Web Utilities</div>
+        <div class="tool-desc">Tools for web development including SEO analyzers, accessibility testers, performance optimizers, and responsive design checkers.</div>
+        <button class="tool-btn" onclick="window.location.href='Web Utilities.html'">
+          Explore Tools <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon"><i class="fas fa-bolt"></i></div>
+        <div class="tool-title">Productivity Tools</div>
+        <div class="tool-desc">Boost your workflow with time management, task organizers, note-taking apps, and collaboration tools for teams.</div>
+        <button class="tool-btn" onclick="window.location.href='Productivity Tools.html'">
+          Explore Tools <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon"><i class="fas fa-star"></i></div>
+        <div class="tool-title">Design Resources</div>
+        <div class="tool-desc">Color palettes, font combinations, icon libraries, design inspiration, and prototyping tools for creatives.</div>
+        <button class="tool-btn" onclick="window.location.href='Maintools.html'">
+          Explore Tools <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon"><i class="fas fa-th-large"></i></div>
+        <div class="tool-title">Main Tools</div>
+        <div class="tool-desc">Core utilities including file converters, data visualizers, security checkers, and system optimization tools.</div>
+        <button class="tool-btn" onclick="window.location.href='Maintools.html'">
+          Explore Tools <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+
+      <div class="tool-card">
+        <div class="tool-icon"><i class="fas fa-plus-circle"></i></div>
+        <div class="tool-title">Other Tools</div>
+        <div class="tool-desc">Miscellaneous utilities, browser extensions, offline tools, and emerging technologies for various use cases.</div>
+        <button class="tool-btn" onclick="window.location.href='othertool.html'">
+          Explore Tools <i class="fas fa-arrow-right"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p class="footer-text">
+      <i class="fas fa-heart"></i> © 2025 Toki Tools Hub | Curated with passion for developers worldwide
+    </p>
+  </footer>
+
+</body>
+</html>

@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Academy Staff</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/x-icon" href="OIP (15).jpeg">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="index.js"></script>
+  <style>
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: linear-gradient(to right, #e0f7fa, #ffffff);
+    color: #2c3e50;
+    animation: fadeIn 1s ease-in-out;
+    overflow:scroll-y;
+  }
+
+  h1, h2 {
+    text-align: center;
+    margin-bottom: 10px;
+    color: #1e3c72;
+    transition: color 0.3s ease;
+  }
+
+  .container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  section {
+    margin-bottom: 40px;
+    padding: 20px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
+  }
+
+  input, button {
+    display: block;
+    width: 100%;
+    max-width: 400px;
+    margin: 10px auto;
+    padding: 10px 15px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+
+  input:focus {
+    border-color: #1abc9c;
+    outline: none;
+    box-shadow: 0 0 5px rgba(26, 188, 156, 0.4);
+  }
+
+  button {
+    background-color: #2a5298;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+
+  button:hover {
+    background-color: #1abc9c;
+    transform: scale(1.03);
+  }
+
+  #employeeList li {
+    background: #f4f8fb;
+    padding: 12px;
+    margin: 8px 0;
+    border-radius: 8px;
+    list-style: none;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  #employeeList li:hover {
+    background: #e0f7fa;
+  }
+
+  .clickable {
+    cursor: pointer;
+    color: #2a5298;
+    font-weight: bold;
+    transition: color 0.3s ease;
+  }
+
+  .clickable:hover {
+    color: #1abc9c;
+  }
+
+  .modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.3s ease forwards;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 500px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.4s ease forwards;
+  position: relative;
+  overflow-y: auto;
+  max-height: 90vh;
+  transition: all 0.3s ease;
+}
+
+.modal-content h3 {
+  margin-top: 0;
+  color: #2a5298;
+  text-align: center;
+}
+
+.modal button {
+  display: inline-block;
+  background-color: #2a5298;
+  color: white;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
+  margin: 10px 5px 0 0;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.modal button:hover {
+  background-color: #1abc9c;
+}
+
+  @keyframes slideUp {
+    from { transform: translateY(40px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  .profile-img {
+    width: 70px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin: 0 auto 5px;
+    display: block;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+  }
+
+  .profile-img:hover {
+    transform: scale(1.05);
+  }
+
+  canvas {
+    max-width: 100%;
+  }
+
+  header {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+    background: linear-gradient(to right, #2a5298, #1e3c72);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .link {
+    background: #34495e;
+    width: 150px;
+    height: 150px;
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .link:hover {
+    transform: translateY(-5px);
+    background: #1abc9c;
+  }
+
+  .link a {
+    text-decoration: none;
+    font-size: 22px;
+    color: white;
+    font-weight: bold;
+  }
+@keyframes move{
+    0%{
+        margin-top: 0;
+        opacity: 0.2;
+    }
+    25%{
+        margin-top: 50vw;
+        opacity: 0.4;
+    }
+    50%{
+        margin-top: 100vw;
+        opacity: 0.8;
+    }
+    75%{
+        margin-top: 50vw;
+        opacity: 1;
+    }
+    100%{
+        margin-top: 25vw;
+        opacity: 0;
+
+    }
+}
+.particle{
+    background-color: blueviolet;
+    border-radius: 2vw;
+    opacity: 0.5;
+z-index: -1;
+position:absolute;
+}
+.p1{
+    opacity: 0;
+    width: 3vw;
+    height: 3vw;
+    animation: move 22s infinite 1.14s linear;
+    left: 1vw;
+} 
+.p2{
+    opacity: 0;
+    width: 3vw;
+    height: 3vw;
+    animation: move 22s infinite 1.14s linear;
+    left: 10vw;
+} 
+.p3{
+    opacity: 0;
+    width: 2.2vw;
+    height: 2.2vw;
+    animation: move 22s infinite 3.25s linear;
+    left: 20vw;
+} 
+.bg{
+    display: flex;
+    flex-direction: row;
+}
+.p4{
+    opacity: 0;
+    left: 30vw;
+    animation: move 22s infinite 4.25s linear;
+    margin-right: 3vw;
+    margin-left: 3vw;
+} 
+.p5{
+    opacity: 0;
+    width: 2.3vw;
+    height: 2.3vw;
+    animation: move 32s infinite 6.25s linear;
+    left: 40vw;
+}
+.p6{
+    opacity: 0;
+    width: 1.5vw;
+    height: 1.5vw;
+    animation: move 27s infinite 2.25s linear;
+    left: 50vw;
+}
+.p7{
+    opacity: 0;
+    width: 3.7vw;
+    height: 3.7vw;
+    animation: move 26s infinite 6.25s linear;
+    left: 60vw;
+}
+.p8{
+    opacity: 0;
+    width: 3vw;
+    height: 3vw;
+    animation: move 17s infinite 1.25s linear;
+    left: 70vw;
+}   
+.p9{
+    opacity: 0;
+    width: 4.3vw;
+    height: 4.3vw;
+    animation: move 12s infinite 8.25s linear;
+    left: 80vw;
+} 
+.p10{
+    opacity: 0;
+    width: 3.8vw;
+    height: 3.8vw;
+    animation: move 29s infinite 5.25s linear;
+    left: 90vw;
+} 
+</style>
+</head>
+<body>
+    <div class="bg">
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
+        <div class="particle p4"></div>
+        <div class="particle p5"></div>
+        <div class="particle p6"></div>
+        <div class="particle p7"></div>
+        <div class="particle p8"></div>
+        <div class="particle p9"></div>
+        <div class="particle p10"></div>
+    </div>
+  <header>
+    <div class="link"><a href="index.html">Employees</a></div>
+    <div class="link"><a href="courses.html">Courses</a></div>
+    <div class="link"><a href="bills.html">Bills</a></div>
+  </header>
+  <div class="container">
+    <h1>🏭 Academy Staff</h1>
+
+    <section class="add-employee">
+      <h2>Add Employee</h2>
+      <input type="text" id="name" placeholder="Full Name" />
+      <input type="text" id="role" placeholder="Role" />
+      <input type="text" id="image" placeholder="Profile Image URL" />
+      <input type="text" id="firstName" placeholder="First Name" />
+      <input type="text" id="lastName" placeholder="Last Name" />
+      <input type="date" id="birthday" placeholder="Birthday" />
+      <input type="text" id="phone" placeholder="Phone Number" />
+      <input type="email" id="email" placeholder="Email" />
+      <input type="text" id="country" placeholder="Country" />
+      <input type="text" id="location" placeholder="Location" />
+      <button onclick="addEmployee()">Add</button>
+    </section>
+
+    <section class="employee-list">
+      <h2>Employees</h2>
+      <input type="text" id="search" placeholder="Search by name..." oninput="renderEmployees()" />
+      <ul id="employeeList"></ul>
+    </section>
+
+    <section class="analytics">
+      <h2>Salary Analytics</h2>
+      <p>Total Employees: <span id="totalEmp">0</span></p>
+      <p>Total Salary: $<span id="totalSalary">0</span></p>
+      <p>Average Salary: $<span id="avgSalary">0</span></p>
+      <canvas id="roleChart"></canvas>
+    </section>
+
+    <section class="settings">
+      <input type="password" id="masterKey" placeholder="" />
+      <button onclick="clearData()">🧹 Clear All Data</button>
+    </section>
+  </div>
+
+  <div class="modal" id="profileModal">
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <script>
+    const MASTER_KEY = "1234";
+    let employees = JSON.parse(localStorage.getItem("employees")) || [];
+  
+    function saveData() {
+      localStorage.setItem("employees", JSON.stringify(employees));
+    }
+  
+    function addEmployee() {
+      const name = document.getElementById("name").value.trim();
+      const role = document.getElementById("role").value.trim();
+      const rate = parseFloat(prompt("Enter hourly rate for this employee:", "20"));
+      if (isNaN(rate)) return alert("Invalid hourly rate!");
+  
+      const profile = {
+        image: document.getElementById("image").value || "https://via.placeholder.com/100",
+        firstName: document.getElementById("firstName").value.trim(),
+        lastName: document.getElementById("lastName").value.trim(),
+        birthday: document.getElementById("birthday").value,
+        phone: document.getElementById("phone").value.trim(),
+        email: document.getElementById("email").value.trim(),
+        country: document.getElementById("country").value.trim(),
+        location: document.getElementById("location").value.trim()
+      };
+  
+      if (!name || !role) return alert("Fill all fields correctly!");
+  
+      employees.push({ name, role, profile, salaryLog: [], hourlyRate: rate });
+      saveData();
+      renderEmployees();
+      renderAnalytics();
+      document.querySelectorAll(".add-employee input").forEach(input => input.value = "");
+    }
+  
+    function renderEmployees() {
+      const list = document.getElementById("employeeList");
+      const search = document.getElementById("search").value.toLowerCase();
+      list.innerHTML = "";
+  
+      employees.filter(e => e.name.toLowerCase().includes(search)).forEach((emp, index) => {
+        const totalSalary = (emp.salaryLog || []).reduce((sum, s) => sum + s.amount, 0);
+        const li = document.createElement("li");
+        li.innerHTML = `<strong class="clickable" onclick="showProfile(${index})">${emp.name}</strong> - ${emp.role} - $${totalSalary.toFixed(2)}
+          <button onclick="requestDelete(${index})">❌</button>`;
+        list.appendChild(li);
+      });
+    }
+  
+    function requestDelete(index) {
+      const enteredKey = document.getElementById("masterKey").value;
+      if (enteredKey === MASTER_KEY) {
+        deleteEmployee(index);
+      } else {
+        alert("❌ Incorrect master key!");
+      }
+    }
+  
+    function deleteEmployee(index) {
+      employees.splice(index, 1);
+      saveData();
+      renderEmployees();
+      renderAnalytics();
+    }
+  
+    function showProfile(index) {
+      const emp = employees[index];
+      const p = emp.profile || {};
+      const modal = document.getElementById("profileModal");
+      const content = document.getElementById("modalContent");
+  
+      const salaryHistory = (emp.salaryLog || [])
+        .map((s, i) => `<li>
+          ${s.date}: ${s.details} = $${s.amount}
+          <button onclick="deleteSalary(${index}, ${i})">🗑️</button>
+        </li>`)
+        .join("");
+  
+      content.innerHTML = `
+        <img src="${p.image}" class="profile-img" alt="Profile Image" />
+        <h3>👤 ${emp.name}'s Profile</h3>
+        <p><strong>First Name:</strong> ${p.firstName || ""}</p>
+        <p><strong>Last Name:</strong> ${p.lastName || ""}</p>
+        <p><strong>Birthday:</strong> ${p.birthday || ""}</p>
+        <p><strong>Phone:</strong> ${p.phone || ""}</p>
+        <p><strong>Email:</strong> ${p.email || ""}</p>
+        <p><strong>Country:</strong> ${p.country || ""}</p>
+        <p><strong>Location:</strong> ${p.location || ""}</p>
+        <p><strong>Role:</strong> ${emp.role}</p>
+        <p><strong>Hourly Rate:</strong> $${emp.hourlyRate}</p>
+  
+        <p><strong>Salary History:</strong></p>
+        <ul>${salaryHistory || "<li>No salary added yet.</li>"}</ul>
+  
+        <input id="salaryInput" placeholder="ex: 6h pm and 2h am 4/2/2025" />
+        <button onclick="Salary(${index})">Add Salary</button>
+        <button onclick="closeModal()">Close</button>
+      `;
+      modal.style.display = "flex";
+    }
+  
+    function parseSalaryInput(input) {
+      const result = {
+        am: 0,
+        pm: 0,
+        date: ""
+      };
+  
+      const matchDate = input.match(/(\d{1,2}\/\d{1,2}\/\d{4})/);
+      if (matchDate) result.date = matchDate[1];
+      const matchAm = input.match(/(\d+)h\s*am/);
+      const matchPm = input.match(/(\d+)h\s*pm/);
+  
+      if (matchAm) result.am = parseInt(matchAm[1]);
+      if (matchPm) result.pm = parseInt(matchPm[1]);
+  
+      return result;
+    }
+  
+    function Salary(index) {
+      const input = document.getElementById("salaryInput").value.trim();
+      if (!input) return alert("Enter a valid input like '6h pm and 2h am 4/2/2025'");
+  
+      const { am, pm, date } = parseSalaryInput(input);
+      if (!date || (am === 0 && pm === 0)) return alert("Could not parse input correctly.");
+  
+      const emp = employees[index];
+      const rate = emp.hourlyRate || 20;//hour price
+      const totalHours = am + pm;
+      const amount = totalHours * rate;
+  
+      emp.salaryLog.push({
+        date,
+        details: `${pm}h pm and ${am}h am`,
+        amount
+      });
+  
+      saveData();
+      renderAnalytics();
+      showProfile(index);
+    }
+  
+    function deleteSalary(empIndex, salaryIndex) {
+      employees[empIndex].salaryLog.splice(salaryIndex, 1);
+      saveData();
+      renderAnalytics();
+      showProfile(empIndex);
+    }
+  
+    function closeModal() {
+      document.getElementById("profileModal").style.display = "none";
+    }
+  
+    window.onclick = function (e) {
+      const modal = document.getElementById("profileModal");
+      if (e.target == modal) closeModal();
+    };
+  
+    function renderAnalytics() {
+      document.getElementById("totalEmp").textContent = employees.length;
+  
+      let totalSalary = 0;
+      employees.forEach(e => {
+        totalSalary += (e.salaryLog || []).reduce((sum, s) => sum + s.amount, 0);
+      });
+  
+      const avgSalary = employees.length ? (totalSalary / employees.length).toFixed(2) : 0;
+      document.getElementById("totalSalary").textContent = totalSalary.toFixed(2);
+      document.getElementById("avgSalary").textContent = avgSalary;
+  
+      const roleCount = {};
+      employees.forEach(e => {
+        roleCount[e.role] = (roleCount[e.role] || 0) + 1;
+      });
+  
+      const ctx = document.getElementById("roleChart").getContext("2d");
+      if (window.roleChart) window.roleChart.destroy();
+      window.roleChart = new Chart(ctx, {
+        type: "pie",
+        data: {
+          labels: Object.keys(roleCount),
+          datasets: [{
+            data: Object.values(roleCount),
+            backgroundColor: ["#ffa500", "#ffce56", "#ff6384", "#36a2eb", "#4bc0c0"]
+          }]
+        }
+      });
+    }
+  
+    function clearData() {
+      if (confirm("Are you sure you want to clear all employee data?")) {
+        employees = [];
+        saveData();
+        renderEmployees();
+        renderAnalytics();
+      }
+    }
+  
+    // On load
+    renderEmployees();
+    renderAnalytics();
+  </script>  
+</body>
+</html>

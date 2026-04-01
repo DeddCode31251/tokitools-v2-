@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>✨ Enhanced Notepad + Codepad</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Base styles */
+    :root {
+      --primary-bg: #0a0a14;
+      --secondary-bg: #111128;
+      --header-bg: #090920;
+      --footer-bg: #090920;
+      --text-color: #e0e0ff;
+      --accent-blue: #4a6bff;
+      --accent-purple: #9b59ff;
+      --accent-pink: #ff4d94;
+      --textarea-bg: #151530;
+      --textarea-border: #252545;
+      --button-bg: #1e1e3f;
+      --button-hover: #2a2a5a;
+      --shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+      --transition: all 0.3s ease;
+    }
+    
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      background: var(--primary-bg);
+      color: var(--text-color);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
+    
+    /* Animated background */
+    .background-animation {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      opacity: 0.15;
+      overflow: hidden;
+    }
+    
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--accent-purple), transparent);
+      opacity: 0.7;
+      animation: float 15s infinite linear;
+    }
+    
+    @keyframes float {
+      0% { transform: translateY(0) translateX(0); }
+      25% { transform: translateY(-20vh) translateX(10vw); }
+      50% { transform: translateY(10vh) translateX(-15vw); }
+      75% { transform: translateY(-15vh) translateX(20vw); }
+      100% { transform: translateY(0) translateX(0); }
+    }
+    
+    /* Header styles */
+    header {
+      background: var(--header-bg);
+      padding: 12px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--accent-purple);
+      box-shadow: var(--shadow);
+      position: relative;
+      z-index: 10;
+      transition: var(--transition);
+    }
+    
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .logo-icon {
+      font-size: 24px;
+      color: var(--accent-purple);
+      background: rgba(155, 89, 255, 0.2);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(155, 89, 255, 0.4); }
+      70% { box-shadow: 0 0 0 12px rgba(155, 89, 255, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(155, 89, 255, 0); }
+    }
+    
+    .title {
+      font-weight: 700;
+      font-size: 1.5rem;
+      background: linear-gradient(45deg, var(--accent-blue), var(--accent-purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: var(--transition);
+    }
+    
+    .controls {
+      display: flex;
+      gap: 12px;
+    }
+    
+    .btn {
+      background: var(--button-bg);
+      color: var(--text-color);
+      border: 1px solid var(--textarea-border);
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 500;
+      transition: var(--transition);
+    }
+    
+    .btn:hover {
+      background: var(--button-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    }
+    
+    .btn i {
+      color: var(--accent-purple);
+    }
+    
+    .btn-save:hover i {
+      color: #4ade80;
+    }
+    
+    .btn-clear:hover i {
+      color: #f87171;
+    }
+    
+    .btn-download:hover i {
+      color: #60a5fa;
+    }
+    
+    .btn-theme:hover i {
+      color: #fbbf24;
+    }
+    
+    /* Text area styles */
+    .editor-container {
+      flex: 1;
+      display: flex;
+      padding: 20px;
+      position: relative;
+    }
+    
+    textarea {
+      flex: 1;
+      padding: 20px;
+      font-size: 16px;
+      background: var(--textarea-bg);
+      color: #b0b0ff;
+      border: 1px solid var(--textarea-border);
+      border-radius: 8px;
+      resize: none;
+      outline: none;
+      box-shadow: var(--shadow);
+      transition: var(--transition);
+      font-family: 'Fira Code', 'Courier New', monospace;
+      line-height: 1.6;
+    }
+    
+    textarea:focus {
+      border-color: var(--accent-purple);
+      box-shadow: 0 0 0 3px rgba(155, 89, 255, 0.3);
+    }
+    
+    /* Footer styles */
+    footer {
+      padding: 12px 20px;
+      background: var(--footer-bg);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--accent-purple);
+      box-shadow: var(--shadow);
+      font-size: 0.9rem;
+      color: #a0a0e0;
+      transition: var(--transition);
+    }
+    
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .status-indicator {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: #10b981;
+      box-shadow: 0 0 8px #10b981;
+      animation: pulse 2s infinite;
+    }
+    
+    .additional-options {
+      display: flex;
+      gap: 15px;
+    }
+    
+    .option-btn {
+      background: transparent;
+      border: none;
+      color: #a0a0e0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: var(--transition);
+    }
+    
+    .option-btn:hover {
+      color: var(--accent-blue);
+    }
+    
+    /* Font controls */
+    .font-controls {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      background: var(--secondary-bg);
+      border: 1px solid var(--textarea-border);
+      border-radius: 8px;
+      padding: 15px;
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 20;
+      box-shadow: var(--shadow);
+      animation: slideIn 0.3s ease-out;
+    }
+    
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .font-controls.active {
+      display: flex;
+    }
+    
+    .font-controls label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+    }
+    
+    .font-controls input[type="range"] {
+      width: 100%;
+    }
+    
+    /* Theme toggle */
+    .theme-toggle {
+      position: relative;
+      width: 50px;
+      height: 24px;
+    }
+    
+    .theme-toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    
+    .theme-slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: var(--textarea-bg);
+      border: 1px solid var(--textarea-border);
+      transition: var(--transition);
+      border-radius: 24px;
+    }
+    
+    .theme-slider:before {
+      position: absolute;
+      content: "";
+      height: 16px;
+      width: 16px;
+      left: 4px;
+      bottom: 3px;
+      background-color: var(--accent-purple);
+      transition: var(--transition);
+      border-radius: 50%;
+    }
+    
+    input:checked + .theme-slider {
+      background-color: var(--accent-blue);
+    }
+    
+    input:checked + .theme-slider:before {
+      transform: translateX(26px);
+      background-color: #fff;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .controls {
+        width: 100%;
+        justify-content: center;
+      }
+      
+      footer {
+        flex-direction: column;
+        gap: 10px;
+      }
+    }
+    
+    /* Animation for text */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .animated-text {
+      animation: fadeIn 0.5s ease-out;
+    }
+    /*Page Title*/
+        #tokitoolsTitle {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      position: relative;
+      color: transparent;
+      background: linear-gradient(135deg, #ff6a00, #ff0066, #00c6ff);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientSlide 5s infinite linear;
+
+      /* Glassy glowing edge */
+      text-shadow: 0 0 20px rgba(255, 105, 180, 0.7),
+                   0 0 40px rgba(0, 198, 255, 0.6),
+                   0 0 60px rgba(255, 106, 0, 0.5);
+	  margin-bottom: 4vw;
+    }
+
+    /* Gradient animation */
+    @keyframes gradientSlide {
+      0% {
+        background-position: 0% center;
+      }
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    /* Elegant underline */
+    #tokitoolsTitle::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 4px;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #ff6a00, #ff0066, #00c6ff);
+      animation: underlineGlow 3s infinite alternate;
+    }
+
+    @keyframes underlineGlow {
+      0% {
+        box-shadow: 0 0 10px #ff0066;
+      }
+      100% {
+        box-shadow: 0 0 25px #00c6ff;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Animated background particles -->
+  <div class="background-animation" id="particles"></div>
+    <h1 id="tokitoolsTitle">Note Pad</h1>
+  
+  <header>
+    <div class="logo">
+      <div class="logo-icon">
+        <i class="fas fa-code"></i>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="btn btn-save" id="saveBtn">
+        <i class="fas fa-save"></i> Save
+      </button>
+      <button class="btn btn-clear" id="clearBtn">
+        <i class="fas fa-trash-alt"></i> Clear
+      </button>
+      <button class="btn btn-download" id="downloadBtn">
+        <i class="fas fa-download"></i> Download
+      </button>
+      <button class="btn btn-theme" id="themeBtn">
+        <i class="fas fa-moon"></i> Theme
+      </button>
+      <button class="btn" id="fontBtn">
+        <i class="fas fa-font"></i> Font
+      </button>
+    </div>
+  </header>
+  
+  <div class="editor-container">
+    <textarea id="notepad" placeholder="Start typing your notes or code here..."></textarea>
+    
+    <!-- Font controls panel -->
+    <div class="font-controls" id="fontControls">
+      <h3>Font Settings</h3>
+      <label>
+        Font Size: <span id="fontSizeValue">16px</span>
+        <input type="range" id="fontSize" min="12" max="24" value="16">
+      </label>
+      <label>
+        <input type="checkbox" id="lineNumbers"> Show Line Numbers
+      </label>
+      <label>
+        <input type="checkbox" id="wordWrap"> Enable Word Wrap
+      </label>
+      <button class="btn" id="applyFont">Apply</button>
+    </div>
+  </div>
+  
+  <footer>
+    <div class="status">
+      <div class="status-indicator"></div>
+      <span id="statusText">All changes saved to your browser (localStorage)</span>
+    </div>
+    <div class="additional-options">
+      <button class="option-btn" id="wordCountBtn">
+        <i class="fas fa-text-width"></i> <span id="wordCount">0 words</span>
+      </button>
+      <button class="option-btn" id="charCountBtn">
+        <i class="fas fa-font"></i> <span id="charCount">0 chars</span>
+      </button>
+      <button class="option-btn" id="timeBtn">
+        <i class="far fa-clock"></i> <span id="timeInfo">0 min read</span>
+      </button>
+    </div>
+  </footer>
+
+  <script>
+    // DOM Elements
+    const textarea = document.getElementById('notepad');
+    const saveBtn = document.getElementById('saveBtn');
+    const clearBtn = document.getElementById('clearBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const themeBtn = document.getElementById('themeBtn');
+    const fontBtn = document.getElementById('fontBtn');
+    const applyFontBtn = document.getElementById('applyFont');
+    const fontControls = document.getElementById('fontControls');
+    const fontSizeSlider = document.getElementById('fontSize');
+    const fontSizeValue = document.getElementById('fontSizeValue');
+    const wordCountEl = document.getElementById('wordCount');
+    const charCountEl = document.getElementById('charCount');
+    const timeInfoEl = document.getElementById('timeInfo');
+    const statusText = document.getElementById('statusText');
+    const particlesContainer = document.getElementById('particles');
+    
+    // Constants
+    const STORAGE_KEY = 'notepad_content';
+    const THEME_KEY = 'notepad_theme';
+    
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      // Load saved content
+      textarea.value = localStorage.getItem(STORAGE_KEY) || '';
+      
+      // Load theme preference
+      const savedTheme = localStorage.getItem(THEME_KEY);
+      if (savedTheme === 'light') {
+        document.body.classList.add('light-theme');
+      }
+      
+      // Initialize word count
+      updateCounts();
+      
+      // Create animated background particles
+      createParticles();
+      
+      // Add animation to title
+      document.querySelector('.title').classList.add('animated-text');
+    });
+    
+    // Auto save with debounce
+    let saveTimeout;
+    textarea.addEventListener('input', () => {
+      clearTimeout(saveTimeout);
+      
+      // Update counts in real-time
+      updateCounts();
+      
+      // Show saving status
+      statusText.textContent = "Saving changes...";
+      statusText.style.color = "#fbbf24";
+      
+      saveTimeout = setTimeout(() => {
+        localStorage.setItem(STORAGE_KEY, textarea.value);
+        
+        // Show saved status
+        statusText.textContent = "All changes saved to your browser (localStorage)";
+        statusText.style.color = "#a0a0e0";
+        
+        // Add save animation
+        statusText.classList.add('animated-text');
+        setTimeout(() => {
+          statusText.classList.remove('animated-text');
+        }, 500);
+      }, 1000);
+    });
+    
+    // Manual save button
+    saveBtn.addEventListener('click', () => {
+      localStorage.setItem(STORAGE_KEY, textarea.value);
+      
+      // Show save confirmation
+      statusText.textContent = "Manually saved!";
+      statusText.style.color = "#4ade80";
+      
+      setTimeout(() => {
+        statusText.textContent = "All changes saved to your browser (localStorage)";
+        statusText.style.color = "#a0a0e0";
+      }, 2000);
+    });
+    
+    // Clear button with confirmation
+    clearBtn.addEventListener('click', () => {
+      if (confirm("Are you sure you want to clear all content?")) {
+        textarea.value = '';
+        localStorage.removeItem(STORAGE_KEY);
+        updateCounts();
+        
+        // Animation effect
+        textarea.style.transform = "scale(0.98)";
+        setTimeout(() => {
+          textarea.style.transform = "scale(1)";
+        }, 300);
+      }
+    });
+    
+    // Download button
+    downloadBtn.addEventListener('click', () => {
+      const content = textarea.value;
+      if (!content.trim()) {
+        alert("Cannot download empty content!");
+        return;
+      }
+      
+      const blob = new Blob([content], { type: 'text/plain' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'notepad_content.txt';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+      
+      // Show download confirmation
+      statusText.textContent = "Download started!";
+      statusText.style.color = "#60a5fa";
+      
+      setTimeout(() => {
+        statusText.textContent = "All changes saved to your browser (localStorage)";
+        statusText.style.color = "#a0a0e0";
+      }, 2000);
+    });
+    
+    // Theme toggle
+    themeBtn.addEventListener('click', () => {
+      document.body.classList.toggle('light-theme');
+      
+      // Save theme preference
+      const isLight = document.body.classList.contains('light-theme');
+      localStorage.setItem(THEME_KEY, isLight ? 'light' : 'dark');
+      
+      // Update button icon
+      const icon = themeBtn.querySelector('i');
+      icon.className = isLight ? 'fas fa-sun' : 'fas fa-moon';
+    });
+    
+    // Font controls toggle
+    fontBtn.addEventListener('click', () => {
+      fontControls.classList.toggle('active');
+    });
+    
+    // Apply font settings
+    applyFontBtn.addEventListener('click', () => {
+      // Apply font size
+      textarea.style.fontSize = `${fontSizeSlider.value}px`;
+      
+      // Apply line numbers (simulated)
+      if (document.getElementById('lineNumbers').checked) {
+        textarea.classList.add('line-numbers');
+      } else {
+        textarea.classList.remove('line-numbers');
+      }
+      
+      // Apply word wrap
+      if (document.getElementById('wordWrap').checked) {
+        textarea.style.whiteSpace = 'pre-wrap';
+      } else {
+        textarea.style.whiteSpace = 'nowrap';
+      }
+      
+      // Close panel
+      fontControls.classList.remove('active');
+    });
+    
+    // Update font size value display
+    fontSizeSlider.addEventListener('input', () => {
+      fontSizeValue.textContent = `${fontSizeSlider.value}px`;
+    });
+    
+    // Word and character count
+    function updateCounts() {
+      const text = textarea.value;
+      const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+      const characters = text.length;
+      
+      // Word count
+      wordCountEl.textContent = `${words} ${words === 1 ? 'word' : 'words'}`;
+      
+      // Character count
+      charCountEl.textContent = `${characters} ${characters === 1 ? 'char' : 'chars'}`;
+      
+      // Reading time (200 words per minute)
+      const minutes = Math.ceil(words / 200);
+      timeInfoEl.textContent = `${minutes} min read`;
+    }
+    
+    // Create animated particles
+    function createParticles() {
+      const particlesCount = 15;
+      
+      for (let i = 0; i < particlesCount; i++) {
+        const particle = document.createElement('div');
+        particle.classList.add('particle');
+        
+        // Random size
+        const size = Math.random() * 80 + 20;
+        particle.style.width = `${size}px`;
+        particle.style.height = `${size}px`;
+        
+        // Random position
+        particle.style.left = `${Math.random() * 100}%`;
+        particle.style.top = `${Math.random() * 100}%`;
+        
+        // Random animation duration
+        particle.style.animationDuration = `${Math.random() * 20 + 10}s`;
+        
+        particlesContainer.appendChild(particle);
+      }
+    }
+  </script>
+</body>
+</html>

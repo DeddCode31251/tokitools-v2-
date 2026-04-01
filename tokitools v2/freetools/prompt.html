@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AI Prompt Generator PRO</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen">
+
+  <div class="bg-white p-6 rounded shadow-lg max-w-lg w-full text-center">
+    <h1 class="text-2xl font-bold text-purple-600 mb-4">🧠 AI Prompt Generator</h1>
+
+    <!-- Output -->
+    <div id="promptOutput" class="text-left text-gray-800 bg-gray-50 border rounded p-4 h-40 overflow-y-auto mb-4 font-mono">
+      Click generate to get a random prompt!
+    </div>
+
+    <!-- Free Generate -->
+    <button onclick="generatePrompt()" class="bg-purple-500 hover:bg-purple-600 text-white px-4 py-2 rounded mb-2">Generate Prompt</button>
+
+    <!-- Pro Controls -->
+    <div id="proTools">
+      <select id="categorySelect" class="w-full mb-2 p-2 border rounded">
+        <option value="any">Any</option>
+        <option value="art">🎨 Art</option>
+        <option value="code">💻 Code</option>
+        <option value="story">📖 Story</option>
+        <option value="funny">😂 Funny</option>
+      </select>
+
+      <button onclick="generateBatch()" class="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded mb-2">🎯 Generate 5 Prompts</button>
+      <button onclick="copyPrompts()" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded mb-2">📋 Copy All</button>
+      <button onclick="exportPrompts()" class="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded mb-2">📤 Export</button>
+      <button onclick="savePrompts()" class="bg-gray-700 hover:bg-black text-white px-4 py-2 rounded mb-4">💾 Save</button>
+    </div>
+
+
+  <script>
+    const prompts = {
+      any: [
+        "Design an app that controls time.",
+        "What if animals ran the government?",
+        "Invent a sport using magnets.",
+        "Describe a planet with no gravity.",
+        "What would a robot dream about?"
+      ],
+      art: [
+        "Draw a haunted coffee shop.",
+        "Design a castle made of glass.",
+        "Sketch an underwater city.",
+        "Paint a tree that grows planets.",
+        "Draw emotions as creatures."
+      ],
+      code: [
+        "Make a todo app with AI features.",
+        "Build a weather site using only HTML/CSS.",
+        "Generate 100 fake users with JS.",
+        "Create a Python chatbot that tells jokes.",
+        "Design a game with only arrow keys."
+      ],
+      story: [
+        "Write a sci-fi scene in the year 3030.",
+        "Describe a kid who speaks with shadows.",
+        "A love letter sent across the galaxy.",
+        "A bakery hiding magical secrets.",
+        "The last human meets a robot dog."
+      ],
+      funny: [
+        "A chicken becomes a CEO. Explain how.",
+        "Design a dating app for aliens.",
+        "Make a meme about potato politics.",
+        "Write a joke as if you're Shakespeare.",
+        "What if gravity stopped for 5 mins?"
+      ]
+    };
+
+    function generatePrompt() {
+      const all = Object.values(prompts).flat();
+      const prompt = all[Math.floor(Math.random() * all.length)];
+      document.getElementById("promptOutput").textContent = prompt;
+    }
+
+    function generateBatch() {
+      const cat = document.getElementById("categorySelect").value;
+      const list = cat === "any" ? Object.values(prompts).flat() : prompts[cat];
+      let result = "";
+      for (let i = 0; i < 5; i++) {
+        const rand = list[Math.floor(Math.random() * list.length)];
+        result += `• ${rand}\n`;
+      }
+      document.getElementById("promptOutput").textContent = result;
+    }
+
+    function copyPrompts() {
+      const text = document.getElementById("promptOutput").textContent;
+      if (!text) return alert("Nothing to copy.");
+      navigator.clipboard.writeText(text);
+      alert("✅ Copied!");
+    }
+
+    function exportPrompts() {
+      const text = document.getElementById("promptOutput").textContent;
+      if (!text) return alert("Nothing to export.");
+      const blob = new Blob([text], { type: "text/plain" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "ai-prompts.txt";
+      link.click();
+    }
+
+    function savePrompts() {
+      const text = document.getElementById("promptOutput").textContent;
+      if (!text) return alert("Nothing to save.");
+      localStorage.setItem("savedPrompts", text);
+      alert("💾 Prompts saved!");
+    }
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Exam Portal</title>
+  <link rel="stylesheet" href="home.css">
+</head>
+<body>
+  <!--Background Animation-->
+  <div id="bg">
+    <div class="ball"></div>
+    <div class="ball"></div>
+    <div class="ball"></div>
+    <div class="ball"></div>
+    <div class="ball"></div>
+    <div class="ball"></div>
+    <div class="ball"></div>
+    <div class="ball"></div>
+    <div class="ball"></div>
+    <div class="ball"></div>
+  </div>
+  <!-- LOADING SCREEN -->
+  <div id="loading-animation">
+    <img src="icons/ruler.png" alt="ruler" id="ruler" />
+    <h1 id="txt">
+      <span>M</span><span>a</span><span>t</span><span>h</span>
+    </h1>
+    <div id="credit">Made by DeadCode Company</div>
+  </div>
+
+  <!--Dark Mode-->
+  <button id="dark-toggle" onclick="toggleDarkMode()">🌙</button>
+
+   <h1 id="title">
+    <span class="txt1">W</span>
+    <span class="txt1">e</span>
+    <span class="txt1">l</span>
+    <span class="txt1">c</span>
+    <span class="txt1">o</span>
+    <span class="txt1">m</span>
+    <span class="txt1">e</span>
+  </h1>
+
+  <div id="exam-list">
+    <button class="exam-btn" onclick="openExam('math')">Math Exam</button>
+    <button class="exam-btn" onclick="openExam('MathNovember')">Math November</button>
+    <button class="exam-btn" onclick="openExam('MathOctober')">Math October</button>
+  </div>
+
+  <!-- Exam Panel -->
+  <div id="exam-panel">
+    <h2 id="exam-title">Exam</h2>
+    <form id="exam-form">
+      <div id="questions-container"></div>
+      <button type="button" id="submit-btn" onclick="submitExam()">Submit Exam</button>
+      <button type="button" id="close-btn" onclick="closeExam()">Close</button>
+    </form>
+  </div>
+
+  <!-- Result Modal -->
+  <div id="result-overlay">
+    <div id="result-box">
+      <h2>Your Result</h2>
+      <p id="score-text"></p>
+      <button onclick="closeResult()">Close</button>
+    </div>
+  </div>
+
+<script>
+  const exams = {
+    MathOctober: {
+      title: "Math Exam",
+      questions: [
+        { type: "multiple", question: "What is 4 + 2?", options: ["6", "4", "5"], answer: "6" },
+        { type: "text", question: "Write the number after 7.", answer: "8" },
+        { type: "boolean", question: "5 * 3 = 10. True or False?", answer: "False" },
+        {
+          type: "multiple",
+          question: "Solve this equation:",
+          image: "equations/question1.png",
+          options: ["16/13", "8/3", "14/6"],
+          answer: "16/13"
+        }
+      ]
+    },
+
+    math: {
+      title: "Math Exam",
+      questions: [
+        { type: "multiple", question: "What is 2 + 2?", options: ["3", "4", "5"], answer: "4" },
+        { type: "text", question: "Write the number after 9.", answer: "10" },
+        { type: "boolean", question: "5 * 2 = 10. True or False?", answer: "true" }
+      ]
+    },
+
+    MathNovember: {
+      title: "Math November",
+      questions: [
+        { type: "multiple", question: "7 * 7?", options: ["49", "21", "52"], answer: "49" },
+        { type: "text", question: "Racine 9 a la forme la plus simple", answer: "3" },
+        { type: "boolean", question: "Is racine -1 a real number?", answer: "false" }
+      ]
+    }
+  };
+
+  let currentExam = null;
+
+  function openExam(key) {
+    currentExam = exams[key];
+    document.getElementById('exam-title').textContent = currentExam.title;
+    const container = document.getElementById('questions-container');
+    container.innerHTML = '';
+
+    currentExam.questions.forEach((q, index) => {
+      const qDiv = document.createElement('div');
+      qDiv.className = 'question';
+      qDiv.innerHTML = `<h3>${index + 1}. ${q.question}</h3>`;
+
+      if (q.image) {
+        qDiv.innerHTML += `<img src="${q.image}" alt="Question Image" class="question-img">`;
+      }
+
+      if (q.type === 'multiple') {
+        q.options.forEach(opt => {
+          qDiv.innerHTML += `<label><input type="radio" name="q${index}" value="${opt}"> ${opt}</label>`;
+        });
+      } else if (q.type === 'text') {
+        qDiv.innerHTML += `<input type="text" name="q${index}">`;
+      } else if (q.type === 'boolean') {
+        qDiv.innerHTML += `
+          <label><input type="radio" name="q${index}" value="true"> True</label>
+          <label><input type="radio" name="q${index}" value="false"> False</label>`;
+      }
+
+      container.appendChild(qDiv);
+    });
+
+    document.getElementById('exam-panel').classList.add('active');
+  }
+
+  function closeExam() {
+    document.getElementById('exam-panel').classList.remove('active');
+  }
+
+  function submitExam() {
+    let score = 0;
+    const total = currentExam.questions.length;
+
+    currentExam.questions.forEach((q, index) => {
+      const name = "q" + index;
+      let userAnswer = "";
+      const questionDiv = document.querySelectorAll(".question")[index];
+
+      if (q.type === 'text') {
+        const input = document.querySelector(`input[name="${name}"]`);
+        userAnswer = input.value.trim().toLowerCase();
+        if (userAnswer === q.answer.toLowerCase()) {
+          score++;
+          questionDiv.classList.add("correct");
+        } else {
+          questionDiv.classList.add("wrong");
+          showCorrectAnswer(questionDiv, q.answer);
+        }
+      } else {
+        const selected = document.querySelector(`input[name="${name}"]:checked`);
+        if (selected && selected.value.toLowerCase() === q.answer.toLowerCase()) {
+          score++;
+          questionDiv.classList.add("correct");
+        } else {
+          questionDiv.classList.add("wrong");
+          showCorrectAnswer(questionDiv, q.answer);
+        }
+      }
+    });
+
+    const percentage = Math.round((score / total) * 100);
+    document.getElementById('score-text').textContent = `You scored ${score} out of ${total} (${percentage}%)`;
+    document.getElementById('result-overlay').style.display = 'flex';
+  }
+
+  function showCorrectAnswer(container, answer) {
+    if (!container.querySelector('.correct-answer')) {
+      const ans = document.createElement('div');
+      ans.className = 'correct-answer';
+      ans.textContent = `Correct Answer: ${answer}`;
+      container.appendChild(ans);
+    }
+  }
+
+  function closeResult() {
+    document.getElementById('result-overlay').style.display = 'none';
+  }
+
+  setTimeout(() => {
+    document.getElementById('loading-animation').style.display = 'none';
+  }, 3000);
+
+  function toggleDarkMode() {
+    document.body.classList.toggle("dark");
+    const toggle = document.getElementById("dark-toggle");
+    toggle.textContent = document.body.classList.contains("dark") ? "☀️" : "🌙";
+}
+
+</script>
+
+
+</body>
+</html>

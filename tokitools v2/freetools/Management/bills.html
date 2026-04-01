@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Bill Manager</title>
+  <link rel="icon" type="image/x-icon" href="OIP (15).jpeg">
+  <style>
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background: linear-gradient(to right, #dfe9f3, #ffffff);
+  color: #2c3e50;
+  animation: fadeIn 1s ease-in-out;
+overflow:scroll-y;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 20px;
+  background: #1e3c72;
+  background: linear-gradient(to right, #2a5298, #1e3c72);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.link {
+  background: #34495e;
+  width: 150px;
+  height: 150px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+.link:hover {
+  transform: translateY(-5px);
+  background: #1abc9c;
+}
+.link a {
+  text-decoration: none;
+  font-size: 22px;
+  color: white;
+  font-weight: bold;
+}
+
+#addbill {
+  background-color: white;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 20px;
+  margin: 50px auto;
+  padding: 35px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+#addbill h2 {
+  margin-bottom: 25px;
+  color: #1e3c72;
+  text-align: center;
+}
+
+input, button {
+  margin: 12px 0;
+  padding: 14px 18px;
+  border-radius: 12px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  width: 100%;
+  box-sizing: border-box;
+  transition: 0.3s ease;
+}
+input:focus {
+  border-color: #2980b9;
+  outline: none;
+  background-color: #f0f8ff;
+}
+button {
+  background: linear-gradient(to right, #27ae60, #2ecc71);
+  color: white;
+  border: none;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+button:hover {
+  background: linear-gradient(to right, #219150, #28b765);
+  cursor: pointer;
+}
+
+#bills-container {
+  width: 95%;
+  max-width: 1200px;
+  margin: 40px auto;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  justify-content: center;
+}
+
+.bill {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 20px;
+  padding: 25px 20px 20px 20px;
+  width: 100%;
+  max-width: 320px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  position: relative;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.bill:hover {
+  transform: scale(1.02);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+
+.bill label {
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight: 600;
+  padding: 8px 0;
+}
+
+.bill input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  margin-right: 10px;
+  cursor: pointer;
+  accent-color: #27ae60; /* Adds green highlight for checked box */
+}
+
+.bill p {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.bill p strong {
+  color: #34495e;
+}
+
+.editable {
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  width: 100%;
+  padding: 6px 0;
+  border-bottom: 1px solid #ccc;
+  transition: 0.3s;
+}
+.editable:focus {
+  outline: none;
+  border-color: #3498db;
+  background-color: #f8f9fa;
+}
+
+.delete-btn {
+  background: #e74c3c;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  transition: background 0.3s ease;
+}
+.delete-btn:hover {
+  background: #c0392b;
+}
+
+
+.paid {
+  color: #2ecc71;
+  font-weight: bold;
+}
+.unpaid {
+  color: #e74c3c;
+  font-weight: bold;
+}
+
+
+.editable {
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  width: 100%;
+  padding: 5px 0;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.3s ease, background 0.2s ease;
+}
+.editable:focus {
+  outline: none;
+  border-bottom: 2px solid #2980b9;
+  background: #ecf0f1;
+}
+
+.Analytics {
+  background-color: #ffffff;
+  width: 90%;
+  max-width: 600px;
+  margin: 50px auto;
+  padding: 30px;
+  border-radius: 20px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-size: 20px;
+  color: #1e3c72;
+  line-height: 1.8em;
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+@keyframes move{
+    0%{
+        margin-top: 0;
+        opacity: 0.2;
+    }
+    25%{
+        margin-top: 50vw;
+        opacity: 0.4;
+    }
+    50%{
+        margin-top: 100vw;
+        opacity: 0.8;
+    }
+    75%{
+        margin-top: 50vw;
+        opacity: 1;
+    }
+    100%{
+        margin-top: 25vw;
+        opacity: 0;
+
+    }
+}
+.particle{
+    background-color: blueviolet;
+    border-radius: 2vw;
+    opacity: 0.5;
+z-index: -1;
+position:absolute;
+}
+.p1{
+    opacity: 0;
+    width: 3vw;
+    height: 3vw;
+    animation: move 22s infinite 1.14s linear;
+    left: 1vw;
+} 
+.p2{
+    opacity: 0;
+    width: 3vw;
+    height: 3vw;
+    animation: move 22s infinite 1.14s linear;
+    left: 10vw;
+} 
+.p3{
+    opacity: 0;
+    width: 2.2vw;
+    height: 2.2vw;
+    animation: move 22s infinite 3.25s linear;
+    left: 20vw;
+} 
+.bg{
+    display: flex;
+    flex-direction: row;
+}
+.p4{
+    opacity: 0;
+    left: 30vw;
+    animation: move 22s infinite 4.25s linear;
+    margin-right: 3vw;
+    margin-left: 3vw;
+} 
+.p5{
+    opacity: 0;
+    width: 2.3vw;
+    height: 2.3vw;
+    animation: move 32s infinite 6.25s linear;
+    left: 40vw;
+}
+.p6{
+    opacity: 0;
+    width: 1.5vw;
+    height: 1.5vw;
+    animation: move 27s infinite 2.25s linear;
+    left: 50vw;
+}
+.p7{
+    opacity: 0;
+    width: 3.7vw;
+    height: 3.7vw;
+    animation: move 26s infinite 6.25s linear;
+    left: 60vw;
+}
+.p8{
+    opacity: 0;
+    width: 3vw;
+    height: 3vw;
+    animation: move 17s infinite 1.25s linear;
+    left: 70vw;
+}   
+.p9{
+    opacity: 0;
+    width: 4.3vw;
+    height: 4.3vw;
+    animation: move 12s infinite 8.25s linear;
+    left: 80vw;
+} 
+.p10{
+    opacity: 0;
+    width: 3.8vw;
+    height: 3.8vw;
+    animation: move 29s infinite 5.25s linear;
+    left: 90vw;
+} 
+</style>
+</head>
+<body>
+    <div class="bg">
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
+        <div class="particle p4"></div>
+        <div class="particle p5"></div>
+        <div class="particle p6"></div>
+        <div class="particle p7"></div>
+        <div class="particle p8"></div>
+        <div class="particle p9"></div>
+        <div class="particle p10"></div>
+    </div>
+  <header>
+    <div class="link"><a href="index.html">Employees</a></div>
+    <div class="link"><a href="courses.html">Courses</a></div>
+    <div class="link"><a href="bills.html">Bills</a></div>
+  </header>
+
+  <div id="addbill">
+    <h2>Add Bill</h2>
+    <input type="text" id="BillName" placeholder="Bill Name" />
+    <input type="number" id="Billprice" placeholder="Bill Cost" />
+    <input type="date" id="Billdate" />
+    <input type="text" id="billmonth" placeholder="Date or Month: Month 1 | 24/4/2025">
+    <input type="text" id="BillDescreption" placeholder="Bill Description" />
+    <button id="NewBill" onclick="addBill()">Add New Bill</button>
+  </div>
+
+  <div id="bills-container"></div>
+
+  <div class="Analytics">
+    <p id="Bills">Total Bills: 0</p>
+    <p id="Cost1">Total Cost: $0</p>
+  </div>
+  <div class="Analytics" id="MonthlyAnalytics">
+    <h3>Monthly Analytics</h3>
+  </div>
+  
+
+  <script>
+    let bills = [];
+
+    window.onload = function() {
+      const stored = localStorage.getItem("bills");
+      if (stored) {
+        bills = JSON.parse(stored);
+        renderBills();
+      }
+    };
+
+    function saveToStorage() {
+      localStorage.setItem("bills", JSON.stringify(bills));
+    }
+
+    function addBill() {
+      const name = document.getElementById("BillName").value.trim();
+      const cost = parseFloat(document.getElementById("Billprice").value.trim());
+      const date = document.getElementById("Billdate").value;
+      const billmonth = document.getElementById("billmonth").value.trim();
+      const descr = document.getElementById("BillDescreption").value.trim();
+
+      if (!name || isNaN(cost) || !date || !descr || !billmonth) {
+        alert("Please fill all fields correctly.");
+        return;
+      }
+
+      const newBill = {
+        id: Date.now(),
+        name,
+        cost,
+        date,
+        billmonth,
+        descr,
+        paid: false
+      };
+
+      bills.push(newBill);
+      saveToStorage();
+      renderBills();
+
+      document.getElementById("BillName").value = "";
+      document.getElementById("Billprice").value = "";
+      document.getElementById("Billdate").value = "";
+      document.getElementById("BillDescreption").value = "";
+    }
+
+    function togglePaid(id) {
+      bills = bills.map(b => {
+        if (b.id === id) b.paid = !b.paid;
+        return b;
+      });
+      saveToStorage();
+      renderBills();
+    }
+
+    function deleteBill(id) {
+      bills = bills.filter(b => b.id !== id);
+      saveToStorage();
+      renderBills();
+    }
+
+    function updateBill(id, key, value) {
+      bills = bills.map(b => {
+        if (b.id === id) {
+          if (key === 'cost') {
+            b[key] = parseFloat(value) || 0;
+          } else {
+            b[key] = value;
+          }
+        }
+        return b;
+      });
+      saveToStorage();
+      renderBills();
+    }
+
+    function renderBills() {
+      const container = document.getElementById("bills-container");
+      container.innerHTML = "";
+
+      bills.forEach(bill => {
+        const div = document.createElement("div");
+        div.className = "bill";
+
+        div.innerHTML = `
+          <button class="delete-btn" onclick="deleteBill(${bill.id})">Delete</button>
+          <label>
+            <input type="checkbox" ${bill.paid ? "checked" : ""} onchange="togglePaid(${bill.id})" />
+            <span class="${bill.paid ? "paid" : "unpaid"}">${bill.paid ? "PAID" : "UNPAID"}</span>
+          </label>
+          <p><strong>Name:</strong> <input class="editable" onchange="updateBill(${bill.id}, 'name', this.value)" value="${bill.name}" /></p>
+          <p><strong>Cost:</strong> $<input class="editable" onchange="updateBill(${bill.id}, 'cost', this.value)" value="${bill.cost}" /></p>
+          <p><strong>Date:</strong> <input class="editable" type="date" onchange="updateBill(${bill.id}, 'date', this.value)" value="${bill.date}" /></p>
+          <p><strong>Description:</strong> <input class="editable" onchange="updateBill(${bill.id}, 'descr', this.value)" value="${bill.descr}" /></p>
+          <p><strong>Date or Month:</strong> <input class="editable" onchange="updateBill(${bill.id}, 'billmonth', this.value)" value="${bill.billmonth}" /></p>
+        `;
+
+        container.appendChild(div);
+      });
+
+      updateAnalytics();
+    }function renderBills() {
+  const container = document.getElementById("bills-container");
+  container.innerHTML = "";
+
+  bills.forEach(bill => {
+    const div = document.createElement("div");
+    div.className = "bill";
+
+    div.innerHTML = `
+      <button class="delete-btn" onclick="deleteBill(${bill.id})">Delete</button>
+      <label>
+        <input type="checkbox" ${bill.paid ? "checked" : ""} onchange="togglePaid(${bill.id})" />
+        <span class="${bill.paid ? "paid" : "unpaid"}">${bill.paid ? "PAID" : "UNPAID"}</span>
+      </label>
+      <p><strong>Name:</strong> <input class="editable" onchange="updateBill(${bill.id}, 'name', this.value)" value="${bill.name}" /></p>
+      <p><strong>Cost:</strong> $<input class="editable" onchange="updateBill(${bill.id}, 'cost', this.value)" value="${bill.cost}" /></p>
+      <p><strong>Date:</strong> <input class="editable" type="date" onchange="updateBill(${bill.id}, 'date', this.value)" value="${bill.date}" /></p>
+      <p><strong>Description:</strong> <input class="editable" onchange="updateBill(${bill.id}, 'descr', this.value)" value="${bill.descr}" /></p>
+      <p><strong>Date or Month:</strong> <input class="editable" onchange="updateBill(${bill.id}, 'billmonth', this.value)" value="${bill.billmonth}" /></p>
+    `;
+
+    container.appendChild(div);
+  });
+
+  updateAnalytics();
+  monthlyAnalytics(); // Call here
+}
+
+    function updateAnalytics() {
+      const totalBills = bills.length;
+      const totalCost = bills.reduce((sum, b) => sum + (parseFloat(b.cost) || 0), 0);
+      document.getElementById("Bills").textContent = `Total Bills: ${totalBills}`;
+      document.getElementById("Cost1").textContent = `Total Cost: $${totalCost.toFixed(2)}`;
+    }
+    function monthlyAnalytics() {
+  const monthlyData = {};
+
+  bills.forEach(bill => {
+    const monthKey = bill.billmonth || "Unknown";
+
+    if (!monthlyData[monthKey]) {
+      monthlyData[monthKey] = {
+        totalCost: 0,
+        count: 0
+      };
+    }
+
+    monthlyData[monthKey].totalCost += parseFloat(bill.cost) || 0;
+    monthlyData[monthKey].count += 1;
+  });
+
+  const analyticsDiv = document.getElementById("MonthlyAnalytics");
+  analyticsDiv.innerHTML = "<h3>Monthly Analytics</h3>";
+
+  for (const month in monthlyData) {
+    const { totalCost, count } = monthlyData[month];
+    const entry = document.createElement("p");
+    entry.textContent = `${month}: ${count} bill(s), Total Cost: $${totalCost.toFixed(2)}`;
+    analyticsDiv.appendChild(entry);
+  }
+}
+
+  </script>
+</body>
+</html>

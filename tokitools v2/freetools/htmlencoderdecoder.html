@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML Encoder/Decoder Tool</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+        }
+
+        .encoder-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 30px;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            font-weight: 500;
+            color: #666;
+            border-bottom: 3px solid transparent;
+            transition: all 0.2s;
+        }
+
+        .tab.active {
+            color: #4a90e2;
+            border-bottom-color: #4a90e2;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .text-area-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+
+        .text-area-container label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .action-buttons button {
+            padding: 10px 20px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+        }
+
+        .action-buttons button:hover {
+            background-color: #3a7bc8;
+        }
+
+        .action-buttons button.secondary {
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        .action-buttons button.secondary:hover {
+            background-color: #e0e0e0;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 600px) {
+            .encoder-container {
+                padding: 15px;
+            }
+            
+            .tabs {
+                flex-wrap: wrap;
+            }
+            
+            .tab {
+                flex: 1;
+                text-align: center;
+                padding: 8px 10px;
+            }
+            
+            .action-buttons {
+                flex-wrap: wrap;
+            }
+            
+            .action-buttons button {
+                flex: 1;
+                min-width: 100%;
+            }
+        }
+            /*Page Title*/
+        #tokitoolsTitle {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      position: relative;
+      color: transparent;
+      background: linear-gradient(135deg, #ff6a00, #ff0066, #00c6ff);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientSlide 5s infinite linear;
+
+      /* Glassy glowing edge */
+      text-shadow: 0 0 20px rgba(255, 105, 180, 0.7),
+                   0 0 40px rgba(0, 198, 255, 0.6),
+                   0 0 60px rgba(255, 106, 0, 0.5);
+	  margin-bottom: 4vw;
+    }
+
+    /* Gradient animation */
+    @keyframes gradientSlide {
+      0% {
+        background-position: 0% center;
+      }
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    /* Elegant underline */
+    #tokitoolsTitle::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 4px;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #ff6a00, #ff0066, #00c6ff);
+      animation: underlineGlow 3s infinite alternate;
+    }
+
+    @keyframes underlineGlow {
+      0% {
+        box-shadow: 0 0 10px #ff0066;
+      }
+      100% {
+        box-shadow: 0 0 25px #00c6ff;
+      }
+    }
+    </style>
+</head>
+<body>
+    <div class="header">
+          <h1 id="tokitoolsTitle">HTML Encoder/Decoder Tool</h1>
+        <p>Encode and decode HTML entities with ease</p>
+    </div>
+
+    <div class="encoder-container">
+        <div class="tabs">
+            <div class="tab active" data-tab="encoder">HTML Encoder</div>
+            <div class="tab" data-tab="decoder">HTML Decoder</div>
+        </div>
+        
+        <div class="tab-content active" id="encoder">
+            <div class="text-area-container">
+                <label for="encodeInput">Text to encode:</label>
+                <textarea id="encodeInput" placeholder="Enter text to encode..."></textarea>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="encodeBtn">Encode</button>
+                <button id="copyEncoded" class="secondary" disabled>Copy</button>
+                <button id="clearEncoded" class="secondary">Clear</button>
+            </div>
+            
+            <div class="text-area-container">
+                <label for="encodeOutput">Encoded result:</label>
+                <textarea id="encodeOutput" readonly></textarea>
+            </div>
+        </div>
+        
+        <div class="tab-content" id="decoder">
+            <div class="text-area-container">
+                <label for="decodeInput">Text to decode:</label>
+                <textarea id="decodeInput" placeholder="Enter text to decode..."></textarea>
+            </div>
+            
+            <div class="action-buttons">
+                <button id="decodeBtn">Decode</button>
+                <button id="copyDecoded" class="secondary" disabled>Copy</button>
+                <button id="clearDecoded" class="secondary">Clear</button>
+            </div>
+            
+            <div class="text-area-container">
+                <label for="decodeOutput">Decoded result:</label>
+                <textarea id="decodeOutput" readonly></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Copied to clipboard!</div>
+
+    <script>
+        // DOM Elements
+        const tabs = document.querySelectorAll('.tab');
+        const tabContents = document.querySelectorAll('.tab-content');
+        const encodeInput = document.getElementById('encodeInput');
+        const encodeOutput = document.getElementById('encodeOutput');
+        const encodeBtn = document.getElementById('encodeBtn');
+        const copyEncoded = document.getElementById('copyEncoded');
+        const clearEncoded = document.getElementById('clearEncoded');
+        const decodeInput = document.getElementById('decodeInput');
+        const decodeOutput = document.getElementById('decodeOutput');
+        const decodeBtn = document.getElementById('decodeBtn');
+        const copyDecoded = document.getElementById('copyDecoded');
+        const clearDecoded = document.getElementById('clearDecoded');
+        const toast = document.getElementById('toast');
+        
+        // Initialize the tool
+        function initEncoderDecoder() {
+            // Tab switching
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    tab.classList.add('active');
+                    document.getElementById(tab.dataset.tab).classList.add('active');
+                });
+            });
+            
+            // Encoder functionality
+            encodeBtn.addEventListener('click', encodeHtml);
+            copyEncoded.addEventListener('click', () => copyToClipboard(encodeOutput));
+            clearEncoded.addEventListener('click', () => {
+                encodeInput.value = '';
+                encodeOutput.value = '';
+                copyEncoded.disabled = true;
+            });
+            
+            // Decoder functionality
+            decodeBtn.addEventListener('click', decodeHtml);
+            copyDecoded.addEventListener('click', () => copyToClipboard(decodeOutput));
+            clearDecoded.addEventListener('click', () => {
+                decodeInput.value = '';
+                decodeOutput.value = '';
+                copyDecoded.disabled = true;
+            });
+            
+            // Enable copy buttons when there's content
+            encodeOutput.addEventListener('input', () => {
+                copyEncoded.disabled = !encodeOutput.value;
+            });
+            
+            decodeOutput.addEventListener('input', () => {
+                copyDecoded.disabled = !decodeOutput.value;
+            });
+        }
+        
+        // Encode HTML entities
+        function encodeHtml() {
+            const text = encodeInput.value;
+            if (!text) return;
+            
+            const encoded = text.replace(/[\u00A0-\u9999<>&]/g, function(i) {
+                return '&#' + i.charCodeAt(0) + ';';
+            });
+            
+            encodeOutput.value = encoded;
+            copyEncoded.disabled = false;
+        }
+        
+        // Decode HTML entities
+        function decodeHtml() {
+            const text = decodeInput.value;
+            if (!text) return;
+            
+            const decoded = text.replace(/&#(\d+);/g, function(match, dec) {
+                return String.fromCharCode(dec);
+            });
+            
+            decodeOutput.value = decoded;
+            copyDecoded.disabled = false;
+        }
+        
+        // Copy to clipboard
+        function copyToClipboard(element) {
+            element.select();
+            document.execCommand('copy');
+            showToast();
+        }
+        
+        // Show toast notification
+        function showToast() {
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        
+        // Initialize the tool
+        initEncoderDecoder();
+    </script>
+</body>
+</html>

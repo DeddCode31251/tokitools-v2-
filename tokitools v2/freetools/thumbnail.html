@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>YouTube Thumbnail Downloader</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen">
+  <div class="bg-white shadow-lg p-6 rounded max-w-md w-full text-center">
+    <h1 class="text-xl font-bold text-red-600 mb-4">🎥 YouTube Thumbnail Downloader</h1>
+    <input id="ytLink" type="text" placeholder="Paste YouTube link" class="w-full p-2 border rounded mb-2">
+    <button onclick="getThumbnail()" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded">Get Thumbnail</button>
+    <div id="result" class="mt-4 hidden">
+      <img id="thumbImg" class="w-full rounded mb-2" />
+      <a id="downloadLink" href="#" download class="text-blue-600 underline">Download</a>
+    </div>
+  </div>
+
+  <script>
+    function getThumbnail() {
+      const url = document.getElementById("ytLink").value;
+      const match = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+      if (!match) return alert("Invalid YouTube link.");
+      const id = match[1];
+      const img = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
+      document.getElementById("thumbImg").src = img;
+      document.getElementById("downloadLink").href = img;
+      document.getElementById("result").classList.remove("hidden");
+    }
+  </script>
+</body>
+</html>

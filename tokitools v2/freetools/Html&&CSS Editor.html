@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Live HTML/CSS Editor</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 10px;
+      background: #f0f0f0;
+overflow:scroll-y;
+    }
+    textarea {
+      width: 100%;
+      height: 150px;
+      margin-bottom: 10px;
+      font-family: monospace;
+      padding: 10px;
+    }
+    iframe {
+      width: 100%;
+      height: 300px;
+      border: 1px solid #ccc;
+      background: white;
+    }
+  @keyframes move{
+    0%{
+        margin-top: 0;
+        opacity: 0.2;
+    }
+    25%{
+        margin-top: 50vw;
+        opacity: 0.4;
+    }
+    50%{
+        margin-top: 100vw;
+        opacity: 0.8;
+    }
+    75%{
+        margin-top: 50vw;
+        opacity: 1;
+    }
+    100%{
+        margin-top: 25vw;
+        opacity: 0;
+
+    }
+}
+.particle{
+    background-color: blueviolet;
+    border-radius: 2vw;
+    opacity: 0.5;
+z-index: -1;
+position:absolute;
+}
+.p1{
+    opacity: 0;
+    width: 3vw;
+    height: 3vw;
+    animation: move 22s infinite 1.14s linear;
+    left: 1vw;
+} 
+.p2{
+    opacity: 0;
+    width: 3vw;
+    height: 3vw;
+    animation: move 22s infinite 1.14s linear;
+    left: 10vw;
+} 
+.p3{
+    opacity: 0;
+    width: 2.2vw;
+    height: 2.2vw;
+    animation: move 22s infinite 3.25s linear;
+    left: 20vw;
+} 
+.bg{
+    display: flex;
+    flex-direction: row;
+}
+.p4{
+    opacity: 0;
+    left: 30vw;
+    animation: move 22s infinite 4.25s linear;
+    margin-right: 3vw;
+    margin-left: 3vw;
+} 
+.p5{
+    opacity: 0;
+    width: 2.3vw;
+    height: 2.3vw;
+    animation: move 32s infinite 6.25s linear;
+    left: 40vw;
+}
+.p6{
+    opacity: 0;
+    width: 1.5vw;
+    height: 1.5vw;
+    animation: move 27s infinite 2.25s linear;
+    left: 50vw;
+}
+.p7{
+    opacity: 0;
+    width: 3.7vw;
+    height: 3.7vw;
+    animation: move 26s infinite 6.25s linear;
+    left: 60vw;
+}
+.p8{
+    opacity: 0;
+    width: 3vw;
+    height: 3vw;
+    animation: move 17s infinite 1.25s linear;
+    left: 70vw;
+}   
+.p9{
+    opacity: 0;
+    width: 4.3vw;
+    height: 4.3vw;
+    animation: move 12s infinite 8.25s linear;
+    left: 80vw;
+} 
+.p10{
+    opacity: 0;
+    width: 3.8vw;
+    height: 3.8vw;
+    animation: move 29s infinite 5.25s linear;
+    left: 90vw;
+} 
+    #tokitoolsTitle {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      position: relative;
+      color: transparent;
+      background: linear-gradient(135deg, #ff6a00, #ff0066, #00c6ff);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientSlide 5s infinite linear;
+
+      /* Glassy glowing edge */
+      text-shadow: 0 0 20px rgba(255, 105, 180, 0.7),
+                   0 0 40px rgba(0, 198, 255, 0.6),
+                   0 0 60px rgba(255, 106, 0, 0.5);
+	  margin-bottom: 4vw;
+    }
+
+    /* Gradient animation */
+    @keyframes gradientSlide {
+      0% {
+        background-position: 0% center;
+      }
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    /* Elegant underline */
+    #tokitoolsTitle::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 4px;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #ff6a00, #ff0066, #00c6ff);
+      animation: underlineGlow 3s infinite alternate;
+    }
+
+    @keyframes underlineGlow {
+      0% {
+        box-shadow: 0 0 10px #ff0066;
+      }
+      100% {
+        box-shadow: 0 0 25px #00c6ff;
+      }
+    }
+</style>
+</head>
+<body>
+    <div class="bg">
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
+        <div class="particle p4"></div>
+        <div class="particle p5"></div>
+        <div class="particle p6"></div>
+        <div class="particle p7"></div>
+        <div class="particle p8"></div>
+        <div class="particle p9"></div>
+        <div class="particle p10"></div>
+    </div>
+     <h1 id="tokitoolsTitle">Live Html/CSS Editor </h1>
+
+  <label>HTML:</label>
+  <textarea id="html-input" placeholder="<h1>Hello World</h1>"><!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="bg">
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
+        <div class="particle p4"></div>
+        <div class="particle p5"></div>
+        <div class="particle p6"></div>
+        <div class="particle p7"></div>
+        <div class="particle p8"></div>
+        <div class="particle p9"></div>
+        <div class="particle p10"></div>
+    </div>
+</body>
+</html></textarea>
+
+  <label>CSS:</label>
+  <textarea id="css-input" placeholder="body { color: red; }">body{
+    overflow: hidden;
+}
+@keyframes move{
+    0%{
+        margin-top: 0;
+        opacity: 0.2;
+    }
+    25%{
+        margin-top: 50vw;
+        opacity: 0.4;
+    }
+    50%{
+        margin-top: 100vw;
+        opacity: 0.8;
+    }
+    75%{
+        margin-top: 50vw;
+        opacity: 1;
+    }
+    100%{
+        margin-top: 25vw;
+        opacity: 0;
+
+    }
+}
+.particle{
+    background-color: red;
+    border-radius: 2vw;
+    opacity: 0.5;
+}
+.p1{
+    opacity: 0;
+    width: 2vw;
+    height: 2vw;
+    animation: move 22s infinite 2.12s linear;
+    margin-right: 3vw;
+} 
+.p2{
+    opacity: 0;
+    width: 3vw;
+    height: 3vw;
+    animation: move 22s infinite 1.14s linear;
+    margin-right: 3vw;
+    margin-left: 3vw;
+} 
+.p3{
+    opacity: 0;
+    width: 2.2vw;
+    height: 2.2vw;
+    animation: move 22s infinite 3.25s linear;
+    margin-right: 3vw;
+    margin-left: 3vw;
+} 
+.bg{
+    display: flex;
+    flex-direction: row;
+}
+.p4{
+    opacity: 0;
+    width: 3.5vw;
+    height: 3.5vw;
+    animation: move 22s infinite 4.25s linear;
+    margin-right: 3vw;
+    margin-left: 3vw;
+} 
+.p5{
+    opacity: 0;
+    width: 2.3vw;
+    height: 2.3vw;
+    animation: move 32s infinite 6.25s linear;
+    margin-right: 3vw;
+    margin-left: 3vw;
+}
+.p6{
+    opacity: 0;
+    width: 1.5vw;
+    height: 1.5vw;
+    animation: move 27s infinite 2.25s linear;
+    margin-right: 3vw;
+    margin-left: 3vw;
+}
+.p7{
+    opacity: 0;
+    width: 3.7vw;
+    height: 3.7vw;
+    animation: move 26s infinite 6.25s linear;
+    margin-right: 3vw;
+    margin-left: 3vw;
+}
+.p8{
+    opacity: 0;
+    width: 3vw;
+    height: 3vw;
+    animation: move 17s infinite 1.25s linear;
+    margin-right: 3vw;
+    margin-left: 3vw;
+}   
+.p9{
+    opacity: 0;
+    width: 4.3vw;
+    height: 4.3vw;
+    animation: move 12s infinite 8.25s linear;
+    margin-right: 3vw;
+    margin-left: 3vw;
+} 
+.p10{
+    opacity: 0;
+    width: 3.8vw;
+    height: 3.8vw;
+    animation: move 29s infinite 5.25s linear;
+    margin-right: 3vw;
+    margin-left: 3vw;
+} </textarea>
+
+  <iframe id="preview"></iframe>
+
+  <script>
+    const htmlInput = document.getElementById('html-input');
+    const cssInput = document.getElementById('css-input');
+    const previewFrame = document.getElementById('preview');
+
+    function updatePreview() {
+      const html = htmlInput.value;
+      const css = `<style>${cssInput.value}</style>`;
+      const content = `${css}\n${html}`;
+
+      const doc = previewFrame.contentDocument || previewFrame.contentWindow.document;
+      doc.open();
+      doc.write(content);
+      doc.close();
+    }
+
+    htmlInput.addEventListener('input', updatePreview);
+    cssInput.addEventListener('input', updatePreview);
+
+    // Initialize preview on load
+    updatePreview();
+  </script>
+</body>
+</html>

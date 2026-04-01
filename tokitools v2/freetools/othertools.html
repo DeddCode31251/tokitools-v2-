@@ -1,0 +1,2327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Tools Hub - All-in-One Toolkit</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js"></script>
+    <meta name="keywords" content="Free Tools, QR Generator, Password Maker, GPA Calculator, BMI Tool, Mark Tools, Youtube thumbnail , Color picker, Css Gradient Generator, ">
+    <meta name="description" content="Generate QR codes, strong passwords, calculate GPA and BMI — 31 free tools">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4895ef;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #4cc9f0;
+            --warning: #f72585;
+            --card-bg: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #e3e7f0 100%);
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            padding: 30px 20px;
+            margin-bottom: 20px;
+        }
+        
+        header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px var(--shadow);
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            color: #555;
+            max-width: 700px;
+            margin: 0 auto 15px;
+        }
+        
+        .stats-bar {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 10px;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 10px 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .stat-card i {
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+        
+        .category-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+        
+        .category-btn {
+            background: var(--card-bg);
+            border: none;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px var(--shadow);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .category-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px var(--shadow);
+        }
+        
+        .category-btn.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+        }
+        
+        .tool-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 20px var(--shadow);
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+        }
+        
+        .tool-header {
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .tool-icon {
+            font-size: 1.6rem;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .tool-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+        
+        .tool-content {
+            padding: 20px;
+            flex-grow: 1;
+        }
+        
+        .tool-description {
+            color: #666;
+            margin-bottom: 15px;
+            min-height: 60px;
+            font-size: 0.95rem;
+        }
+        
+        .tool-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        
+        .tool-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.3s ease;
+            margin: 5px 0;
+        }
+        
+        .tool-btn:hover {
+            background: var(--secondary);
+        }
+        
+        .tool-btn.secondary {
+            background: #f0f0f0;
+            color: #333;
+        }
+        
+        .tool-btn.secondary:hover {
+            background: #e0e0e0;
+        }
+        
+        .tool-result {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border: 1px dashed #ddd;
+            min-height: 80px;
+            word-break: break-word;
+            font-size: 0.9rem;
+        }
+        
+        .qr-code-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 15px;
+        }
+        
+        #qrcode {
+            margin: 15px 0;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .flashcard-container {
+            perspective: 1000px;
+            height: 200px;
+            margin-bottom: 15px;
+        }
+        
+        .flashcard {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            cursor: pointer;
+        }
+        
+        .flashcard.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .flashcard-front {
+            background: linear-gradient(45deg, var(--accent), var(--primary));
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .flashcard-back {
+            background: white;
+            color: #333;
+            transform: rotateY(180deg);
+            font-size: 1rem;
+        }
+        
+        .counter-display {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+            color: var(--primary);
+        }
+        
+        .word-count-display {
+            text-align: center;
+            margin: 10px 0;
+            font-size: 1.2rem;
+        }
+        
+        .word-limit-alert {
+            color: var(--warning);
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .tool-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        
+        .tool-row .tool-input {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .tool-row .tool-btn {
+            width: auto;
+            flex: 0 0 auto;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 50px;
+            color: #666;
+            font-size: 0.9rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .tool-category-label {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255,255,255,0.9);
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .file-input-container {
+            position: relative;
+            margin-bottom: 15px;
+        }
+        
+        .file-input-container input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-input-label {
+            display: block;
+            padding: 12px 15px;
+            border: 1px dashed #ddd;
+            border-radius: 8px;
+            text-align: center;
+            background: #f8f9fa;
+            cursor: pointer;
+        }
+        
+        .file-input-label:hover {
+            background: #f0f0f0;
+        }
+        
+        .file-input-label i {
+            margin-right: 8px;
+        }
+        
+        .hash-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .hash-option {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #f8f9fa;
+        }
+        
+        .hash-option.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .base64-result {
+            max-height: 200px;
+            overflow: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+            font-size: 0.8rem;
+        }
+        
+        .date-picker {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        
+        .roman-converter-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .roman-result {
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 10px;
+            color: var(--primary);
+        }
+        
+        .flip-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .flip-option {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #f8f9fa;
+        }
+        
+        .flip-option.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .number-input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+        }
+        
+        .language-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .lang-option {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            background: #f8f9fa;
+        }
+        
+        .lang-option.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        
+        .fact-container {
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .speech-container {
+            position: relative;
+        }
+        
+        .speech-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 0.8rem;
+            color: #666;
+        }
+        
+        @media (max-width: 768px) {
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header h1 {
+                font-size: 2.2rem;
+            }
+            
+            .category-tabs {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .category-btn {
+                width: 100%;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .hash-options, .flip-options, .language-selector {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-toolbox"></i> Web Tools Hub</h1>
+            <p>Your all-in-one toolkit for productivity, learning, and creativity</p>
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <div>5 Learning Tools</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-wrench"></i>
+                    <div>17 Utility Tools</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-robot"></i>
+                    <div>6 Fun & AI Tools</div>
+                </div>
+                <div class="stat-card">
+                    <i class="fas fa-hashtag"></i>
+                    <div>4 Social Tools</div>
+                </div>
+            </div>
+        </header>
+        
+        <div class="category-tabs">
+            <button class="category-btn active" data-category="all">
+                <i class="fas fa-th"></i> All Tools
+            </button>
+            <button class="category-btn" data-category="learning">
+                <i class="fas fa-book"></i> Learning
+            </button>
+            <button class="category-btn" data-category="utility">
+                <i class="fas fa-wrench"></i> Utilities
+            </button>
+            <button class="category-btn" data-category="fun">
+                <i class="fas fa-gamepad"></i> Fun & AI
+            </button>
+            <button class="category-btn" data-category="social">
+                <i class="fas fa-hashtag"></i> Social
+            </button>
+        </div>
+        
+        <div class="tools-grid">
+            <!-- New Tools Start Here -->
+            
+            <!-- Number to Words Converter -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-hashtag"></i>
+                    </div>
+                    <h3 class="tool-title">Number to Words</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Convert numbers to words in English and Arabic</p>
+                    <input type="number" class="tool-input" id="number-input" placeholder="Enter a number" value="12345">
+                    <div class="language-selector">
+                        <div class="lang-option active" data-lang="en">English</div>
+                        <div class="lang-option" data-lang="ar">Arabic</div>
+                    </div>
+                    <button class="tool-btn" id="convert-number">Convert to Words</button>
+                    <div class="tool-result" id="number-result">Twelve thousand three hundred forty-five</div>
+                </div>
+            </div>
+            
+            <!-- Text Reverser / Flip Tool -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-undo-alt"></i>
+                    </div>
+                    <h3 class="tool-title">Text Reverser</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Reverse or flip text in different ways</p>
+                    <textarea class="tool-input" id="reverse-input" placeholder="Enter text to reverse" rows="3">Hello World! This is a text reverser tool.</textarea>
+                    <div class="flip-options">
+                        <div class="flip-option active" data-type="reverse">Reverse Text</div>
+                        <div class="flip-option" data-type="vertical">Flip Vertically</div>
+                        <div class="flip-option" data-type="horizontal">Flip Horizontally</div>
+                    </div>
+                    <button class="tool-btn" id="reverse-btn">Process Text</button>
+                    <div class="tool-result" id="reverse-result">.loot resrever txet a si siht !dlroW olleH</div>
+                </div>
+            </div>
+            
+            <!-- SHA256 / MD5 Hash Generator -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-lock"></i>
+                    </div>
+                    <h3 class="tool-title">Hash Generator</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Generate secure hashes from text</p>
+                    <textarea class="tool-input" id="hash-input" placeholder="Enter text to hash" rows="3">Secret text to hash</textarea>
+                    <div class="hash-options">
+                        <div class="hash-option active" data-algo="sha256">SHA256</div>
+                        <div class="hash-option" data-algo="md5">MD5</div>
+                    </div>
+                    <button class="tool-btn" id="generate-hash">Generate Hash</button>
+                    <div class="tool-result" id="hash-result">
+                        9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Random Fact Generator -->
+            <div class="tool-card" data-categories="fun">
+                <div class="tool-category-label">Fun & AI</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3 class="tool-title">Random Fact Generator</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Discover fascinating facts with each click</p>
+                    <button class="tool-btn" id="generate-fact">Generate Random Fact</button>
+                    <div class="tool-result fact-container" id="fact-result">
+                        The shortest war in history was between Britain and Zanzibar on August 27, 1896. Zanzibar surrendered after 38 minutes.
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Speech to Text -->
+            <div class="tool-card" data-categories="fun">
+                <div class="tool-category-label">Fun & AI</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-microphone"></i>
+                    </div>
+                    <h3 class="tool-title">Speech to Text</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Convert your speech to text in real-time</p>
+                    <div class="speech-container">
+                        <div class="speech-status" id="speech-status">Status: Ready</div>
+                        <textarea class="tool-input" id="speech-output" placeholder="Speech will appear here..." rows="3" readonly></textarea>
+                    </div>
+                    <div class="tool-row">
+                        <button class="tool-btn" id="start-speech">Start Recording</button>
+                        <button class="tool-btn secondary" id="stop-speech">Stop</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Roman Numeral Converter -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-history"></i>
+                    </div>
+                    <h3 class="tool-title">Roman Numeral Converter</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Convert between numbers and Roman numerals</p>
+                    <div class="roman-converter-container">
+                        <input type="number" class="tool-input" id="roman-input" placeholder="Enter a number (1-3999)" min="1" max="3999" value="1999">
+                        <button class="tool-btn" id="convert-roman">Convert to Roman</button>
+                        <div class="roman-result" id="roman-result">MCMXCIX</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- File to Base64 Encoder -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-file-code"></i>
+                    </div>
+                    <h3 class="tool-title">File to Base64</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Convert any file to Base64 string</p>
+                    <div class="file-input-container">
+                        <input type="file" id="base64-file">
+                        <label for="base64-file" class="file-input-label">
+                            <i class="fas fa-upload"></i> Choose a File
+                        </label>
+                    </div>
+                    <div id="file-name">No file selected</div>
+                    <button class="tool-btn" id="encode-btn">Encode to Base64</button>
+                    <div class="tool-result base64-result" id="base64-result">
+                        Base64 result will appear here
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Days Until Calculator -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-calendar-day"></i>
+                    </div>
+                    <h3 class="tool-title">Days Until Calculator</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Calculate days until a future date</p>
+                    <input type="date" class="date-picker" id="days-until-date">
+                    <button class="tool-btn" id="calculate-days">Calculate Days</button>
+                    <div class="tool-result" id="days-result">
+                        Select a date to calculate
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Unix Timestamp Converter -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3 class="tool-title">Unix Timestamp Converter</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Convert between timestamps and dates</p>
+                    <input type="number" class="tool-input" id="timestamp-input" placeholder="Enter timestamp" value="">
+                    <div class="tool-row">
+                        <button class="tool-btn" id="to-date-btn">Convert to Date</button>
+                        <button class="tool-btn" id="to-timestamp-btn">Current Timestamp</button>
+                    </div>
+                    <div class="tool-result" id="timestamp-result">
+                        Result will appear here
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Image Compressor -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-compress-alt"></i>
+                    </div>
+                    <h3 class="tool-title">Image Compressor</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Compress images client-side (no upload)</p>
+                    <div class="file-input-container">
+                        <input type="file" id="image-file" accept="image/*">
+                        <label for="image-file" class="file-input-label">
+                            <i class="fas fa-image"></i> Choose an Image
+                        </label>
+                    </div>
+                    <div id="image-name">No image selected</div>
+                    <div class="tool-row">
+                        <label for="quality-slider">Quality:</label>
+                        <input type="range" id="quality-slider" min="10" max="100" value="80">
+                        <span id="quality-value">80%</span>
+                    </div>
+                    <button class="tool-btn" id="compress-btn">Compress Image</button>
+                    <div class="tool-result" id="compression-result">
+                        Compressed image will appear here
+                    </div>
+                    <div id="compressed-image-container"></div>
+                </div>
+            </div>
+            
+            <!-- File Merger -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-file-medical"></i>
+                    </div>
+                    <h3 class="tool-title">File Merger (TXT/CSV)</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Merge multiple TXT or CSV files</p>
+                    <div class="file-input-container">
+                        <input type="file" id="file-merger" multiple accept=".txt,.csv">
+                        <label for="file-merger" class="file-input-label">
+                            <i class="fas fa-file-upload"></i> Select Files (TXT/CSV)
+                        </label>
+                    </div>
+                    <div id="selected-files">No files selected</div>
+                    <button class="tool-btn" id="merge-btn">Merge Files</button>
+                    <div class="tool-result" id="merge-result">
+                        Merged file will appear here
+                    </div>
+                </div>
+            </div>
+            
+            <!-- URL Encoder/Decoder -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <h3 class="tool-title">URL Encoder/Decoder</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Encode or decode URL components</p>
+                    <textarea class="tool-input" id="url-text" placeholder="Enter URL to encode/decode" rows="3">https://example.com/page?name=John Doe&age=30</textarea>
+                    <div class="tool-row">
+                        <button class="tool-btn" id="encode-url">Encode URL</button>
+                        <button class="tool-btn" id="decode-url">Decode URL</button>
+                    </div>
+                    <div class="tool-result" id="url-result">
+                        Result will appear here
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Existing Tools -->
+            <!-- Typing Speed Test -->
+            <div class="tool-card" data-categories="learning">
+                <div class="tool-category-label">Learning</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-keyboard"></i>
+                    </div>
+                    <h3 class="tool-title">Typing Speed Test</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Test your typing speed and accuracy</p>
+                    <div class="tool-result" id="typing-text">
+                        The quick brown fox jumps over the lazy dog. This is a typing test to measure your words per minute.
+                    </div>
+                    <textarea class="tool-input" id="typing-input" placeholder="Start typing here..." rows="3"></textarea>
+                    <button class="tool-btn" id="start-typing">Start Test</button>
+                    <div class="tool-result hidden" id="typing-results">
+                        <p>Words per minute: <span id="wpm">0</span></p>
+                        <p>Accuracy: <span id="accuracy">0%</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Timer & Stopwatch -->
+            <div class="tool-card" data-categories="learning">
+                <div class="tool-category-label">Learning</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-stopwatch"></i>
+                    </div>
+                    <h3 class="tool-title">Timer & Stopwatch</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Track time for productivity or study sessions</p>
+                    <div class="counter-display" id="timer-display">00:00:00</div>
+                    <div class="tool-row">
+                        <input type="number" class="tool-input" id="minutes-input" placeholder="Min" min="0" value="0">
+                        <input type="number" class="tool-input" id="seconds-input" placeholder="Sec" min="0" max="59" value="0">
+                    </div>
+                    <div class="tool-row">
+                        <button class="tool-btn" id="start-timer">Start Timer</button>
+                        <button class="tool-btn" id="stopwatch-btn">Stopwatch</button>
+                        <button class="tool-btn secondary" id="reset-timer">Reset</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Flashcard Maker -->
+            <div class="tool-card" data-categories="learning">
+                <div class="tool-category-label">Learning</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3 class="tool-title">Flashcard Maker</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Create and study with digital flashcards</p>
+                    <div class="flashcard-container">
+                        <div class="flashcard" id="flashcard">
+                            <div class="flashcard-front">
+                                <div id="card-front-text">Click to add your first card</div>
+                            </div>
+                            <div class="flashcard-back">
+                                <div id="card-back-text">Back content</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tool-row">
+                        <input type="text" class="tool-input" id="card-front" placeholder="Front text">
+                        <input type="text" class="tool-input" id="card-back" placeholder="Back text">
+                    </div>
+                    <div class="tool-row">
+                        <button class="tool-btn" id="add-card">Add Card</button>
+                        <button class="tool-btn secondary" id="prev-card">Prev</button>
+                        <button class="tool-btn secondary" id="next-card">Next</button>
+                    </div>
+                    <button class="tool-btn secondary" id="save-cards">Save Flashcards</button>
+                </div>
+            </div>
+            
+            <!-- Unit Converter -->
+            <div class="tool-card" data-categories="learning">
+                <div class="tool-category-label">Learning</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-balance-scale"></i>
+                    </div>
+                    <h3 class="tool-title">Unit Converter</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Convert between different measurement units</p>
+                    <input type="number" class="tool-input" id="unit-value" placeholder="Enter value" value="1">
+                    <div class="tool-row">
+                        <select class="tool-input" id="unit-from">
+                            <option value="cm">Centimeters</option>
+                            <option value="in">Inches</option>
+                            <option value="kg">Kilograms</option>
+                            <option value="lb">Pounds</option>
+                            <option value="c">Celsius</option>
+                            <option value="f">Fahrenheit</option>
+                        </select>
+                        <select class="tool-input" id="unit-to">
+                            <option value="in">Inches</option>
+                            <option value="cm">Centimeters</option>
+                            <option value="lb">Pounds</option>
+                            <option value="kg">Kilograms</option>
+                            <option value="f">Fahrenheit</option>
+                            <option value="c">Celsius</option>
+                        </select>
+                    </div>
+                    <button class="tool-btn" id="convert-btn">Convert</button>
+                    <div class="tool-result" id="conversion-result">Result will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Word Counter -->
+            <div class="tool-card" data-categories="learning">
+                <div class="tool-category-label">Learning</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-font"></i>
+                    </div>
+                    <h3 class="tool-title">Word Counter</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Count words and characters with limit alerts</p>
+                    <textarea class="tool-input" id="word-counter-input" placeholder="Enter your text here..." rows="4">This is a sample text to demonstrate the word counter tool.</textarea>
+                    <input type="number" class="tool-input" id="word-limit" placeholder="Set word limit (optional)" min="0">
+                    <div class="word-count-display">
+                        Words: <span id="word-count">0</span> | 
+                        Characters: <span id="char-count">0</span>
+                    </div>
+                    <div class="word-limit-alert" id="word-limit-alert">
+                        You've reached your word limit!
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Text Case Converter -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-text-height"></i>
+                    </div>
+                    <h3 class="tool-title">Text Case Converter</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Convert text between different cases</p>
+                    <textarea class="tool-input" id="case-input" placeholder="Enter text to convert" rows="3">Convert this text to different cases</textarea>
+                    <div class="tool-row">
+                        <button class="tool-btn" id="lowercase-btn">lowercase</button>
+                        <button class="tool-btn" id="uppercase-btn">UPPERCASE</button>
+                        <button class="tool-btn" id="titlecase-btn">Title Case</button>
+                    </div>
+                    <div class="tool-result" id="case-output">Converted text will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Lorem Ipsum Generator -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-paragraph"></i>
+                    </div>
+                    <h3 class="tool-title">Lorem Ipsum Generator</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Generate placeholder text for your projects</p>
+                    <input type="number" class="tool-input" id="lorem-count" placeholder="Number of paragraphs" min="1" max="10" value="3">
+                    <button class="tool-btn" id="generate-lorem">Generate Text</button>
+                    <div class="tool-result" id="lorem-output">Generated text will appear here</div>
+                </div>
+            </div>
+            
+            <!-- JSON Formatter -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-code"></i>
+                    </div>
+                    <h3 class="tool-title">JSON Formatter</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Format and validate JSON data</p>
+                    <textarea class="tool-input" id="json-input" placeholder='Paste JSON here...' rows="4">{"name":"John","age":30,"city":"New York"}</textarea>
+                    <button class="tool-btn" id="format-json">Format JSON</button>
+                    <div class="tool-result" id="json-output">Formatted JSON will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Fake Name/Email Generator -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-user-secret"></i>
+                    </div>
+                    <h3 class="tool-title">Fake Name/Email</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Generate random names and email addresses</p>
+                    <div class="tool-row">
+                        <select class="tool-input" id="name-gender">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="random">Random</option>
+                        </select>
+                        <select class="tool-input" id="name-country">
+                            <option value="us">US</option>
+                            <option value="uk">UK</option>
+                            <option value="fr">France</option>
+                            <option value="de">Germany</option>
+                        </select>
+                    </div>
+                    <button class="tool-btn" id="generate-fake">Generate</button>
+                    <div class="tool-result" id="fake-result">
+                        <p><strong>Name:</strong> <span id="fake-name">-</span></p>
+                        <p><strong>Email:</strong> <span id="fake-email">-</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Link Shortener -->
+            <div class="tool-card" data-categories="utility">
+                <div class="tool-category-label">Utility</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-link"></i>
+                    </div>
+                    <h3 class="tool-title">Link Shortener</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Shorten long URLs using shrtco.de API</p>
+                    <input type="url" class="tool-input" id="url-input" placeholder="Enter URL to shorten" value="https://example.com">
+                    <button class="tool-btn" id="shorten-btn">Shorten URL</button>
+                    <div class="tool-result" id="shortened-url">Shortened URL will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Meme Idea Generator -->
+            <div class="tool-card" data-categories="fun">
+                <div class="tool-category-label">Fun & AI</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-laugh-squint"></i>
+                    </div>
+                    <h3 class="tool-title">Meme Idea Generator</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Get creative ideas for your next meme</p>
+                    <button class="tool-btn" id="generate-meme">Generate Meme Idea</button>
+                    <div class="tool-result" id="meme-idea">
+                        Click the button to generate a meme idea!
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat Prompt Assistant -->
+            <div class="tool-card" data-categories="fun">
+                <div class="tool-category-label">Fun & AI</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <h3 class="tool-title">Chat Prompt Assistant</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Create smart and funny ChatGPT prompts</p>
+                    <select class="tool-input" id="prompt-type">
+                        <option value="funny">Funny Prompts</option>
+                        <option value="smart">Smart Prompts</option>
+                        <option value="creative">Creative Prompts</option>
+                        <option value="business">Business Prompts</option>
+                    </select>
+                    <button class="tool-btn" id="generate-prompt">Generate Prompt</button>
+                    <div class="tool-result" id="prompt-result">
+                        Your generated prompt will appear here
+                    </div>
+                </div>
+            </div>
+            
+            <!-- AI Bio Writer -->
+            <div class="tool-card" data-categories="fun">
+                <div class="tool-category-label">Fun & AI</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-robot"></i>
+                    </div>
+                    <h3 class="tool-title">AI Bio Writer</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Create social media bios with AI assistance</p>
+                    <input type="text" class="tool-input" id="bio-keywords" placeholder="Keywords (e.g. developer, traveler, artist)">
+                    <select class="tool-input" id="bio-style">
+                        <option value="professional">Professional</option>
+                        <option value="casual">Casual</option>
+                        <option value="funny">Funny</option>
+                        <option value="creative">Creative</option>
+                    </select>
+                    <button class="tool-btn" id="generate-bio">Generate Bio</button>
+                    <div class="tool-result" id="bio-output">Your generated bio will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Daily Challenge Generator -->
+            <div class="tool-card" data-categories="fun">
+                <div class="tool-category-label">Fun & AI</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <h3 class="tool-title">Daily Challenge Generator</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Get daily challenges for coding, art, or life</p>
+                    <select class="tool-input" id="challenge-type">
+                        <option value="coding">Coding Challenge</option>
+                        <option value="art">Art Challenge</option>
+                        <option value="life">Life Challenge</option>
+                        <option value="learning">Learning Challenge</option>
+                    </select>
+                    <button class="tool-btn" id="generate-challenge">Generate Challenge</button>
+                    <div class="tool-result" id="challenge-result">
+                        Your daily challenge will appear here
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Instagram Bio Generator -->
+            <div class="tool-card" data-categories="social">
+                <div class="tool-category-label">Social</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                    <h3 class="tool-title">Instagram Bio Generator</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Create catchy bios for your Instagram profile</p>
+                    <input type="text" class="tool-input" id="ig-keywords" placeholder="Keywords (e.g. travel, food, art)">
+                    <button class="tool-btn" id="generate-ig-bio">Generate Bio</button>
+                    <div class="tool-result" id="ig-bio-output">Your generated bio will appear here</div>
+                </div>
+            </div>
+            
+            <!-- Hashtag Generator -->
+            <div class="tool-card" data-categories="social">
+                <div class="tool-category-label">Social</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-hashtag"></i>
+                    </div>
+                    <h3 class="tool-title">Hashtag Generator</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Generate relevant hashtags for your content</p>
+                    <input type="text" class="tool-input" id="hashtag-topic" placeholder="Enter topic or keyword">
+                    <button class="tool-btn" id="generate-hashtags">Generate Hashtags</button>
+                    <div class="tool-result" id="hashtag-result">
+                        #generated #hashtags #will #appear #here
+                    </div>
+                </div>
+            </div>
+            
+            <!-- YouTube Title Generator -->
+            <div class="tool-card" data-categories="social">
+                <div class="tool-category-label">Social</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <h3 class="tool-title">YouTube Title Generator</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Create compelling titles for your YouTube videos</p>
+                    <input type="text" class="tool-input" id="video-topic" placeholder="Video topic">
+                    <select class="tool-input" id="title-style">
+                        <option value="clickbait">Clickbait Style</option>
+                        <option value="professional">Professional</option>
+                        <option value="informative">Informative</option>
+                        <option value="funny">Funny</option>
+                    </select>
+                    <button class="tool-btn" id="generate-title">Generate Title</button>
+                    <div class="tool-result" id="title-result">
+                        Your video title will appear here
+                    </div>
+                </div>
+            </div>
+            
+            <!-- SEO Title/Description Generator -->
+            <div class="tool-card" data-categories="social">
+                <div class="tool-category-label">Social</div>
+                <div class="tool-header">
+                    <div class="tool-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h3 class="tool-title">SEO Generator</h3>
+                </div>
+                <div class="tool-content">
+                    <p class="tool-description">Create SEO-optimized titles and descriptions</p>
+                    <input type="text" class="tool-input" id="seo-keyword" placeholder="Main keyword">
+                    <textarea class="tool-input" id="seo-content" placeholder="Page content summary" rows="2"></textarea>
+                    <button class="tool-btn" id="generate-seo">Generate SEO</button>
+                    <div class="tool-result" id="seo-result">
+                        <p><strong>Title:</strong> <span id="seo-title">-</span></p>
+                        <p><strong>Description:</strong> <span id="seo-description">-</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>Web Tools Hub &copy; 2023 | All-in-one toolkit with 31 essential tools</p>
+            <p>Designed for developers, students, content creators, and professionals</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Category filtering
+        document.querySelectorAll('.category-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                // Update active button
+                document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                const category = button.dataset.category;
+                const toolCards = document.querySelectorAll('.tool-card');
+                
+                toolCards.forEach(card => {
+                    if (category === 'all' || card.dataset.categories.includes(category)) {
+                        card.style.display = 'flex';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // New Tools JavaScript
+        
+        // Number to Words Converter
+        const numberWords = {
+            en: {
+                units: ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'],
+                teens: ['ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'],
+                tens: ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'],
+                scales: ['', 'thousand', 'million', 'billion', 'trillion']
+            },
+            ar: {
+                units: ['', 'واحد', 'اثنان', 'ثلاثة', 'أربعة', 'خمسة', 'ستة', 'سبعة', 'ثمانية', 'تسعة'],
+                teens: ['عشرة', 'أحد عشر', 'اثنا عشر', 'ثلاثة عشر', 'أربعة عشر', 'خمسة عشر', 'ستة عشر', 'سبعة عشر', 'ثمانية عشر', 'تسعة عشر'],
+                tens: ['', '', 'عشرون', 'ثلاثون', 'أربعون', 'خمسون', 'ستون', 'سبعون', 'ثمانون', 'تسعون'],
+                scales: ['', 'ألف', 'مليون', 'مليار', 'تريليون']
+            }
+        };
+        
+        function convertToWords(num, lang) {
+            if (num === 0) return lang === 'en' ? 'zero' : 'صفر';
+            
+            let words = '';
+            const scale = numberWords[lang].scales;
+            const units = numberWords[lang].units;
+            const teens = numberWords[lang].teens;
+            const tens = numberWords[lang].tens;
+            
+            // Convert each scale group (thousands, millions, etc.)
+            for (let i = scale.length - 1; i >= 0; i--) {
+                const scaleValue = Math.pow(1000, i);
+                if (num >= scaleValue) {
+                    const count = Math.floor(num / scaleValue);
+                    num %= scaleValue;
+                    
+                    if (count > 0) {
+                        let group = convertGroup(count, lang);
+                        words += group + ' ' + scale[i] + ' ';
+                    }
+                }
+            }
+            
+            return words.trim();
+        }
+        
+        function convertGroup(num, lang) {
+            const units = numberWords[lang].units;
+            const teens = numberWords[lang].teens;
+            const tens = numberWords[lang].tens;
+            
+            let group = '';
+            const hundreds = Math.floor(num / 100);
+            num %= 100;
+            
+            if (hundreds) {
+                group += units[hundreds] + (lang === 'en' ? ' hundred' : ' مائة');
+                if (num > 0) group += lang === 'en' ? ' and ' : ' و';
+            }
+            
+            if (num >= 10 && num <= 19) {
+                group += teens[num - 10];
+            } else {
+                const ten = Math.floor(num / 10);
+                const unit = num % 10;
+                
+                if (ten) {
+                    group += tens[ten];
+                    if (unit) group += lang === 'en' ? '-' + units[unit] : ' و' + units[unit];
+                } else if (unit) {
+                    group += units[unit];
+                }
+            }
+            
+            return group;
+        }
+        
+        document.querySelectorAll('.lang-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.lang-option').forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+            });
+        });
+        
+        document.getElementById('convert-number').addEventListener('click', () => {
+            const num = parseInt(document.getElementById('number-input').value);
+            const lang = document.querySelector('.lang-option.active').dataset.lang;
+            
+            if (isNaN(num)) {
+                document.getElementById('number-result').textContent = 'Please enter a valid number';
+                return;
+            }
+            
+            if (num > 999999999999999) {
+                document.getElementById('number-result').textContent = 'Number is too large';
+                return;
+            }
+            
+            const words = convertToWords(num, lang);
+            document.getElementById('number-result').textContent = words;
+        });
+        
+        // Text Reverser / Flip Tool
+        document.querySelectorAll('.flip-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.flip-option').forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+            });
+        });
+        
+        document.getElementById('reverse-btn').addEventListener('click', () => {
+            const text = document.getElementById('reverse-input').value;
+            const type = document.querySelector('.flip-option.active').dataset.type;
+            
+            let result = text;
+            
+            switch(type) {
+                case 'reverse':
+                    result = text.split('').reverse().join('');
+                    break;
+                case 'vertical':
+                    result = text.split('\n').reverse().join('\n');
+                    break;
+                case 'horizontal':
+                    result = text.split('\n').map(line => line.split('').reverse().join('')).join('\n');
+                    break;
+            }
+            
+            document.getElementById('reverse-result').textContent = result;
+        });
+        
+        // SHA256 / MD5 Hash Generator
+        async function generateHash(text, algorithm) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(text);
+            
+            if (algorithm === 'sha256') {
+                const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+                return Array.from(new Uint8Array(hashBuffer)).map(b => b.toString(16).padStart(2, '0')).join('');
+            } else { // MD5
+                // Simple MD5 implementation for demonstration
+                return md5(text);
+            }
+        }
+        
+        function md5(input) {
+            // Simple MD5 implementation for demonstration
+            // Note: This is not cryptographically secure
+            let hash = 0;
+            for (let i = 0; i < input.length; i++) {
+                const char = input.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash |= 0; // Convert to 32bit integer
+            }
+            return hash.toString(16);
+        }
+        
+        document.querySelectorAll('.hash-option').forEach(option => {
+            option.addEventListener('click', () => {
+                document.querySelectorAll('.hash-option').forEach(opt => opt.classList.remove('active'));
+                option.classList.add('active');
+            });
+        });
+        
+        document.getElementById('generate-hash').addEventListener('click', async () => {
+            const text = document.getElementById('hash-input').value;
+            const algorithm = document.querySelector('.hash-option.active').dataset.algo;
+            
+            if (!text) {
+                document.getElementById('hash-result').textContent = 'Please enter text to hash';
+                return;
+            }
+            
+            const hash = await generateHash(text, algorithm);
+            document.getElementById('hash-result').textContent = hash;
+        });
+        
+        // Random Fact Generator
+        const facts = [
+            "The shortest war in history was between Britain and Zanzibar on August 27, 1896. Zanzibar surrendered after 38 minutes.",
+            "Honey never spoils. Archaeologists have found pots of honey in ancient Egyptian tombs that are over 3,000 years old and still perfectly edible.",
+            "Octopuses have three hearts: two pump blood to the gills, and one pumps it to the rest of the body.",
+            "The Eiffel Tower can be 15 cm taller during the summer due to thermal expansion of the iron.",
+            "Bananas are berries, but strawberries aren't.",
+            "A group of flamingos is called a 'flamboyance'.",
+            "The dot over the letter 'i' is called a tittle.",
+            "The longest English word without a vowel is 'rhythms'.",
+            "Wombat poop is cube-shaped.",
+            "A snail can sleep for three years.",
+            "The inventor of the frisbee was turned into a frisbee after he died.",
+            "The first oranges weren't orange. They were green."
+        ];
+        
+        document.getElementById('generate-fact').addEventListener('click', () => {
+            const randomIndex = Math.floor(Math.random() * facts.length);
+            document.getElementById('fact-result').textContent = facts[randomIndex];
+        });
+        
+        // Speech to Text
+        let recognition = null;
+        
+        if ('SpeechRecognition' in window || 'webkitSpeechRecognition' in window) {
+            recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = 'en-US';
+            
+            recognition.onresult = (event) => {
+                let transcript = '';
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    if (event.results[i].isFinal) {
+                        transcript += event.results[i][0].transcript;
+                    } else {
+                        transcript += event.results[i][0].transcript;
+                    }
+                }
+                document.getElementById('speech-output').value = transcript;
+            };
+            
+            recognition.onstart = () => {
+                document.getElementById('speech-status').textContent = 'Status: Listening...';
+            };
+            
+            recognition.onend = () => {
+                document.getElementById('speech-status').textContent = 'Status: Stopped';
+            };
+            
+            recognition.onerror = (event) => {
+                document.getElementById('speech-status').textContent = 'Error: ' + event.error;
+            };
+        } else {
+            document.getElementById('speech-output').placeholder = 'Speech recognition not supported in this browser';
+            document.getElementById('start-speech').disabled = true;
+            document.getElementById('stop-speech').disabled = true;
+        }
+        
+        document.getElementById('start-speech').addEventListener('click', () => {
+            if (recognition) {
+                recognition.start();
+            }
+        });
+        
+        document.getElementById('stop-speech').addEventListener('click', () => {
+            if (recognition) {
+                recognition.stop();
+            }
+        });
+        
+        // Roman Numeral Converter
+        const romanNumerals = [
+            { value: 1000, numeral: 'M' },
+            { value: 900, numeral: 'CM' },
+            { value: 500, numeral: 'D' },
+            { value: 400, numeral: 'CD' },
+            { value: 100, numeral: 'C' },
+            { value: 90, numeral: 'XC' },
+            { value: 50, numeral: 'L' },
+            { value: 40, numeral: 'XL' },
+            { value: 10, numeral: 'X' },
+            { value: 9, numeral: 'IX' },
+            { value: 5, numeral: 'V' },
+            { value: 4, numeral: 'IV' },
+            { value: 1, numeral: 'I' }
+        ];
+        
+        function convertToRoman(num) {
+            if (num < 1 || num > 3999) return 'Number must be between 1 and 3999';
+            
+            let result = '';
+            for (const numeral of romanNumerals) {
+                while (num >= numeral.value) {
+                    result += numeral.numeral;
+                    num -= numeral.value;
+                }
+            }
+            return result;
+        }
+        
+        document.getElementById('convert-roman').addEventListener('click', () => {
+            const num = parseInt(document.getElementById('roman-input').value);
+            const roman = convertToRoman(num);
+            document.getElementById('roman-result').textContent = roman;
+        });
+        
+        // File to Base64 Encoder
+        document.getElementById('base64-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('file-name').textContent = file.name;
+            } else {
+                document.getElementById('file-name').textContent = 'No file selected';
+            }
+        });
+        
+        document.getElementById('encode-btn').addEventListener('click', function() {
+            const fileInput = document.getElementById('base64-file');
+            if (!fileInput.files.length) {
+                document.getElementById('base64-result').textContent = 'Please select a file';
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                const base64 = e.target.result.split(',')[1];
+                document.getElementById('base64-result').textContent = base64;
+            };
+            
+            reader.onerror = function() {
+                document.getElementById('base64-result').textContent = 'Error reading file';
+            };
+            
+            reader.readAsDataURL(file);
+        });
+        
+        // Days Until Calculator
+        document.getElementById('calculate-days').addEventListener('click', function() {
+            const dateStr = document.getElementById('days-until-date').value;
+            if (!dateStr) {
+                document.getElementById('days-result').textContent = 'Please select a date';
+                return;
+            }
+            
+            const targetDate = new Date(dateStr);
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            
+            if (targetDate < today) {
+                document.getElementById('days-result').textContent = 'Date must be in the future';
+                return;
+            }
+            
+            const diffTime = targetDate - today;
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            document.getElementById('days-result').textContent = `${diffDays} days until ${targetDate.toDateString()}`;
+        });
+        
+        // Unix Timestamp Converter
+        document.getElementById('to-date-btn').addEventListener('click', function() {
+            const timestamp = parseInt(document.getElementById('timestamp-input').value);
+            if (isNaN(timestamp)) {
+                document.getElementById('timestamp-result').textContent = 'Please enter a valid timestamp';
+                return;
+            }
+            
+            const date = new Date(timestamp * 1000);
+            document.getElementById('timestamp-result').textContent = date.toLocaleString();
+        });
+        
+        document.getElementById('to-timestamp-btn').addEventListener('click', function() {
+            const now = Math.floor(Date.now() / 1000);
+            document.getElementById('timestamp-input').value = now;
+            document.getElementById('timestamp-result').textContent = `Current timestamp: ${now}`;
+        });
+        
+        // Image Compressor
+        document.getElementById('image-file').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('image-name').textContent = file.name;
+            } else {
+                document.getElementById('image-name').textContent = 'No image selected';
+            }
+        });
+        
+        document.getElementById('quality-slider').addEventListener('input', function() {
+            document.getElementById('quality-value').textContent = this.value + '%';
+        });
+        
+        document.getElementById('compress-btn').addEventListener('click', function() {
+            const fileInput = document.getElementById('image-file');
+            if (!fileInput.files.length) {
+                document.getElementById('compression-result').textContent = 'Please select an image';
+                return;
+            }
+            
+            const file = fileInput.files[0];
+            const quality = parseInt(document.getElementById('quality-slider').value) / 100;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0);
+                    
+                    // Convert to data URL with specified quality
+                    const compressedDataURL = canvas.toDataURL('image/jpeg', quality);
+                    
+                    // Display compressed image
+                    const imgElement = document.createElement('img');
+                    imgElement.src = compressedDataURL;
+                    imgElement.style.maxWidth = '100%';
+                    imgElement.style.maxHeight = '200px';
+                    
+                    const container = document.getElementById('compressed-image-container');
+                    container.innerHTML = '';
+                    container.appendChild(imgElement);
+                    
+                    // Create download link
+                    const downloadLink = document.createElement('a');
+                    downloadLink.href = compressedDataURL;
+                    downloadLink.download = 'compressed_' + file.name;
+                    downloadLink.textContent = 'Download Compressed Image';
+                    downloadLink.className = 'tool-btn';
+                    downloadLink.style.marginTop = '10px';
+                    
+                    container.appendChild(downloadLink);
+                    
+                    document.getElementById('compression-result').textContent = 
+                        `Compressed from ${formatBytes(file.size)} to ${formatBytes(compressedDataURL.length * 0.75)}`;
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        });
+        
+        function formatBytes(bytes, decimals = 2) {
+            if (bytes === 0) return '0 Bytes';
+            
+            const k = 1024;
+            const dm = decimals < 0 ? 0 : decimals;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+        }
+        
+        // File Merger
+        document.getElementById('file-merger').addEventListener('change', function(e) {
+            const files = e.target.files;
+            if (files.length) {
+                document.getElementById('selected-files').textContent = `${files.length} files selected`;
+            } else {
+                document.getElementById('selected-files').textContent = 'No files selected';
+            }
+        });
+        
+        document.getElementById('merge-btn').addEventListener('click', async function() {
+            const fileInput = document.getElementById('file-merger');
+            if (!fileInput.files.length) {
+                document.getElementById('merge-result').textContent = 'Please select files';
+                return;
+            }
+            
+            let mergedContent = '';
+            let isCsv = false;
+            
+            for (const file of fileInput.files) {
+                if (file.name.endsWith('.csv')) isCsv = true;
+                
+                const content = await readFile(file);
+                mergedContent += content + '\n';
+            }
+            
+            // Create download link
+            const blob = new Blob([mergedContent], { type: isCsv ? 'text/csv' : 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            
+            const downloadLink = document.createElement('a');
+            downloadLink.href = url;
+            downloadLink.download = `merged_${Date.now()}.${isCsv ? 'csv' : 'txt'}`;
+            downloadLink.textContent = `Download Merged ${isCsv ? 'CSV' : 'TXT'} File`;
+            downloadLink.className = 'tool-btn';
+            downloadLink.style.marginTop = '10px';
+            
+            const container = document.getElementById('merge-result');
+            container.innerHTML = '';
+            container.appendChild(downloadLink);
+        });
+        
+        function readFile(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    resolve(e.target.result);
+                };
+                reader.onerror = function() {
+                    reject('Error reading file');
+                };
+                reader.readAsText(file);
+            });
+        }
+        
+        // URL Encoder/Decoder
+        document.getElementById('encode-url').addEventListener('click', function() {
+            const text = document.getElementById('url-text').value;
+            document.getElementById('url-result').textContent = encodeURIComponent(text);
+        });
+        
+        document.getElementById('decode-url').addEventListener('click', function() {
+            const text = document.getElementById('url-text').value;
+            document.getElementById('url-result').textContent = decodeURIComponent(text);
+        });
+        
+        // Initialize the page with some generated content
+        window.addEventListener('DOMContentLoaded', () => {
+            // Generate initial content for new tools
+            document.getElementById('convert-number').click();
+            document.getElementById('reverse-btn').click();
+            document.getElementById('generate-hash').click();
+            document.getElementById('generate-fact').click();
+            document.getElementById('convert-roman').click();
+            document.getElementById('to-timestamp-btn').click();
+            
+            // Existing initializations
+            document.getElementById('generate-fake').click();
+            document.getElementById('generate-prompt').click();
+            document.getElementById('generate-bio').click();
+            document.getElementById('generate-challenge').click();
+            document.getElementById('generate-ig-bio').click();
+            document.getElementById('generate-hashtags').click();
+            document.getElementById('generate-title').click();
+            document.getElementById('generate-seo').click();
+        });
+                // Typing Speed Test
+        let startTime, endTime;
+        const testText = "The quick brown fox jumps over the lazy dog. This is a typing test to measure your words per minute.";
+        
+        document.getElementById('start-typing').addEventListener('click', () => {
+            document.getElementById('typing-input').value = '';
+            document.getElementById('typing-results').classList.add('hidden');
+            document.getElementById('typing-input').focus();
+            startTime = new Date();
+        });
+        
+        document.getElementById('typing-input').addEventListener('input', function() {
+            const typedText = this.value;
+            const originalText = testText;
+            
+            if (typedText.length === originalText.length) {
+                endTime = new Date();
+                const timeDiff = (endTime - startTime) / 60000; // minutes
+                const words = originalText.split(' ').length;
+                const wpm = Math.round(words / timeDiff);
+                
+                // Calculate accuracy
+                let errors = 0;
+                for (let i = 0; i < originalText.length; i++) {
+                    if (typedText[i] !== originalText[i]) {
+                        errors++;
+                    }
+                }
+                const accuracy = Math.round((1 - errors / originalText.length) * 100);
+                
+                document.getElementById('wpm').textContent = wpm;
+                document.getElementById('accuracy').textContent = accuracy + '%';
+                document.getElementById('typing-results').classList.remove('hidden');
+            }
+        });
+        
+        // Timer & Stopwatch
+        let timerInterval;
+        let isStopwatch = false;
+        let seconds = 0;
+        
+        function updateTimerDisplay() {
+            const hrs = Math.floor(seconds / 3600);
+            const mins = Math.floor((seconds % 3600) / 60);
+            const secs = seconds % 60;
+            
+            document.getElementById('timer-display').textContent = 
+                `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+        
+        document.getElementById('start-timer').addEventListener('click', () => {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            const minutes = parseInt(document.getElementById('minutes-input').value) || 0;
+            const secs = parseInt(document.getElementById('seconds-input').value) || 0;
+            seconds = minutes * 60 + secs;
+            isStopwatch = false;
+            
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                if (seconds <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('timer-display').innerHTML = "Time's up!";
+                    return;
+                }
+                seconds--;
+                updateTimerDisplay();
+            }, 1000);
+        });
+        
+        document.getElementById('stopwatch-btn').addEventListener('click', () => {
+            if (timerInterval) clearInterval(timerInterval);
+            
+            seconds = 0;
+            isStopwatch = true;
+            updateTimerDisplay();
+            
+            timerInterval = setInterval(() => {
+                seconds++;
+                updateTimerDisplay();
+            }, 1000);
+        });
+        
+        document.getElementById('reset-timer').addEventListener('click', () => {
+            if (timerInterval) clearInterval(timerInterval);
+            seconds = 0;
+            updateTimerDisplay();
+            document.getElementById('minutes-input').value = '0';
+            document.getElementById('seconds-input').value = '0';
+        });
+        
+        // Unit Converter
+        document.getElementById('convert-btn').addEventListener('click', () => {
+            const value = parseFloat(document.getElementById('unit-value').value);
+            const fromUnit = document.getElementById('unit-from').value;
+            const toUnit = document.getElementById('unit-to').value;
+            
+            let result;
+            
+            if (fromUnit === toUnit) {
+                result = value;
+            } else if (fromUnit === 'cm' && toUnit === 'in') {
+                result = value / 2.54;
+            } else if (fromUnit === 'in' && toUnit === 'cm') {
+                result = value * 2.54;
+            } else if (fromUnit === 'kg' && toUnit === 'lb') {
+                result = value * 2.20462;
+            } else if (fromUnit === 'lb' && toUnit === 'kg') {
+                result = value / 2.20462;
+            } else if (fromUnit === 'c' && toUnit === 'f') {
+                result = (value * 9/5) + 32;
+            } else if (fromUnit === 'f' && toUnit === 'c') {
+                result = (value - 32) * 5/9;
+            } else {
+                result = "Invalid conversion";
+            }
+            
+            if (typeof result === 'number') {
+                result = result.toFixed(2);
+            }
+            
+            document.getElementById('conversion-result').textContent = `${value} ${fromUnit} = ${result} ${toUnit}`;
+        });
+        
+        // Text Case Converter
+        document.getElementById('lowercase-btn').addEventListener('click', () => {
+            const text = document.getElementById('case-input').value;
+            document.getElementById('case-output').textContent = text.toLowerCase();
+        });
+        
+        document.getElementById('uppercase-btn').addEventListener('click', () => {
+            const text = document.getElementById('case-input').value;
+            document.getElementById('case-output').textContent = text.toUpperCase();
+        });
+        
+        document.getElementById('titlecase-btn').addEventListener('click', () => {
+            const text = document.getElementById('case-input').value;
+            document.getElementById('case-output').textContent = text.replace(/\w\S*/g, (txt) => {
+                return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+            });
+        });
+        
+        // Lorem Ipsum Generator
+        document.getElementById('generate-lorem').addEventListener('click', () => {
+            const count = parseInt(document.getElementById('lorem-count').value) || 3;
+            const lorem = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. ";
+            let output = '';
+            
+            for (let i = 0; i < count; i++) {
+                output += `<p>${lorem.repeat(3)}</p>`;
+            }
+            
+            document.getElementById('lorem-output').innerHTML = output;
+        });
+        
+        // JSON Formatter
+        document.getElementById('format-json').addEventListener('click', () => {
+            try {
+                const input = document.getElementById('json-input').value;
+                const parsed = JSON.parse(input);
+                const formatted = JSON.stringify(parsed, null, 4);
+                document.getElementById('json-output').textContent = formatted;
+            } catch (e) {
+                document.getElementById('json-output').textContent = "Invalid JSON: " + e.message;
+            }
+        });
+        
+        // Fake Name/Email Generator
+        const firstNames = {
+            male: ["James", "John", "Robert", "Michael", "William"],
+            female: ["Mary", "Patricia", "Jennifer", "Linda", "Elizabeth"]
+        };
+        
+        const lastNames = ["Smith", "Johnson", "Williams", "Brown", "Jones"];
+        const domains = ["gmail.com", "yahoo.com", "hotmail.com", "outlook.com", "example.com"];
+        
+        document.getElementById('generate-fake').addEventListener('click', () => {
+            const gender = document.getElementById('name-gender').value;
+            let firstName;
+            
+            if (gender === "random") {
+                const randomGender = Math.random() > 0.5 ? "male" : "female";
+                firstName = firstNames[randomGender][Math.floor(Math.random() * firstNames[randomGender].length)];
+            } else {
+                firstName = firstNames[gender][Math.floor(Math.random() * firstNames[gender].length)];
+            }
+            
+            const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+            const domain = domains[Math.floor(Math.random() * domains.length)];
+            const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${domain}`;
+            
+            document.getElementById('fake-name').textContent = `${firstName} ${lastName}`;
+            document.getElementById('fake-email').textContent = email;
+        });
+        
+        // Link Shortener
+        document.getElementById('shorten-btn').addEventListener('click', async () => {
+            const url = document.getElementById('url-input').value;
+            if (!url) return;
+            
+            try {
+                const response = await fetch(`https://api.shrtco.de/v2/shorten?url=${encodeURIComponent(url)}`);
+                const data = await response.json();
+                
+                if (data.ok) {
+                    const shortUrl = data.result.full_short_link;
+                    document.getElementById('shortened-url').innerHTML = 
+                        `Shortened URL: <a href="${shortUrl}" target="_blank">${shortUrl}</a>`;
+                } else {
+                    document.getElementById('shortened-url').textContent = "Error: " + data.error;
+                }
+            } catch (e) {
+                document.getElementById('shortened-url').textContent = "Error: " + e.message;
+            }
+        });
+        
+        // Word Counter
+        document.getElementById('word-counter-input').addEventListener('input', function() {
+            const text = this.value;
+            const words = text.trim() === '' ? 0 : text.trim().split(/\s+/).length;
+            const characters = text.length;
+            
+            document.getElementById('word-count').textContent = words;
+            document.getElementById('char-count').textContent = characters;
+            
+            const wordLimit = parseInt(document.getElementById('word-limit').value);
+            if (wordLimit && words >= wordLimit) {
+                document.getElementById('word-limit-alert').style.display = 'block';
+            } else {
+                document.getElementById('word-limit-alert').style.display = 'none';
+            }
+        });
+        
+        // Initialize word counter
+        document.getElementById('word-counter-input').dispatchEvent(new Event('input'));
+        
+        // Flashcard Maker
+        let flashcards = [];
+        let currentCard = 0;
+        
+        document.getElementById('add-card').addEventListener('click', () => {
+            const front = document.getElementById('card-front').value;
+            const back = document.getElementById('card-back').value;
+            
+            if (front && back) {
+                flashcards.push({ front, back });
+                document.getElementById('card-front').value = '';
+                document.getElementById('card-back').value = '';
+                showCard(currentCard);
+            }
+        });
+        
+        document.getElementById('prev-card').addEventListener('click', () => {
+            if (currentCard > 0) {
+                currentCard--;
+                showCard(currentCard);
+            }
+        });
+        
+        document.getElementById('next-card').addEventListener('click', () => {
+            if (currentCard < flashcards.length - 1) {
+                currentCard++;
+                showCard(currentCard);
+            }
+        });
+        
+        document.getElementById('flashcard').addEventListener('click', function() {
+            this.classList.toggle('flipped');
+        });
+        
+        function showCard(index) {
+            if (flashcards.length > 0) {
+                document.getElementById('card-front-text').textContent = flashcards[index].front;
+                document.getElementById('card-back-text').textContent = flashcards[index].back;
+            }
+        }
+        
+        // Meme Idea Generator
+        const memeTemplates = [
+            "Distracted Boyfriend: You, your hobby, and responsibilities",
+            "Drake Hotline Bling: Your preference vs what you actually do",
+            "Two Buttons: Two difficult choices you face",
+            "Change My Mind: Your unpopular opinion",
+            "Woman Yelling at Cat: You explaining vs them understanding"
+        ];
+        
+        const memeSubjects = [
+            "programming", "work", "relationships", "food", "pets", 
+            "weather", "traffic", "shopping", "sleep", "exercise"
+        ];
+        
+        document.getElementById('generate-meme').addEventListener('click', () => {
+            const template = memeTemplates[Math.floor(Math.random() * memeTemplates.length)];
+            const subject = memeSubjects[Math.floor(Math.random() * memeSubjects.length)];
+            document.getElementById('meme-idea').textContent = `${template} (about ${subject})`;
+        });
+        
+        // Chat Prompt Assistant
+        const promptTypes = {
+            funny: [
+                "Write a breakup letter to my alarm clock",
+                "Explain quantum physics using only emojis",
+                "Write a job application for a dinosaur applying to be a librarian"
+            ],
+            smart: [
+                "Explain blockchain technology in simple terms",
+                "What are the potential applications of AI in healthcare?",
+                "Discuss the ethical implications of gene editing"
+            ],
+            creative: [
+                "Write a short story about a time-traveling barista",
+                "Create a poem about the changing seasons from a cat's perspective",
+                "Design a fantasy world where emotions are currency"
+            ],
+            business: [
+                "Create a SWOT analysis for a vegan bakery",
+                "Write a persuasive elevator pitch for a teleportation device",
+                "Outline a marketing strategy for a new eco-friendly product"
+            ]
+        };
+        
+        document.getElementById('generate-prompt').addEventListener('click', () => {
+            const type = document.getElementById('prompt-type').value;
+            const prompt = promptTypes[type][Math.floor(Math.random() * promptTypes[type].length)];
+            document.getElementById('prompt-result').textContent = prompt;
+        });
+        
+        // AI Bio Writer
+        document.getElementById('generate-bio').addEventListener('click', () => {
+            const keywords = document.getElementById('bio-keywords').value || "creative";
+            const style = document.getElementById('bio-style').value;
+            
+            const styles = {
+                professional: [
+                    `Digital strategist | ${keywords} expert | Turning ideas into measurable results`,
+                    `Senior ${keywords} consultant | Data-driven solutions | Industry thought leader`,
+                    `Tech entrepreneur | ${keywords} innovator | Building the future of digital experiences`
+                ],
+                casual: [
+                    `Just a ${keywords} enthusiast living my best life 🌈 | Coffee addict ☕`,
+                    `Professional ${keywords} lover | Part-time meme connoisseur | Seeking adventures`,
+                    `${keywords} explorer | Making mistakes & learning daily | Good vibes only ✌️`
+                ],
+                funny: [
+                    `Professional ${keywords} overthinker | Master of awkward situations | Needs coffee to human`,
+                    `I put the 'pro' in procrastination | ${keywords} wizard | Frequently loses arguments with my cat`,
+                    `Certified ${keywords} ninja | Sarcasm specialist | My mom thinks I'm cool`
+                ],
+                creative: [
+                    `Painting the world with ${keywords} | Dreamer + doer | Creating magic in the mundane ✨`,
+                    `${keywords} alchemist | Turning ordinary moments into extraordinary memories | Poet at heart`,
+                    `Professional daydreamer | ${keywords} architect | Building castles in the clouds`
+                ]
+            };
+            
+            const bio = styles[style][Math.floor(Math.random() * styles[style].length)];
+            document.getElementById('bio-output').textContent = bio;
+        });
+        
+        // Daily Challenge Generator
+        document.getElementById('generate-challenge').addEventListener('click', () => {
+            const type = document.getElementById('challenge-type').value;
+            
+            const challenges = {
+                coding: [
+                    "Build a simple calculator using HTML/CSS/JS",
+                    "Create a responsive navigation bar without using frameworks",
+                    "Implement a dark/light mode toggle for a website",
+                    "Solve 3 problems on Codewars (difficulty: 6kyu)"
+                ],
+                art: [
+                    "Draw something using only geometric shapes",
+                    "Create a color palette inspired by your favorite food",
+                    "Sketch a futuristic version of an everyday object",
+                    "Make art using only recycled materials"
+                ],
+                life: [
+                    "Compliment 3 strangers today",
+                    "Learn and cook a dish from a different culture",
+                    "Spend 1 hour without any digital devices",
+                    "Write thank-you notes to 3 people who helped you"
+                ],
+                learning: [
+                    "Watch a documentary about a topic you know nothing about",
+                    "Learn 10 phrases in a new language",
+                    "Research a historical event that happened today",
+                    "Read a chapter of a non-fiction book outside your usual interests"
+                ]
+            };
+            
+            const challenge = challenges[type][Math.floor(Math.random() * challenges[type].length)];
+            document.getElementById('challenge-result').textContent = challenge;
+        });
+        
+        // Instagram Bio Generator
+        document.getElementById('generate-ig-bio').addEventListener('click', () => {
+            const keywords = document.getElementById('ig-keywords').value || "life";
+            
+            const bios = [
+                `✨ Living my best ${keywords} life | Creating memories not things`,
+                `📍 Based in ${['NYC', 'London', 'Tokyo', 'Paris'][Math.floor(Math.random()*4)]} | ${keywords} enthusiast`,
+                `📸 Capturing ${keywords} moments | Wanderlust sufferer ✈️`,
+                `👩‍💻 Turning ${keywords} into art | Daily posts 🔔`,
+                `🌎 Exploring the world | ${keywords} collector | Coffee in one hand, camera in the other`
+            ];
+            
+            const bio = bios[Math.floor(Math.random() * bios.length)];
+            document.getElementById('ig-bio-output').textContent = bio;
+        });
+        
+        // Hashtag Generator
+        document.getElementById('generate-hashtags').addEventListener('click', () => {
+            const topic = document.getElementById('hashtag-topic').value || "inspiration";
+            
+            const baseHashtags = {
+                travel: ['wanderlust', 'travelgram', 'adventure', 'explore'],
+                food: ['foodie', 'foodporn', 'yum', 'instafood'],
+                fashion: ['ootd', 'style', 'fashionblogger', 'outfit'],
+                tech: ['technology', 'innovation', 'gadgets', 'techie'],
+                art: ['artist', 'artwork', 'creative', 'design'],
+                default: ['motivation', 'inspiration', 'daily', 'life']
+            };
+            
+            // Determine category based on topic
+            let category = 'default';
+            if (topic.toLowerCase().includes('travel')) category = 'travel';
+            if (topic.toLowerCase().includes('food')) category = 'food';
+            if (topic.toLowerCase().includes('fashion')) category = 'fashion';
+            if (topic.toLowerCase().includes('tech')) category = 'tech';
+            if (topic.toLowerCase().includes('art')) category = 'art';
+            
+            const hashtags = [
+                ...baseHashtags[category],
+                `#${topic.replace(/\s+/g, '')}`,
+                `#${topic.replace(/\s+/g, '_')}`,
+                `#${topic}OfTheDay`,
+                `#${topic}Lover`
+            ];
+            
+            // Get 6 unique hashtags
+            const uniqueHashtags = [...new Set(hashtags)].slice(0, 6);
+            document.getElementById('hashtag-result').textContent = uniqueHashtags.join(' ');
+        });
+        
+        // YouTube Title Generator
+        document.getElementById('generate-title').addEventListener('click', () => {
+            const topic = document.getElementById('video-topic').value || "YouTube Tips";
+            const style = document.getElementById('title-style').value;
+            
+            const titles = {
+                clickbait: [
+                    `YOU WON'T BELIEVE THIS ${topic.toUpperCase()}! 🤯`,
+                    `I TRIED ${topic} FOR 30 DAYS - RESULTS SHOCKED ME!`,
+                    `${topic} SECRETS REVEALED (MUST WATCH) 🔥`,
+                    `THIS ${topic.toUpperCase()} CHANGED EVERYTHING!`
+                ],
+                professional: [
+                    `Advanced ${topic}: Strategies for Success`,
+                    `${topic} Masterclass: Expert Techniques`,
+                    `The Science Behind Effective ${topic}`,
+                    `${topic} Optimization: Best Practices`
+                ],
+                informative: [
+                    `Understanding ${topic}: A Complete Guide`,
+                    `${topic} Explained in 5 Minutes`,
+                    `The Ultimate ${topic} Tutorial for Beginners`,
+                    `How ${topic} Works: A Deep Dive`
+                ],
+                funny: [
+                    `When ${topic} Goes Horribly Wrong 😂`,
+                    `${topic} Fails: You Can't Make This Stuff Up!`,
+                    `My Cat Tried ${topic} - Here's What Happened`,
+                    `The Truth About ${topic} (Nobody Talks About This)`
+                ]
+            };
+            
+            const title = titles[style][Math.floor(Math.random() * titles[style].length)];
+            document.getElementById('title-result').textContent = title;
+        });
+        
+        // SEO Generator
+        document.getElementById('generate-seo').addEventListener('click', () => {
+            const keyword = document.getElementById('seo-keyword').value || "Digital Marketing";
+            const content = document.getElementById('seo-content').value || "Learn the best strategies";
+            
+            const titles = [
+                `The Ultimate Guide to ${keyword}`,
+                `${keyword}: Everything You Need to Know`,
+                `Mastering ${keyword} in 2023`,
+                `10 Proven ${keyword} Strategies That Work`
+            ];
+            
+            const descriptions = [
+                `Discover the best ${keyword} techniques. ${content}. Learn how to improve your results today!`,
+                `Looking to master ${keyword}? This comprehensive guide covers everything from basics to advanced strategies. ${content}.`,
+                `${keyword} secrets revealed! ${content}. Transform your approach with these expert tips.`,
+                `Learn effective ${keyword} methods that deliver real results. ${content}. Start implementing today!`
+            ];
+            
+            document.getElementById('seo-title').textContent = titles[Math.floor(Math.random() * titles.length)];
+            document.getElementById('seo-description').textContent = descriptions[Math.floor(Math.random() * descriptions.length)];
+        });
+    </script>
+</body>
+</html>

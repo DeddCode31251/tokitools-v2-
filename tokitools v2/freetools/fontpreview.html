@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Font Previewer Tool</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+        }
+
+        .font-previewer-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 25px;
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 30px;
+        }
+
+        .text-preview {
+            width: 100%;
+            min-height: 200px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            padding: 20px;
+            font-size: 24px;
+            line-height: 1.5;
+            transition: all 0.3s;
+            overflow-y: auto;
+        }
+
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .control-group {
+            flex: 1;
+            min-width: 200px;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .control-group select, 
+        .control-group input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .size-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .size-controls input {
+            flex: 1;
+        }
+
+        .color-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-control input[type="color"] {
+            width: 40px;
+            height: 40px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .text-input {
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .text-input textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: vertical;
+            min-height: 80px;
+            font-size: 16px;
+        }
+
+        .css-output {
+            margin-top: 30px;
+        }
+
+        .css-output h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .code-container {
+            position: relative;
+        }
+
+        .code-container textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 14px;
+            resize: none;
+            min-height: 100px;
+            background-color: #f9f9f9;
+        }
+
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            background-color: #4a90e2;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .copy-button:hover {
+            background-color: #3a7bc8;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .toast.show {
+            opacity: 1;
+        }
+
+        @media (max-width: 600px) {
+            .font-previewer-container {
+                padding: 15px;
+            }
+            
+            .controls {
+                flex-direction: column;
+            }
+            
+            .control-group {
+                min-width: 100%;
+            }
+        }
+        /*Title of the page*/
+            #tokitoolsTitle {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      position: relative;
+      color: transparent;
+      background: linear-gradient(135deg, #ff6a00, #ff0066, #00c6ff);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientSlide 5s infinite linear;
+
+      /* Glassy glowing edge */
+      text-shadow: 0 0 20px rgba(255, 105, 180, 0.7),
+                   0 0 40px rgba(0, 198, 255, 0.6),
+                   0 0 60px rgba(255, 106, 0, 0.5);
+	  margin-bottom: 4vw;
+    }
+
+    /* Gradient animation */
+    @keyframes gradientSlide {
+      0% {
+        background-position: 0% center;
+      }
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    /* Elegant underline */
+    #tokitoolsTitle::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 4px;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #ff6a00, #ff0066, #00c6ff);
+      animation: underlineGlow 3s infinite alternate;
+    }
+
+    @keyframes underlineGlow {
+      0% {
+        box-shadow: 0 0 10px #ff0066;
+      }
+      100% {
+        box-shadow: 0 0 25px #00c6ff;
+      }
+    }
+    </style>
+</head>
+<body>
+    <div class="header">
+          <h1 id="tokitoolsTitle">Font Preview</h1>
+        <p>Test and visualize fonts with custom styling</p>
+    </div>
+
+    <div class="font-previewer-container">
+        <div class="text-preview" id="textPreview">
+            The quick brown fox jumps over the lazy dog. 1234567890
+        </div>
+        
+        <div class="controls">
+            <div class="control-group">
+                <label for="fontFamily">Font Family</label>
+                <select id="fontFamily">
+                    <option value="Arial, sans-serif">Arial</option>
+                    <option value="'Times New Roman', serif">Times New Roman</option>
+                    <option value="'Courier New', monospace">Courier New</option>
+                    <option value="Georgia, serif">Georgia</option>
+                    <option value="Verdana, sans-serif">Verdana</option>
+                    <option value="'Trebuchet MS', sans-serif">Trebuchet MS</option>
+                    <option value="'Gill Sans', sans-serif">Gill Sans</option>
+                    <option value="'Palatino Linotype', serif">Palatino</option>
+                    <option value="'Comic Sans MS', cursive">Comic Sans MS</option>
+                    <option value="Impact, sans-serif">Impact</option>
+                    <option value="'Arial Black', sans-serif">Arial Black</option>
+                    <option value="'Lucida Sans Unicode', sans-serif">Lucida Sans</option>
+                    <option value="Tahoma, sans-serif">Tahoma</option>
+                    <option value="'Century Gothic', sans-serif">Century Gothic</option>
+                    <option value="'Franklin Gothic Medium', sans-serif">Franklin Gothic</option>
+                    <option value="'Book Antiqua', serif">Book Antiqua</option>
+                    <option value="'Garamond', serif">Garamond</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="fontWeight">Font Weight</label>
+                <select id="fontWeight">
+                    <option value="100">100 (Thin)</option>
+                    <option value="200">200 (Extra Light)</option>
+                    <option value="300">300 (Light)</option>
+                    <option value="400" selected>400 (Normal)</option>
+                    <option value="500">500 (Medium)</option>
+                    <option value="600">600 (Semi Bold)</option>
+                    <option value="700">700 (Bold)</option>
+                    <option value="800">800 (Extra Bold)</option>
+                    <option value="900">900 (Black)</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="fontStyle">Font Style</label>
+                <select id="fontStyle">
+                    <option value="normal" selected>Normal</option>
+                    <option value="italic">Italic</option>
+                    <option value="oblique">Oblique</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="fontSize">Font Size</label>
+                <div class="size-controls">
+                    <input type="number" id="fontSize" min="8" max="120" value="24">
+                    <select id="fontUnit">
+                        <option value="px">px</option>
+                        <option value="em">em</option>
+                        <option value="rem">rem</option>
+                        <option value="pt">pt</option>
+                        <option value="%">%</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label for="lineHeight">Line Height</label>
+                <input type="number" id="lineHeight" min="0.5" max="3" step="0.1" value="1.5">
+            </div>
+            
+            <div class="control-group">
+                <label for="letterSpacing">Letter Spacing</label>
+                <input type="number" id="letterSpacing" min="-5" max="20" step="0.1" value="0">
+            </div>
+            
+            <div class="control-group">
+                <label for="textColor">Text Color</label>
+                <div class="color-control">
+                    <input type="color" id="textColor" value="#000000">
+                    <span id="textColorValue">#000000</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label for="bgColor">Background Color</label>
+                <div class="color-control">
+                    <input type="color" id="bgColor" value="#ffffff">
+                    <span id="bgColorValue">#ffffff</span>
+                </div>
+            </div>
+            
+            <div class="control-group">
+                <label for="textAlign">Text Alignment</label>
+                <select id="textAlign">
+                    <option value="left" selected>Left</option>
+                    <option value="center">Center</option>
+                    <option value="right">Right</option>
+                    <option value="justify">Justify</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="textDecoration">Text Decoration</label>
+                <select id="textDecoration">
+                    <option value="none" selected>None</option>
+                    <option value="underline">Underline</option>
+                    <option value="overline">Overline</option>
+                    <option value="line-through">Line Through</option>
+                </select>
+            </div>
+            
+            <div class="control-group">
+                <label for="textTransform">Text Transform</label>
+                <select id="textTransform">
+                    <option value="none" selected>None</option>
+                    <option value="uppercase">Uppercase</option>
+                    <option value="lowercase">Lowercase</option>
+                    <option value="capitalize">Capitalize</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="text-input">
+            <label for="customText">Custom Text</label>
+            <textarea id="customText" placeholder="Enter your custom text here...">The quick brown fox jumps over the lazy dog. 1234567890</textarea>
+        </div>
+        
+        <div class="css-output">
+            <h3>CSS Code:</h3>
+            <div class="code-container">
+                <textarea id="cssCode" readonly></textarea>
+                <button class="copy-button" id="copyCss">Copy</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">CSS copied to clipboard!</div>
+
+    <script>
+        // DOM Elements
+        const textPreview = document.getElementById('textPreview');
+        const customText = document.getElementById('customText');
+        const cssCode = document.getElementById('cssCode');
+        const copyCssBtn = document.getElementById('copyCss');
+        const toast = document.getElementById('toast');
+        
+        // Form controls
+        const fontFamily = document.getElementById('fontFamily');
+        const fontWeight = document.getElementById('fontWeight');
+        const fontStyle = document.getElementById('fontStyle');
+        const fontSize = document.getElementById('fontSize');
+        const fontUnit = document.getElementById('fontUnit');
+        const lineHeight = document.getElementById('lineHeight');
+        const letterSpacing = document.getElementById('letterSpacing');
+        const textColor = document.getElementById('textColor');
+        const textColorValue = document.getElementById('textColorValue');
+        const bgColor = document.getElementById('bgColor');
+        const bgColorValue = document.getElementById('bgColorValue');
+        const textAlign = document.getElementById('textAlign');
+        const textDecoration = document.getElementById('textDecoration');
+        const textTransform = document.getElementById('textTransform');
+        
+        // Initialize the font previewer
+        function initFontPreviewer() {
+            // Set up event listeners
+            const controls = [
+                fontFamily, fontWeight, fontStyle, fontSize, fontUnit,
+                lineHeight, letterSpacing, textColor, bgColor,
+                textAlign, textDecoration, textTransform, customText
+            ];
+            
+            controls.forEach(control => {
+                control.addEventListener('input', updatePreview);
+            });
+            
+            textColor.addEventListener('input', () => {
+                textColorValue.textContent = textColor.value;
+                updatePreview();
+            });
+            
+            bgColor.addEventListener('input', () => {
+                bgColorValue.textContent = bgColor.value;
+                updatePreview();
+            });
+            
+            copyCssBtn.addEventListener('click', copyCss);
+            
+            // Initial update
+            updatePreview();
+        }
+        
+        // Update the preview and CSS code
+        function updatePreview() {
+            // Update preview text
+            textPreview.textContent = customText.value || ' ';
+            
+            // Apply styles
+            textPreview.style.fontFamily = fontFamily.value;
+            textPreview.style.fontWeight = fontWeight.value;
+            textPreview.style.fontStyle = fontStyle.value;
+            textPreview.style.fontSize = fontSize.value + fontUnit.value;
+            textPreview.style.lineHeight = lineHeight.value;
+            textPreview.style.letterSpacing = letterSpacing.value + 'px';
+            textPreview.style.color = textColor.value;
+            textPreview.style.backgroundColor = bgColor.value;
+            textPreview.style.textAlign = textAlign.value;
+            textPreview.style.textDecoration = textDecoration.value;
+            textPreview.style.textTransform = textTransform.value;
+            
+            // Generate CSS code
+            generateCssCode();
+        }
+        
+        // Generate CSS code
+        function generateCssCode() {
+            const css = `
+font-family: ${fontFamily.value};
+font-weight: ${fontWeight.value};
+font-style: ${fontStyle.value};
+font-size: ${fontSize.value}${fontUnit.value};
+line-height: ${lineHeight.value};
+letter-spacing: ${letterSpacing.value}px;
+color: ${textColor.value};
+background-color: ${bgColor.value};
+text-align: ${textAlign.value};
+text-decoration: ${textDecoration.value};
+text-transform: ${textTransform.value};
+            `.trim();
+            
+            cssCode.value = css;
+        }
+        
+        // Copy CSS to clipboard
+        function copyCss() {
+            cssCode.select();
+            document.execCommand('copy');
+            showToast();
+        }
+        
+        // Show toast notification
+        function showToast() {
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 2000);
+        }
+        
+        // Initialize the font previewer
+        initFontPreviewer();
+    </script>
+</body>
+</html>

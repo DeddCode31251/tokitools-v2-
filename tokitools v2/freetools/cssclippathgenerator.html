@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Tools: Shadow Generator & Clip-Path Maker</title>
+    <style>
+        :root {
+            --primary-color: #5d6bc4;
+            --secondary-color: #7986cb;
+            --background-color: #f5f7fa;
+            --text-color: #333;
+            --border-color: #ddd;
+            --error-color: #e74c3c;
+            --panel-bg: #fff;
+            --shadow-color: rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+
+        .tools-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        .tool-panel {
+            flex: 1;
+            min-width: 350px;
+            background: var(--panel-bg);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 3px 10px var(--shadow-color);
+        }
+
+        .tool-panel h2 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .preview-area {
+            width: 200px;
+            height: 200px;
+            margin: 0 auto 30px;
+            background-color: #5d6bc4;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input[type="range"] {
+            width: 100%;
+        }
+
+        input[type="number"], input[type="color"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(93, 107, 196, 0.2);
+        }
+
+        .output-code {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid var(--primary-color);
+            font-family: 'Courier New', Courier, monospace;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        .clip-path-points {
+            margin-top: 15px;
+        }
+
+        .clip-path-point {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .clip-path-point input {
+            flex: 1;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .btn-remove {
+            background-color: #e74c3c;
+        }
+
+        .btn-remove:hover {
+            background-color: #c0392b;
+        }
+
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .tab {
+            padding: 10px 20px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            font-weight: 600;
+            color: var(--text-color);
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            color: var(--primary-color);
+            border-bottom-color: var(--primary-color);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .tool-panel {
+                min-width: 100%;
+            }
+        }
+        /*tittle of the page */
+            #tokitoolsTitle {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      position: relative;
+      color: transparent;
+      background: linear-gradient(135deg, #ff6a00, #ff0066, #00c6ff);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientSlide 5s infinite linear;
+
+      /* Glassy glowing edge */
+      text-shadow: 0 0 20px rgba(255, 105, 180, 0.7),
+                   0 0 40px rgba(0, 198, 255, 0.6),
+                   0 0 60px rgba(255, 106, 0, 0.5);
+	  margin-bottom: 4vw;
+    }
+
+    /* Gradient animation */
+    @keyframes gradientSlide {
+      0% {
+        background-position: 0% center;
+      }
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    /* Elegant underline */
+    #tokitoolsTitle::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 4px;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #ff6a00, #ff0066, #00c6ff);
+      animation: underlineGlow 3s infinite alternate;
+    }
+
+    @keyframes underlineGlow {
+      0% {
+        box-shadow: 0 0 10px #ff0066;
+      }
+      100% {
+        box-shadow: 0 0 25px #00c6ff;
+      }
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>CSS Tools</h1>
+          <h1 id="tokitoolsTitle">Box Shadow & Clippath Generator</h1>
+        <div class="tabs">
+            <button class="tab active" data-tab="shadow">Shadow Generator</button>
+            <button class="tab" data-tab="clip-path">Clip-Path Maker</button>
+        </div>
+        
+        <div class="tools-container">
+            <!-- Shadow Generator -->
+            <div id="shadow-tool" class="tool-panel tab-content active">
+                <h2>CSS Shadow Generator</h2>
+                
+                <div class="preview-area" id="shadow-preview">
+                    Preview Box
+                </div>
+                
+                <div class="controls">
+                    <div class="form-group">
+                        <label for="shadow-h-offset">Horizontal Offset (px)</label>
+                        <input type="range" id="shadow-h-offset" min="-50" max="50" value="5">
+                        <input type="number" id="shadow-h-offset-value" min="-50" max="50" value="5">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shadow-v-offset">Vertical Offset (px)</label>
+                        <input type="range" id="shadow-v-offset" min="-50" max="50" value="5">
+                        <input type="number" id="shadow-v-offset-value" min="-50" max="50" value="5">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shadow-blur">Blur Radius (px)</label>
+                        <input type="range" id="shadow-blur" min="0" max="50" value="10">
+                        <input type="number" id="shadow-blur-value" min="0" max="50" value="10">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shadow-spread">Spread (px)</label>
+                        <input type="range" id="shadow-spread" min="-50" max="50" value="0">
+                        <input type="number" id="shadow-spread-value" min="-50" max="50" value="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shadow-color">Shadow Color</label>
+                        <input type="color" id="shadow-color" value="#000000">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shadow-opacity">Opacity</label>
+                        <input type="range" id="shadow-opacity" min="0" max="100" value="50">
+                        <input type="number" id="shadow-opacity-value" min="0" max="100" value="50">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="shadow-inset">Inset Shadow</label>
+                        <select id="shadow-inset">
+                            <option value="false">No</option>
+                            <option value="true">Yes</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="output-code" id="shadow-output">
+                    box-shadow: 5px 5px 10px 0px rgba(0, 0, 0, 0.5);
+                </div>
+            </div>
+            
+            <!-- Clip-Path Maker -->
+            <div id="clip-path-tool" class="tool-panel tab-content">
+                <h2>CSS Clip-Path Maker</h2>
+                
+                <div class="preview-area" id="clip-path-preview">
+                    Preview Box
+                </div>
+                
+                <div class="form-group">
+                    <label for="clip-path-type">Shape Type</label>
+                    <select id="clip-path-type">
+                        <option value="polygon">Polygon</option>
+                        <option value="circle">Circle</option>
+                        <option value="ellipse">Ellipse</option>
+                        <option value="inset">Inset</option>
+                    </select>
+                </div>
+                
+                <div id="polygon-controls">
+                    <div class="clip-path-points" id="clip-path-points-container">
+                        <div class="clip-path-point">
+                            <input type="number" class="point-x" placeholder="X (%)" value="0">
+                            <input type="number" class="point-y" placeholder="Y (%)" value="0">
+                            <button class="btn btn-remove remove-point">-</button>
+                        </div>
+                        <div class="clip-path-point">
+                            <input type="number" class="point-x" placeholder="X (%)" value="100">
+                            <input type="number" class="point-y" placeholder="Y (%)" value="0">
+                            <button class="btn btn-remove remove-point">-</button>
+                        </div>
+                        <div class="clip-path-point">
+                            <input type="number" class="point-x" placeholder="X (%)" value="100">
+                            <input type="number" class="point-y" placeholder="Y (%)" value="100">
+                            <button class="btn btn-remove remove-point">-</button>
+                        </div>
+                        <div class="clip-path-point">
+                            <input type="number" class="point-x" placeholder="X (%)" value="0">
+                            <input type="number" class="point-y" placeholder="Y (%)" value="100">
+                            <button class="btn btn-remove remove-point">-</button>
+                        </div>
+                    </div>
+                    <button class="btn" id="add-point">Add Point</button>
+                </div>
+                
+                <div id="circle-controls" style="display: none;">
+                    <div class="form-group">
+                        <label for="circle-x">Center X (%)</label>
+                        <input type="number" id="circle-x" min="0" max="100" value="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="circle-y">Center Y (%)</label>
+                        <input type="number" id="circle-y" min="0" max="100" value="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="circle-radius">Radius (%)</label>
+                        <input type="number" id="circle-radius" min="0" max="100" value="50">
+                    </div>
+                </div>
+                
+                <div id="ellipse-controls" style="display: none;">
+                    <div class="form-group">
+                        <label for="ellipse-x">Center X (%)</label>
+                        <input type="number" id="ellipse-x" min="0" max="100" value="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="ellipse-y">Center Y (%)</label>
+                        <input type="number" id="ellipse-y" min="0" max="100" value="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="ellipse-rx">Radius X (%)</label>
+                        <input type="number" id="ellipse-rx" min="0" max="100" value="50">
+                    </div>
+                    <div class="form-group">
+                        <label for="ellipse-ry">Radius Y (%)</label>
+                        <input type="number" id="ellipse-ry" min="0" max="100" value="30">
+                    </div>
+                </div>
+                
+                <div id="inset-controls" style="display: none;">
+                    <div class="form-group">
+                        <label for="inset-top">Top (%)</label>
+                        <input type="number" id="inset-top" min="0" max="100" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="inset-right">Right (%)</label>
+                        <input type="number" id="inset-right" min="0" max="100" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="inset-bottom">Bottom (%)</label>
+                        <input type="number" id="inset-bottom" min="0" max="100" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="inset-left">Left (%)</label>
+                        <input type="number" id="inset-left" min="0" max="100" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="inset-round">Border Radius (%)</label>
+                        <input type="number" id="inset-round" min="0" max="50" value="10">
+                    </div>
+                </div>
+                
+                <div class="output-code" id="clip-path-output">
+                    clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs and content
+                    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                    document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to clicked tab and corresponding content
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(`${tabId}-tool`).classList.add('active');
+                });
+            });
+            
+            // Shadow Generator
+            const shadowPreview = document.getElementById('shadow-preview');
+            const shadowOutput = document.getElementById('shadow-output');
+            
+            // Get all shadow controls
+            const shadowHOffset = document.getElementById('shadow-h-offset');
+            const shadowHOffsetValue = document.getElementById('shadow-h-offset-value');
+            const shadowVOffset = document.getElementById('shadow-v-offset');
+            const shadowVOffsetValue = document.getElementById('shadow-v-offset-value');
+            const shadowBlur = document.getElementById('shadow-blur');
+            const shadowBlurValue = document.getElementById('shadow-blur-value');
+            const shadowSpread = document.getElementById('shadow-spread');
+            const shadowSpreadValue = document.getElementById('shadow-spread-value');
+            const shadowColor = document.getElementById('shadow-color');
+            const shadowOpacity = document.getElementById('shadow-opacity');
+            const shadowOpacityValue = document.getElementById('shadow-opacity-value');
+            const shadowInset = document.getElementById('shadow-inset');
+            
+            // Sync range and number inputs
+            function syncInputs(range, number) {
+                range.addEventListener('input', () => number.value = range.value);
+                number.addEventListener('input', () => range.value = number.value);
+            }
+            
+            syncInputs(shadowHOffset, shadowHOffsetValue);
+            syncInputs(shadowVOffset, shadowVOffsetValue);
+            syncInputs(shadowBlur, shadowBlurValue);
+            syncInputs(shadowSpread, shadowSpreadValue);
+            syncInputs(shadowOpacity, shadowOpacityValue);
+            
+            // Update shadow preview
+            function updateShadow() {
+                const hOffset = shadowHOffset.value;
+                const vOffset = shadowVOffset.value;
+                const blur = shadowBlur.value;
+                const spread = shadowSpread.value;
+                const color = hexToRgba(shadowColor.value, shadowOpacity.value / 100);
+                const inset = shadowInset.value === 'true' ? 'inset ' : '';
+                
+                const shadowValue = `${inset}${hOffset}px ${vOffset}px ${blur}px ${spread}px ${color}`;
+                shadowPreview.style.boxShadow = shadowValue;
+                shadowOutput.textContent = `box-shadow: ${shadowValue};`;
+            }
+            
+            // Convert hex to rgba
+            function hexToRgba(hex, opacity) {
+                hex = hex.replace('#', '');
+                const r = parseInt(hex.substring(0, 2), 16);
+                const g = parseInt(hex.substring(2, 4), 16);
+                const b = parseInt(hex.substring(4, 6), 16);
+                
+                return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+            }
+            
+            // Add event listeners for shadow controls
+            const shadowControls = [
+                shadowHOffset, shadowHOffsetValue,
+                shadowVOffset, shadowVOffsetValue,
+                shadowBlur, shadowBlurValue,
+                shadowSpread, shadowSpreadValue,
+                shadowColor, shadowOpacity, shadowOpacityValue,
+                shadowInset
+            ];
+            
+            shadowControls.forEach(control => {
+                control.addEventListener('input', updateShadow);
+            });
+            
+            // Initial update
+            updateShadow();
+            
+            // Clip-Path Maker
+            const clipPathPreview = document.getElementById('clip-path-preview');
+            const clipPathOutput = document.getElementById('clip-path-output');
+            const clipPathType = document.getElementById('clip-path-type');
+            const polygonControls = document.getElementById('polygon-controls');
+            const circleControls = document.getElementById('circle-controls');
+            const ellipseControls = document.getElementById('ellipse-controls');
+            const insetControls = document.getElementById('inset-controls');
+            const pointsContainer = document.getElementById('clip-path-points-container');
+            
+            // Show/hide controls based on selected type
+            clipPathType.addEventListener('change', function() {
+                polygonControls.style.display = 'none';
+                circleControls.style.display = 'none';
+                ellipseControls.style.display = 'none';
+                insetControls.style.display = 'none';
+                
+                switch(this.value) {
+                    case 'polygon':
+                        polygonControls.style.display = 'block';
+                        break;
+                    case 'circle':
+                        circleControls.style.display = 'block';
+                        break;
+                    case 'ellipse':
+                        ellipseControls.style.display = 'block';
+                        break;
+                    case 'inset':
+                        insetControls.style.display = 'block';
+                        break;
+                }
+                
+                updateClipPath();
+            });
+            
+            // Add point button
+            document.getElementById('add-point').addEventListener('click', function() {
+                const pointDiv = document.createElement('div');
+                pointDiv.className = 'clip-path-point';
+                pointDiv.innerHTML = `
+                    <input type="number" class="point-x" placeholder="X (%)" value="50">
+                    <input type="number" class="point-y" placeholder="Y (%)" value="50">
+                    <button class="btn btn-remove remove-point">-</button>
+                `;
+                pointsContainer.appendChild(pointDiv);
+                
+                // Add event listener to new point's inputs
+                pointDiv.querySelectorAll('input').forEach(input => {
+                    input.addEventListener('input', updateClipPath);
+                });
+                
+                // Add event listener to remove button
+                pointDiv.querySelector('.remove-point').addEventListener('click', function() {
+                    if (pointsContainer.children.length > 3) {
+                        pointsContainer.removeChild(pointDiv);
+                        updateClipPath();
+                    } else {
+                        alert('A polygon needs at least 3 points');
+                    }
+                });
+                
+                updateClipPath();
+            });
+            
+            // Add event listeners to existing remove buttons
+            document.querySelectorAll('.remove-point').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    if (pointsContainer.children.length > 3) {
+                        pointsContainer.removeChild(this.parentNode);
+                        updateClipPath();
+                    } else {
+                        alert('A polygon needs at least 3 points');
+                    }
+                });
+            });
+            
+            // Add event listeners to existing point inputs
+            document.querySelectorAll('.point-x, .point-y').forEach(input => {
+                input.addEventListener('input', updateClipPath);
+            });
+            
+            // Add event listeners to circle controls
+            document.getElementById('circle-x').addEventListener('input', updateClipPath);
+            document.getElementById('circle-y').addEventListener('input', updateClipPath);
+            document.getElementById('circle-radius').addEventListener('input', updateClipPath);
+            
+            // Add event listeners to ellipse controls
+            document.getElementById('ellipse-x').addEventListener('input', updateClipPath);
+            document.getElementById('ellipse-y').addEventListener('input', updateClipPath);
+            document.getElementById('ellipse-rx').addEventListener('input', updateClipPath);
+            document.getElementById('ellipse-ry').addEventListener('input', updateClipPath);
+            
+            // Add event listeners to inset controls
+            document.getElementById('inset-top').addEventListener('input', updateClipPath);
+            document.getElementById('inset-right').addEventListener('input', updateClipPath);
+            document.getElementById('inset-bottom').addEventListener('input', updateClipPath);
+            document.getElementById('inset-left').addEventListener('input', updateClipPath);
+            document.getElementById('inset-round').addEventListener('input', updateClipPath);
+            
+            // Update clip-path preview
+            function updateClipPath() {
+                let clipPathValue;
+                
+                switch(clipPathType.value) {
+                    case 'polygon':
+                        const points = [];
+                        document.querySelectorAll('.clip-path-point').forEach(point => {
+                            const x = point.querySelector('.point-x').value || 0;
+                            const y = point.querySelector('.point-y').value || 0;
+                            points.push(`${x}% ${y}%`);
+                        });
+                        clipPathValue = `polygon(${points.join(', ')})`;
+                        break;
+                        
+                    case 'circle':
+                        const cx = document.getElementById('circle-x').value || 50;
+                        const cy = document.getElementById('circle-y').value || 50;
+                        const radius = document.getElementById('circle-radius').value || 50;
+                        clipPathValue = `circle(${radius}% at ${cx}% ${cy}%)`;
+                        break;
+                        
+                    case 'ellipse':
+                        const ex = document.getElementById('ellipse-x').value || 50;
+                        const ey = document.getElementById('ellipse-y').value || 50;
+                        const rx = document.getElementById('ellipse-rx').value || 50;
+                        const ry = document.getElementById('ellipse-ry').value || 30;
+                        clipPathValue = `ellipse(${rx}% ${ry}% at ${ex}% ${ey}%)`;
+                        break;
+                        
+                    case 'inset':
+                        const top = document.getElementById('inset-top').value || 0;
+                        const right = document.getElementById('inset-right').value || 0;
+                        const bottom = document.getElementById('inset-bottom').value || 0;
+                        const left = document.getElementById('inset-left').value || 0;
+                        const round = document.getElementById('inset-round').value || 0;
+                        clipPathValue = `inset(${top}% ${right}% ${bottom}% ${left}% round ${round}%)`;
+                        break;
+                }
+                
+                clipPathPreview.style.clipPath = clipPathValue;
+                clipPathOutput.textContent = `clip-path: ${clipPathValue};`;
+            }
+            
+            // Initial update
+            updateClipPath();
+        });
+    </script>
+</body>
+</html>

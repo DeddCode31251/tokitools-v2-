@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Unit Converter</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #6b8cbc;
+            --background-color: #f5f7fa;
+            --text-color: #333;
+            --border-color: #ddd;
+            --error-color: #e74c3c;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+
+        .converter-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .input-group, .output-group {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+        }
+
+        button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .result h3 {
+            margin-bottom: 10px;
+            color: var(--primary-color);
+        }
+
+        .error {
+            color: var(--error-color);
+            margin-top: 5px;
+            font-size: 14px;
+        }
+
+        .info-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0f4f8;
+            border-radius: 5px;
+        }
+
+        .info-section h2 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .info-section ul {
+            padding-left: 20px;
+        }
+
+        .info-section li {
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .converter-section {
+                flex-direction: column;
+            }
+            
+            .input-group, .output-group {
+                min-width: 100%;
+            }
+        }
+        /*title of the page*/
+            #tokitoolsTitle {
+      font-size: 4rem;
+      font-weight: 800;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      position: relative;
+      color: transparent;
+      background: linear-gradient(135deg, #ff6a00, #ff0066, #00c6ff);
+      background-size: 200%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: gradientSlide 5s infinite linear;
+
+      /* Glassy glowing edge */
+      text-shadow: 0 0 20px rgba(255, 105, 180, 0.7),
+                   0 0 40px rgba(0, 198, 255, 0.6),
+                   0 0 60px rgba(255, 106, 0, 0.5);
+	  margin-bottom: 4vw;
+    }
+
+    /* Gradient animation */
+    @keyframes gradientSlide {
+      0% {
+        background-position: 0% center;
+      }
+      100% {
+        background-position: 200% center;
+      }
+    }
+
+    /* Elegant underline */
+    #tokitoolsTitle::after {
+      content: "";
+      position: absolute;
+      left: 50%;
+      bottom: -10px;
+      transform: translateX(-50%);
+      width: 80%;
+      height: 4px;
+      border-radius: 50px;
+      background: linear-gradient(90deg, #ff6a00, #ff0066, #00c6ff);
+      animation: underlineGlow 3s infinite alternate;
+    }
+
+    @keyframes underlineGlow {
+      0% {
+        box-shadow: 0 0 10px #ff0066;
+      }
+      100% {
+        box-shadow: 0 0 25px #00c6ff;
+      }
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+  <h1 id="tokitoolsTitle">Css Unit Convertor</h1>
+        
+        <div class="converter-section">
+            <div class="input-group">
+                <div class="form-group">
+                    <label for="inputValue">Value</label>
+                    <input type="number" id="inputValue" placeholder="Enter value" step="any">
+                    <div id="valueError" class="error"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="inputUnit">From Unit</label>
+                    <select id="inputUnit">
+                        <option value="px">Pixels (px)</option>
+                        <option value="em">Ems (em)</option>
+                        <option value="rem">Root Ems (rem)</option>
+                        <option value="%">Percentage (%)</option>
+                        <option value="vw">Viewport Width (vw)</option>
+                        <option value="vh">Viewport Height (vh)</option>
+                        <option value="vmin">Viewport Minimum (vmin)</option>
+                        <option value="vmax">Viewport Maximum (vmax)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="basePixelValue">Base Pixel Size (for em/rem)</label>
+                    <input type="number" id="basePixelValue" placeholder="Default: 16" value="16">
+                    <div id="baseError" class="error"></div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="viewportWidth">Viewport Width (for vw/vmin/vmax)</label>
+                    <input type="number" id="viewportWidth" placeholder="Default: 1920" value="1920">
+                </div>
+                
+                <div class="form-group">
+                    <label for="viewportHeight">Viewport Height (for vh/vmin/vmax)</label>
+                    <input type="number" id="viewportHeight" placeholder="Default: 1080" value="1080">
+                </div>
+            </div>
+            
+            <div class="output-group">
+                <div class="form-group">
+                    <label for="outputUnit">To Unit</label>
+                    <select id="outputUnit">
+                        <option value="px">Pixels (px)</option>
+                        <option value="em">Ems (em)</option>
+                        <option value="rem">Root Ems (rem)</option>
+                        <option value="%">Percentage (%)</option>
+                        <option value="vw">Viewport Width (vw)</option>
+                        <option value="vh">Viewport Height (vh)</option>
+                        <option value="vmin">Viewport Minimum (vmin)</option>
+                        <option value="vmax">Viewport Maximum (vmax)</option>
+                    </select>
+                </div>
+                
+                <button id="convertBtn">Convert</button>
+                
+                <div class="result">
+                    <h3>Result</h3>
+                    <div id="resultValue">-</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-section">
+            <h2>About CSS Units</h2>
+            <ul>
+                <li><strong>px</strong> - Absolute pixels (1px = 1/96th of 1in)</li>
+                <li><strong>em</strong> - Relative to the font-size of the element</li>
+                <li><strong>rem</strong> - Relative to the font-size of the root element</li>
+                <li><strong>%</strong> - Percentage relative to the parent element</li>
+                <li><strong>vw</strong> - 1% of the viewport's width</li>
+                <li><strong>vh</strong> - 1% of the viewport's height</li>
+                <li><strong>vmin</strong> - 1% of the viewport's smaller dimension</li>
+                <li><strong>vmax</strong> - 1% of the viewport's larger dimension</li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputValue = document.getElementById('inputValue');
+            const inputUnit = document.getElementById('inputUnit');
+            const outputUnit = document.getElementById('outputUnit');
+            const basePixelValue = document.getElementById('basePixelValue');
+            const viewportWidth = document.getElementById('viewportWidth');
+            const viewportHeight = document.getElementById('viewportHeight');
+            const convertBtn = document.getElementById('convertBtn');
+            const resultValue = document.getElementById('resultValue');
+            const valueError = document.getElementById('valueError');
+            const baseError = document.getElementById('baseError');
+            
+            convertBtn.addEventListener('click', convertUnits);
+            
+            function convertUnits() {
+                // Reset errors
+                valueError.textContent = '';
+                baseError.textContent = '';
+                
+                // Validate inputs
+                if (inputValue.value === '' || isNaN(inputValue.value)) {
+                    valueError.textContent = 'Please enter a valid number';
+                    return;
+                }
+                
+                if (basePixelValue.value === '' || isNaN(basePixelValue.value) || basePixelValue.value <= 0) {
+                    baseError.textContent = 'Please enter a valid base pixel size (greater than 0)';
+                    return;
+                }
+                
+                const value = parseFloat(inputValue.value);
+                const fromUnit = inputUnit.value;
+                const toUnit = outputUnit.value;
+                const basePx = parseFloat(basePixelValue.value);
+                const vw = parseFloat(viewportWidth.value);
+                const vh = parseFloat(viewportHeight.value);
+                
+                // First convert the input value to pixels
+                let pxValue;
+                switch (fromUnit) {
+                    case 'px':
+                        pxValue = value;
+                        break;
+                    case 'em':
+                    case 'rem':
+                        pxValue = value * basePx;
+                        break;
+                    case '%':
+                        // For %, we need context which we don't have, so we'll assume % of parent's same property
+                        // This is a limitation of this tool
+                        pxValue = value * basePx / 100; // Assuming parent font-size is basePx
+                        break;
+                    case 'vw':
+                        pxValue = value * vw / 100;
+                        break;
+                    case 'vh':
+                        pxValue = value * vh / 100;
+                        break;
+                    case 'vmin':
+                        pxValue = value * Math.min(vw, vh) / 100;
+                        break;
+                    case 'vmax':
+                        pxValue = value * Math.max(vw, vh) / 100;
+                        break;
+                    default:
+                        pxValue = value;
+                }
+                
+                // Then convert from pixels to the desired output unit
+                let result;
+                switch (toUnit) {
+                    case 'px':
+                        result = pxValue;
+                        break;
+                    case 'em':
+                    case 'rem':
+                        result = pxValue / basePx;
+                        break;
+                    case '%':
+                        result = (pxValue / basePx) * 100;
+                        break;
+                    case 'vw':
+                        result = (pxValue / vw) * 100;
+                        break;
+                    case 'vh':
+                        result = (pxValue / vh) * 100;
+                        break;
+                    case 'vmin':
+                        result = (pxValue / Math.min(vw, vh)) * 100;
+                        break;
+                    case 'vmax':
+                        result = (pxValue / Math.max(vw, vh)) * 100;
+                        break;
+                    default:
+                        result = pxValue;
+                }
+                
+                // Display the result with 4 decimal places if needed
+                if (Number.isInteger(result)) {
+                    resultValue.textContent = `${result} ${toUnit}`;
+                } else {
+                    resultValue.textContent = `${result.toFixed(4)} ${toUnit}`;
+                }
+            }
+            
+            // Initialize with a sample conversion
+            inputValue.value = '16';
+            convertUnits();
+        });
+    </script>
+</body>
+</html>

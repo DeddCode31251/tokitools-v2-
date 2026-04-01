@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Manager</title>
+    <link rel="icon" type="image/x-icon" href="OIP (15).jpeg">
+    <style>
+  body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin: 0;
+  background: linear-gradient(to right, #dfe9f3, #ffffff);
+  color: #2c3e50;
+  animation: fadeIn 1s ease-in-out;
+  overflow:scroll-y;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 20px;
+  background: #1e3c72;
+  background: linear-gradient(to right, #2a5298, #1e3c72);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.link {
+  background: #34495e;
+  width: 150px;
+  height: 150px;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+  transition: all 0.3s ease;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+.link:hover {
+  transform: translateY(-5px);
+  background: #1abc9c;
+}
+.link a {
+  text-decoration: none;
+  font-size: 22px;
+  color: white;
+  font-weight: bold;
+}
+        #titlehome {
+            text-align: center;
+            font-size: 40px;
+        }
+        .addnew-div {
+            background-color: burlywood;
+            width: 50%;
+            height: 150px;
+            margin: 20px auto;
+            border-radius: 30px;
+            text-align: center;
+        }
+        .addnew-div button {
+            background-color: green;
+            color: white;
+            width: 250px;
+            height: 120px;
+            border-radius: 30px;
+            font-size: 40px;
+            margin-top: 15px;
+        }
+        .addnew-div button:hover {
+            background-color: rgb(8, 100, 8);
+        }
+        .addnew-div button:active {
+            background-color: rgb(5, 53, 5);
+        }
+        .form-section, .courses-container, .analytics {
+            margin: 5vw auto;
+            width: 90%;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .form-section input, .form-section select {
+            display: block;
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+        }
+        .section-title {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        .remove-button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+        .edit-section {
+            border: 1px solid #ccc;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 10px;
+        }
+        @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+@keyframes move{
+    0%{
+        margin-top: 0;
+        opacity: 0.2;
+    }
+    25%{
+        margin-top: 50vw;
+        opacity: 0.4;
+    }
+    50%{
+        margin-top: 100vw;
+        opacity: 0.8;
+    }
+    75%{
+        margin-top: 50vw;
+        opacity: 1;
+    }
+    100%{
+        margin-top: 25vw;
+        opacity: 0;
+
+    }
+}
+.particle{
+    background-color: blueviolet;
+    border-radius: 2vw;
+    opacity: 0.5;
+z-index: -1;
+position:absolute;
+}
+.p1{
+    opacity: 0;
+    width: 3vw;
+    height: 3vw;
+    animation: move 22s infinite 1.14s linear;
+    left: 1vw;
+} 
+.p2{
+    opacity: 0;
+    width: 3vw;
+    height: 3vw;
+    animation: move 22s infinite 1.14s linear;
+    left: 10vw;
+} 
+.p3{
+    opacity: 0;
+    width: 2.2vw;
+    height: 2.2vw;
+    animation: move 22s infinite 3.25s linear;
+    left: 20vw;
+} 
+.bg{
+    display: flex;
+    flex-direction: row;
+}
+.p4{
+    opacity: 0;
+    left: 30vw;
+    animation: move 22s infinite 4.25s linear;
+    margin-right: 3vw;
+    margin-left: 3vw;
+} 
+.p5{
+    opacity: 0;
+    width: 2.3vw;
+    height: 2.3vw;
+    animation: move 32s infinite 6.25s linear;
+    left: 40vw;
+}
+.p6{
+    opacity: 0;
+    width: 1.5vw;
+    height: 1.5vw;
+    animation: move 27s infinite 2.25s linear;
+    left: 50vw;
+}
+.p7{
+    opacity: 0;
+    width: 3.7vw;
+    height: 3.7vw;
+    animation: move 26s infinite 6.25s linear;
+    left: 60vw;
+}
+.p8{
+    opacity: 0;
+    width: 3vw;
+    height: 3vw;
+    animation: move 17s infinite 1.25s linear;
+    left: 70vw;
+}   
+.p9{
+    opacity: 0;
+    width: 4.3vw;
+    height: 4.3vw;
+    animation: move 12s infinite 8.25s linear;
+    left: 80vw;
+} 
+.p10{
+    opacity: 0;
+    width: 3.8vw;
+    height: 3.8vw;
+    animation: move 29s infinite 5.25s linear;
+    left: 90vw;
+} 
+</style>
+</head>
+<body>
+    <div class="bg">
+        <div class="particle p1"></div>
+        <div class="particle p2"></div>
+        <div class="particle p3"></div>
+        <div class="particle p4"></div>
+        <div class="particle p5"></div>
+        <div class="particle p6"></div>
+        <div class="particle p7"></div>
+        <div class="particle p8"></div>
+        <div class="particle p9"></div>
+        <div class="particle p10"></div>
+    </div>
+    <header>
+	<div class="link"><a href="index.html">Employees</a></div>
+        <div class="link"><a href="courses.html">Courses</a></div>
+        <div class="link"><a href="bills.html">Bills</a></div>
+      </header>
+
+    <div class="addnew-div">
+        <button onclick="renderCourseForm()">Add New Course</button>
+    </div>
+
+    <div id="createnewcourse" class="form-section"></div>
+
+    <div class="courses-container" id="coursesContainer">
+        <h1 id="titlehome">Courses</h1>
+    </div>
+
+    <div class="analytics" id="analytics">
+        <h2>Analytics</h2>
+    </div>
+
+    <script>
+        let courses = JSON.parse(localStorage.getItem('courses')) || [];
+    
+        function saveCourses() {
+            localStorage.setItem('courses', JSON.stringify(courses));
+            renderCourses();
+            renderAnalytics();
+            document.getElementById('createnewcourse').innerHTML = '';
+        }
+    
+        function renderCourseForm() {
+            const form = document.createElement('div');
+            form.innerHTML = `
+                <h2>Add Course</h2>
+                <input type="text" id="courseName" placeholder="Course Name" />
+                <div id="teachers"></div>
+                <button onclick="addTeacher(this)">Add Teacher</button>
+                <div id="students"></div>
+                <button onclick="addStudent(this)">Add Student</button>
+                <div class="section-title">Course Info</div>
+                <input type="text" id="coursemonth" placeholder="Date or Month: Month 1 or 25/2/2025"/>
+                <input type="number" id="courseCost" placeholder="Cost per Week" />
+                <input type="text" id="courseDays" placeholder="Days (e.g. Mon, Wed)" />
+                <input type="text" id="courseHours" placeholder="Hours (e.g. 10AM - 12PM)" />
+                <button onclick="submitCourse()">Submit Course</button>
+            `;
+            document.getElementById('createnewcourse').innerHTML = '';
+            document.getElementById('createnewcourse').appendChild(form);
+        }
+    
+        function addTeacher(btn) {
+            const container = document.getElementById('teachers');
+            if (container.children.length >= 3) return;
+            const div = document.createElement('div');
+            div.classList.add('edit-section');
+            div.innerHTML = `
+                <input type="text" placeholder="Name" class="tname" />
+                <input type="number" placeholder="Salary" class="tsalary" />
+                <input type="text" placeholder="Phone Number" class="tnumber" />
+                <input type="email" placeholder="Gmail" class="tgmail" />
+                <input type="text" placeholder="Location" class="tlocation" />
+                <button class="remove-button" onclick="this.parentElement.remove()">Delete</button>
+            `;
+            container.appendChild(div);
+        }
+    
+        function addStudent(btn) {
+            const container = document.getElementById('students');
+            if (container.children.length >= 6) return;
+            const div = document.createElement('div');
+            div.classList.add('edit-section');
+            div.innerHTML = `
+                <input type="text" placeholder="Name" class="sname" />
+                <input type="text" placeholder="Parent Name" class="sparentname" />
+                <input type="text" placeholder="Number" class="snumber" />
+                <input type="text" placeholder="Parent Number" class="sparentnumber" />
+                <input type="email" placeholder="Email" class="semail" />
+                <input type="text" placeholder="Picture URL" class="spicture" />
+                <input type="number" placeholder="Weeks" class="sweeks" />
+                <input type="number" placeholder="Discount % (if any)" class="sdiscount" />
+                <button class="remove-button" onclick="this.parentElement.remove()">Delete</button>
+            `;
+            container.appendChild(div);
+        }
+    
+        function submitCourse() {
+            const month = document.getElementById('coursemonth').value;
+            const name = document.getElementById('courseName').value;
+            const cost = parseFloat(document.getElementById('courseCost').value);
+            const days = document.getElementById('courseDays').value;
+            const hours = document.getElementById('courseHours').value;
+    
+            const teacherEls = document.querySelectorAll('#teachers .edit-section');
+            const studentEls = document.querySelectorAll('#students .edit-section');
+    
+            const teachers = Array.from(teacherEls).map(div => ({
+                name: div.querySelector('.tname').value,
+                salary: parseFloat(div.querySelector('.tsalary').value),
+                number: div.querySelector('.tnumber').value,
+                gmail: div.querySelector('.tgmail').value,
+                location: div.querySelector('.tlocation').value
+            }));
+    
+            const students = Array.from(studentEls).map(div => ({
+                name: div.querySelector('.sname').value,
+                parentname: div.querySelector('.sparentname').value,
+                number: div.querySelector('.snumber').value,
+                parentnumber: div.querySelector('.sparentnumber').value,
+                email: div.querySelector('.semail').value,
+                picture: div.querySelector('.spicture').value,
+                weeks: parseInt(div.querySelector('.sweeks').value),
+                discount: parseFloat(div.querySelector('.sdiscount').value) || 0,
+                absent: 0,
+                paid: 0
+            }));
+    
+            if (teachers.length < 1 || students.length < 1 || !name || isNaN(cost)) {
+                alert('Please fill all required fields with valid data.');
+                return;
+            }
+    
+            courses.push({ name, cost, days, hours, teachers, students, month });
+            saveCourses();
+        }
+    
+        function renderCourses() {
+            const container = document.getElementById('coursesContainer');
+            container.innerHTML = '<h1 id="titlehome">Courses</h1>';
+            courses.forEach((course, index) => {
+                const div = document.createElement('div');
+                div.classList.add('edit-section');
+                div.innerHTML = `<h3>${course.name}</h3>
+                    <p>Date | Month: ${course.month} </p>
+                    <p>Cost: $${course.cost} per week</p>
+                    <p>Days: ${course.days}</p>
+                    <p>Hours: ${course.hours}</p>
+                    <p>Teachers: ${course.teachers.length}</p>
+                    <p>Students: ${course.students.length}</p>
+                    <button onclick="viewCourse(${index})">View Details</button>
+                    <button onclick="deleteCourse(${index})">Delete Course</button>`;
+                container.appendChild(div);
+            });
+        }
+    
+        function deleteCourse(index) {
+            if (confirm('Are you sure you want to delete this course?')) {
+                courses.splice(index, 1);
+                saveCourses();
+            }
+        }
+    
+        function viewCourse(index) {
+            const course = courses[index];
+    
+            const overlay = document.createElement('div');
+            overlay.id = 'courseBanner';
+            overlay.style.position = 'fixed';
+            overlay.style.top = '0';
+            overlay.style.left = '0';
+            overlay.style.width = '100vw';
+            overlay.style.height = '100vh';
+            overlay.style.background = 'rgba(0, 0, 0, 0.8)';
+            overlay.style.display = 'flex';
+            overlay.style.justifyContent = 'center';
+            overlay.style.alignItems = 'center';
+            overlay.style.zIndex = '9999';
+            overlay.style.animation = 'fadeIn 0.3s ease';
+    
+            const box = document.createElement('div');
+            box.style.background = '#fff';
+            box.style.borderRadius = '20px';
+            box.style.padding = '30px';
+            box.style.width = '80%';
+            box.style.maxHeight = '90vh';
+            box.style.overflowY = 'auto';
+            box.style.boxShadow = '0 10px 30px rgba(0,0,0,0.25)';
+            box.style.fontFamily = 'Arial, sans-serif';
+            box.style.animation = 'slideUp 0.4s ease';
+    
+            box.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <h2 style="margin:0; font-size:28px; color:#333;">${course.name}</h2>
+                    <button onclick="document.getElementById('courseBanner').remove()" style="
+                        background-color: crimson;
+                        color: white;
+                        border: none;
+                        border-radius: 50%;
+                        width: 40px;
+                        height: 40px;
+                        font-size: 20px;
+                        cursor: pointer;
+                        transition: 0.3s;
+                    " title="Close">×</button>
+                </div>
+    
+                <p><strong>💰 Cost:</strong> $${course.cost} / week</p>
+                <p><strong>📅 Days:</strong> ${course.days}</p>
+                <p><strong>⏰ Hours:</strong> ${course.hours}</p>
+    
+                <h3 style="margin-top:20px; color:#444;">👨‍🏫 Teachers</h3>
+                ${course.teachers.map(t => `
+                    <div style="background:#f9f9f9; padding:10px 15px; margin:10px 0; border-left:5px solid #4caf50; border-radius:8px;">
+                        <strong>${t.name}</strong><br>
+                        Salary: $${t.salary} <br>
+                        Phone: ${t.number} <br>
+                        Gmail: ${t.gmail} <br>
+                        Location: ${t.location}
+                    </div>
+                `).join('')}
+    
+                <h3 style="margin-top:20px; color:#444;">👩‍🎓 Students</h3>
+                ${course.students.map(s => `
+                    <div style="background:#f0f0f0; padding:10px 15px; margin:10px 0; border-left:5px solid #2196f3; border-radius:8px;">
+                        <strong>${s.name}</strong> (Parent: ${s.parentname})<br>
+                        Phone: ${s.number}, Parent Phone: ${s.parentnumber} <br>
+                        Email: ${s.email}<br>
+                        Weeks: ${s.weeks}, Discount: ${s.discount}%<br>
+                        <img src="${s.picture}" alt="Student Picture" style="max-width: 100px; max-height: 100px; border-radius: 10px; margin-top:5px;" onerror="this.style.display='none'" />
+                    </div>
+                `).join('')}
+            `;
+    
+            overlay.appendChild(box);
+            document.body.appendChild(overlay);
+    
+            if (!document.getElementById('courseStyles')) {
+                const style = document.createElement('style');
+                style.id = 'courseStyles';
+                style.innerHTML = `
+                    @keyframes fadeIn {
+                        from { opacity: 0; }
+                        to { opacity: 1; }
+                    }
+                    @keyframes slideUp {
+                        from { transform: translateY(40px); opacity: 0; }
+                        to { transform: translateY(0); opacity: 1; }
+                    }
+                    #courseBanner::-webkit-scrollbar {
+                        width: 10px;
+                    }
+                    #courseBanner::-webkit-scrollbar-thumb {
+                        background: #888;
+                        border-radius: 5px;
+                    }
+                    #courseBanner::-webkit-scrollbar-thumb:hover {
+                        background: #555;
+                    }
+                `;
+                document.head.appendChild(style);
+            }
+        }
+    
+        function renderAnalytics() {
+            const analytics = document.getElementById('analytics');
+            let totalCourses = courses.length;
+            let totalTeacherSalary = 0;
+            let totalStudentIncome = 0;
+            let totalTeachers = 0;
+            let totalStudents = 0;
+    
+            const monthlyData = {};
+    
+            courses.forEach(course => {
+                totalTeachers += course.teachers.length;
+                totalStudents += course.students.length;
+    
+                let courseTeacherSalary = 0;
+                let courseStudentIncome = 0;
+    
+                course.teachers.forEach(t => {
+                    totalTeacherSalary += t.salary;
+                    courseTeacherSalary += t.salary;
+                });
+    
+                course.students.forEach(s => {
+                    const fullPrice = s.weeks * course.cost;
+                    const discountedPrice = fullPrice - (fullPrice * s.discount / 100);
+                    totalStudentIncome += discountedPrice;
+                    courseStudentIncome += discountedPrice;
+                });
+    
+                if (!monthlyData[course.month]) {
+                    monthlyData[course.month] = { salary: 0, income: 0 };
+                }
+    
+                monthlyData[course.month].salary += courseTeacherSalary;
+                monthlyData[course.month].income += courseStudentIncome;
+            });
+    
+            let analyticsHTML = `
+                <h2>Analytics</h2>
+                <p>📕 . Total Courses: ${totalCourses}</p>
+                <p>👔 . Total Teachers: ${totalTeachers}</p>
+                <p>👕 . Total Students: ${totalStudents}</p>
+                <p>💰 . Total Teacher Salary: $${totalTeacherSalary.toFixed(2)}</p>
+                <p>💰 . Total Student Income: $${totalStudentIncome.toFixed(2)}</p>
+                <p>💵 . Profit: $${(totalStudentIncome - totalTeacherSalary).toFixed(2)}</p>
+            `;
+    
+            analyticsHTML += `<h3 style="margin-top: 30px;">📊 Monthly Breakdown</h3>`;
+            Object.entries(monthlyData).forEach(([month, data]) => {
+                const profit = data.income - data.salary;
+                analyticsHTML += `
+                    <div style="background:#f9f9f9; margin:10px 0; padding:15px; border-left:5px solid #2a5298; border-radius:8px;">
+                        <strong>Month:</strong> ${month}<br>
+                        💰 Salary Paid: $${data.salary.toFixed(2)}<br>
+                        💸 Income Received: $${data.income.toFixed(2)}<br>
+                        💵 Profit: $${profit.toFixed(2)}
+                    </div>
+                `;
+            });
+    
+            analytics.innerHTML = analyticsHTML;
+        }
+    
+        renderCourses();
+        renderAnalytics();
+        
+    </script>
+    
+</body>
+</html>

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Global News Journal</title>
+  <style>
+    /* Basic reset */
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Georgia, 'Times New Roman', Times, serif;
+      background:#f2f2ef;
+      color:#111;
+      -webkit-font-smoothing:antialiased;
+    }
+
+    header{
+      background:#1b1b1b;
+      color:#fff;
+      padding:26px 16px;
+      text-align:center;
+      letter-spacing:1px;
+    }
+    header h1{
+      margin:0;
+      font-weight:700;
+      font-size:24px;
+    }
+    header p{ margin:6px 0 0; font-size:13px; opacity:.85; }
+
+    main{
+      max-width:1050px;
+      margin:26px auto;
+      padding:0 16px 50px;
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:18px;
+    }
+
+    /* Newspaper-like card */
+    .card{
+      background:linear-gradient(180deg,#fff,#fcfcfb);
+      border-radius:10px;
+      box-shadow:0 10px 30px rgba(15,15,15,.06);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+      transition:transform .18s ease, box-shadow .18s ease;
+    }
+    .card:hover{ transform:translateY(-6px); box-shadow:0 18px 40px rgba(15,15,15,.09); }
+
+    .card .meta{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:12px 16px;
+      border-bottom:1px solid #eee;
+      background:linear-gradient(180deg,rgba(0,0,0,.02),transparent);
+      font-size:13px;
+      color:#555;
+    }
+    .source{
+      font-weight:700;
+      text-transform:uppercase;
+      font-size:12px;
+      letter-spacing:1px;
+      color:#b22a2a;
+    }
+
+    .card .body{
+      padding:18px 18px 22px;
+    }
+    .title{
+      margin:0 0 10px;
+      font-size:20px;
+      line-height:1.18;
+      font-weight:700;
+      color:#111;
+    }
+    .title a{
+      color:inherit;
+      text-decoration:none;
+    }
+    .title a:hover{ text-decoration:underline; }
+
+    .excerpt{
+      margin:0;
+      color:#333;
+      font-size:15px;
+      line-height:1.5;
+    }
+
+    .read-more{
+      margin-top:14px;
+      display:inline-block;
+      font-size:13px;
+      text-decoration:none;
+      color:#1b1b1b;
+      border:1px solid #ddd;
+      padding:8px 12px;
+      border-radius:6px;
+      background:#fff;
+      box-shadow: 0 2px 0 rgba(0,0,0,.02) inset;
+    }
+
+    /* compact footer */
+    .card-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      font-size:12px;
+      padding:12px 16px;
+      color:#666;
+      background:#fafafa;
+      border-top:1px solid #eee;
+    }
+
+    /* Loader */
+    #loader{
+      text-align:center;
+      padding:26px 0 60px;
+      color:#666;
+      font-family:system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    }
+
+    /* Responsive: make multiple columns on larger screens */
+    @media(min-width:900px){
+      main{ grid-template-columns: 1fr 1fr; gap:22px; }
+      .title{ font-size:18px; }
+    }
+    @media(min-width:1200px){
+      main{ grid-template-columns: 1fr 1fr 1fr; gap:22px; }
+      .title{ font-size:19px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Global News Journal</h1>
+    <p>Aggregator — latest headlines from major publishers. Scroll to load more (10 at a time).</p>
+  </header>
+
+  <main id="feed"></main>
+
+  <div id="loader">Loading news…</div>
+
+  <script>
+  (function() {
+    // ---- CONFIG: feeds you want to include ----
+    const feeds = [
+      { name: "BBC News", url: "https://feeds.bbci.co.uk/news/rss.xml" },
+      { name: "CNN", url: "http://rss.cnn.com/rss/cnn_topstories.rss" },
+      { name: "New York Times", url: "http://feeds.nytimes.com/nyt/rss/HomePage" },
+      { name: "The Guardian", url: "https://www.theguardian.com/uk/rss" },
+      { name: "Al Jazeera", url: "https://www.aljazeera.com/xml/rss/all.xml" }
+    ];
+
+    // how many items to show per scroll chunk
+    const PAGE_SIZE = 10;
+    let merged = [];          // merged articles
+    let loaded = 0;           // how many rendered so far
+    const feedContainer = document.getElementById('feed');
+    const loader = document.getElementById('loader');
+
+    // helper: small safe text trimmer
+    function stripHtml(html){
+      if(!html) return '';
+      const tmp = document.createElement('div');
+      tmp.innerHTML = html;
+      return tmp.textContent || tmp.innerText || '';
+    }
+
+    // CORS proxy helper: AllOrigins (public). For production, use your own proxy.
+    function corsProxyUrl(url){
+      // using "raw" endpoint helps return the RSS directly
+      return "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
+    }
+
+    // Parse an RSS/XML string and extract items
+    function parseRss(xmlString, sourceName){
+      try{
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(xmlString, "application/xml");
+        // check errors
+        if(doc.querySelector("parsererror")) return [];
+
+        // support both RSS and Atom
+        const items = [];
+        const rssItems = doc.querySelectorAll("item");
+        if(rssItems.length){
+          rssItems.forEach(node => {
+            const title = node.querySelector("title") ? node.querySelector("title").textContent : "";
+            const link = node.querySelector("link") ? node.querySelector("link").textContent : "";
+            const desc = node.querySelector("description") ? node.querySelector("description").textContent : (node.querySelector("content\\:encoded") ? node.querySelector("content\\:encoded").textContent : "");
+            const pub = node.querySelector("pubDate") ? node.querySelector("pubDate").textContent : (node.querySelector("dc\\:date") ? node.querySelector("dc\\:date").textContent : "");
+            items.push({
+              title: title.trim(),
+              link: link.trim(),
+              description: stripHtml(desc).trim(),
+              pubDate: pub ? new Date(pub).toISOString() : new Date().toISOString(),
+              source: sourceName
+            });
+          });
+        } else {
+          // try Atom entries
+          const atomEntries = doc.querySelectorAll("entry");
+          atomEntries.forEach(node => {
+            const title = node.querySelector("title") ? node.querySelector("title").textContent : "";
+            const linkNode = node.querySelector("link[rel='alternate']") || node.querySelector("link");
+            const link = linkNode ? (linkNode.getAttribute("href") || linkNode.textContent) : "";
+            const desc = node.querySelector("summary") ? node.querySelector("summary").textContent : (node.querySelector("content") ? node.querySelector("content").textContent : "");
+            const pub = node.querySelector("updated") ? node.querySelector("updated").textContent : node.querySelector("published") ? node.querySelector("published").textContent : "";
+            items.push({
+              title: title.trim(),
+              link: link.trim(),
+              description: stripHtml(desc).trim(),
+              pubDate: pub ? new Date(pub).toISOString() : new Date().toISOString(),
+              source: sourceName
+            });
+          });
+        }
+        return items;
+      } catch(e){
+        console.error("parse error", e);
+        return [];
+      }
+    }
+
+    // Fetch one feed (via proxy), parse and return items
+    async function fetchFeed(feed){
+      try {
+        const res = await fetch(corsProxyUrl(feed.url));
+        if(!res.ok) {
+          console.warn("feed fetch failed:", feed.name, res.status);
+          return [];
+        }
+        const text = await res.text();
+        return parseRss(text, feed.name);
+      } catch(err){
+        console.error("fetchFeed error", feed.name, err);
+        return [];
+      }
+    }
+
+    // Fetch all feeds in parallel, merge and sort
+    async function fetchAll(){
+      loader.textContent = "Fetching feeds…";
+      const promises = feeds.map(f => fetchFeed(f));
+      const results = await Promise.all(promises);
+      // flatten
+      merged = results.flat();
+      // dedupe by link (simple)
+      const seen = new Map();
+      merged.forEach(item => {
+        const key = item.link || (item.title + item.pubDate);
+        if(!seen.has(key)) seen.set(key, item);
+      });
+      merged = Array.from(seen.values());
+      // sort newest first
+      merged.sort((a,b) => new Date(b.pubDate) - new Date(a.pubDate));
+      loader.textContent = "";
+      if(merged.length === 0){
+        loader.textContent = "No articles found. Some feeds may block cross-origin requests.";
+      }
+      renderMore(); // initial render
+    }
+
+    // Render next PAGE_SIZE items
+    function renderMore(){
+      const next = merged.slice(loaded, loaded + PAGE_SIZE);
+      next.forEach(item => renderCard(item));
+      loaded += next.length;
+      if(loaded >= merged.length){
+        loader.textContent = "You're all caught up.";
+      } else {
+        loader.textContent = "Scroll down to load more…";
+      }
+    }
+
+    // Build card DOM and append
+    function renderCard(item){
+      const card = document.createElement('article');
+      card.className = 'card';
+
+      // meta row
+      const meta = document.createElement('div');
+      meta.className = 'meta';
+      meta.innerHTML = `<div class="source">${escapeHtml(item.source)}</div><div>${formatDate(item.pubDate)}</div>`;
+
+      // body
+      const body = document.createElement('div');
+      body.className = 'body';
+
+      const title = document.createElement('h2');
+      title.className = 'title';
+      const a = document.createElement('a');
+      a.href = item.link || "#";
+      a.target = "_blank";
+      a.rel = "noopener noreferrer";
+      a.textContent = item.title || "(no title)";
+      title.appendChild(a);
+
+      const excerpt = document.createElement('p');
+      excerpt.className = 'excerpt';
+      excerpt.textContent = item.description ? truncate(item.description, 260) : '';
+
+      const read = document.createElement('a');
+      read.className = 'read-more';
+      read.href = item.link || "#";
+      read.target = "_blank";
+      read.rel = "noopener noreferrer";
+      read.textContent = "Read original";
+
+      body.appendChild(title);
+      body.appendChild(excerpt);
+      body.appendChild(read);
+
+      // footer
+      const footer = document.createElement('div');
+      footer.className = 'card-footer';
+      footer.innerHTML = `<div>${escapeHtml(item.source)}</div><div>${timeAgo(item.pubDate)}</div>`;
+
+      card.appendChild(meta);
+      card.appendChild(body);
+      card.appendChild(footer);
+
+      feedContainer.appendChild(card);
+    }
+
+    // small helpers
+    function truncate(s, n){ return s.length > n ? s.slice(0, n).trim() + "…" : s; }
+    function formatDate(d){
+      const dt = new Date(d);
+      return dt.toLocaleString();
+    }
+    function timeAgo(d){
+      const diff = Date.now() - new Date(d).getTime();
+      const s = Math.floor(diff/1000);
+      if(s < 60) return s + "s ago";
+      const m = Math.floor(s/60);
+      if(m < 60) return m + "m ago";
+      const h = Math.floor(m/60);
+      if(h < 24) return h + "h ago";
+      const days = Math.floor(h/24);
+      return days + "d ago";
+    }
+    function escapeHtml(t){ return String(t).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+    // infinite scroll: when near bottom load more
+    let busy = false;
+    window.addEventListener('scroll', () => {
+      if(busy) return;
+      if(window.innerHeight + window.scrollY >= document.body.offsetHeight - 250){
+        if(loaded < merged.length){
+          busy = true;
+          loader.textContent = "Loading more…";
+          setTimeout(() => { renderMore(); busy = false; }, 350); // tiny delay for UX
+        }
+      }
+    }, { passive:true });
+
+    // start
+    fetchAll();
+
+  })();
+  </script>
+</body>
+</html>
